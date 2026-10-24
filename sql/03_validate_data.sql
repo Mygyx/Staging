@@ -31,71 +31,71 @@ DECLARE
 BEGIN
   SELECT COUNT(*) INTO v_count FROM STG_ALBUM;
   IF v_count <> 347 THEN RAISE_APPLICATION_ERROR(-20005, 'Conteo incorrecto: STG_ALBUM'); END IF;
-  SELECT COUNT(*) INTO v_count FROM STG_SOURCE_FILE
+  SELECT COUNT(*) INTO v_count FROM ETL_SOURCE_FILE
   WHERE SOURCE_FILE = 'Album.csv' AND SOURCE_SHA256 = '656fce5550477e1e4a35a069d884b76fbeb519180a167a1bd9eb93a8ea84019e'
     AND EXPECTED_ROWS = 347 AND COLUMN_COUNT = 3 AND FILE_BYTES = 11164;
   IF v_count <> 1 THEN RAISE_APPLICATION_ERROR(-20006, 'Manifiesto incorrecto: Album.csv'); END IF;
   SELECT COUNT(*) INTO v_count FROM STG_ARTIST;
   IF v_count <> 275 THEN RAISE_APPLICATION_ERROR(-20005, 'Conteo incorrecto: STG_ARTIST'); END IF;
-  SELECT COUNT(*) INTO v_count FROM STG_SOURCE_FILE
+  SELECT COUNT(*) INTO v_count FROM ETL_SOURCE_FILE
   WHERE SOURCE_FILE = 'Artist.csv' AND SOURCE_SHA256 = '4ac1a88103d918b481100d7b3caef709281b14865f36b335e094ee5ed8fa5926'
     AND EXPECTED_ROWS = 275 AND COLUMN_COUNT = 2 AND FILE_BYTES = 7292;
   IF v_count <> 1 THEN RAISE_APPLICATION_ERROR(-20006, 'Manifiesto incorrecto: Artist.csv'); END IF;
   SELECT COUNT(*) INTO v_count FROM STG_CUSTOMER;
   IF v_count <> 59 THEN RAISE_APPLICATION_ERROR(-20005, 'Conteo incorrecto: STG_CUSTOMER'); END IF;
-  SELECT COUNT(*) INTO v_count FROM STG_SOURCE_FILE
+  SELECT COUNT(*) INTO v_count FROM ETL_SOURCE_FILE
   WHERE SOURCE_FILE = 'Customer.csv' AND SOURCE_SHA256 = '32ee8a435a710088aed61654e8641700ae223740aec8576e214e05740e640647'
     AND EXPECTED_ROWS = 59 AND COLUMN_COUNT = 13 AND FILE_BYTES = 6797;
   IF v_count <> 1 THEN RAISE_APPLICATION_ERROR(-20006, 'Manifiesto incorrecto: Customer.csv'); END IF;
   SELECT COUNT(*) INTO v_count FROM STG_EMPLOYEE;
   IF v_count <> 8 THEN RAISE_APPLICATION_ERROR(-20005, 'Conteo incorrecto: STG_EMPLOYEE'); END IF;
-  SELECT COUNT(*) INTO v_count FROM STG_SOURCE_FILE
+  SELECT COUNT(*) INTO v_count FROM ETL_SOURCE_FILE
   WHERE SOURCE_FILE = 'Employee.csv' AND SOURCE_SHA256 = '66f539d1dfb65abced48588dbbd2d6168d2cc1fe2f85764231ac2a9dc2d542fb'
     AND EXPECTED_ROWS = 8 AND COLUMN_COUNT = 15 AND FILE_BYTES = 1531;
   IF v_count <> 1 THEN RAISE_APPLICATION_ERROR(-20006, 'Manifiesto incorrecto: Employee.csv'); END IF;
   SELECT COUNT(*) INTO v_count FROM STG_GENRE;
   IF v_count <> 25 THEN RAISE_APPLICATION_ERROR(-20005, 'Conteo incorrecto: STG_GENRE'); END IF;
-  SELECT COUNT(*) INTO v_count FROM STG_SOURCE_FILE
+  SELECT COUNT(*) INTO v_count FROM ETL_SOURCE_FILE
   WHERE SOURCE_FILE = 'Genre.csv' AND SOURCE_SHA256 = '0c73f495ea8c55702e36e5289b34ddfb89fdae58ba76d53464fc9a6866c13572'
     AND EXPECTED_ROWS = 25 AND COLUMN_COUNT = 2 AND FILE_BYTES = 354;
   IF v_count <> 1 THEN RAISE_APPLICATION_ERROR(-20006, 'Manifiesto incorrecto: Genre.csv'); END IF;
   SELECT COUNT(*) INTO v_count FROM STG_INVOICE;
   IF v_count <> 412 THEN RAISE_APPLICATION_ERROR(-20005, 'Conteo incorrecto: STG_INVOICE'); END IF;
-  SELECT COUNT(*) INTO v_count FROM STG_SOURCE_FILE
+  SELECT COUNT(*) INTO v_count FROM ETL_SOURCE_FILE
   WHERE SOURCE_FILE = 'Invoice.csv' AND SOURCE_SHA256 = '89233865ee25507f7a992c41cb5f4715b3cf33e322c1fff227802ac74cd6d20b'
     AND EXPECTED_ROWS = 412 AND COLUMN_COUNT = 9 AND FILE_BYTES = 32003;
   IF v_count <> 1 THEN RAISE_APPLICATION_ERROR(-20006, 'Manifiesto incorrecto: Invoice.csv'); END IF;
-  SELECT COUNT(*) INTO v_count FROM STG_INVOICELINE;
-  IF v_count <> 2240 THEN RAISE_APPLICATION_ERROR(-20005, 'Conteo incorrecto: STG_INVOICELINE'); END IF;
-  SELECT COUNT(*) INTO v_count FROM STG_SOURCE_FILE
+  SELECT COUNT(*) INTO v_count FROM STG_INVOICE_LINE;
+  IF v_count <> 2240 THEN RAISE_APPLICATION_ERROR(-20005, 'Conteo incorrecto: STG_INVOICE_LINE'); END IF;
+  SELECT COUNT(*) INTO v_count FROM ETL_SOURCE_FILE
   WHERE SOURCE_FILE = 'InvoiceLine.csv' AND SOURCE_SHA256 = '5eedcfec0bb9d3eb937576cc8e1daf3d42013ba395d764a4b876e435115fa9ec'
     AND EXPECTED_ROWS = 2240 AND COLUMN_COUNT = 5 AND FILE_BYTES = 46914;
   IF v_count <> 1 THEN RAISE_APPLICATION_ERROR(-20006, 'Manifiesto incorrecto: InvoiceLine.csv'); END IF;
-  SELECT COUNT(*) INTO v_count FROM STG_MEDIATYPE;
-  IF v_count <> 5 THEN RAISE_APPLICATION_ERROR(-20005, 'Conteo incorrecto: STG_MEDIATYPE'); END IF;
-  SELECT COUNT(*) INTO v_count FROM STG_SOURCE_FILE
+  SELECT COUNT(*) INTO v_count FROM STG_MEDIA_TYPE;
+  IF v_count <> 5 THEN RAISE_APPLICATION_ERROR(-20005, 'Conteo incorrecto: STG_MEDIA_TYPE'); END IF;
+  SELECT COUNT(*) INTO v_count FROM ETL_SOURCE_FILE
   WHERE SOURCE_FILE = 'MediaType.csv' AND SOURCE_SHA256 = '80c6777732c3eca1748d3eadc0e6a7fa86e958637b1f8b10555e4eaa90ed1784'
     AND EXPECTED_ROWS = 5 AND COLUMN_COUNT = 2 AND FILE_BYTES = 142;
   IF v_count <> 1 THEN RAISE_APPLICATION_ERROR(-20006, 'Manifiesto incorrecto: MediaType.csv'); END IF;
   SELECT COUNT(*) INTO v_count FROM STG_PLAYLIST;
   IF v_count <> 18 THEN RAISE_APPLICATION_ERROR(-20005, 'Conteo incorrecto: STG_PLAYLIST'); END IF;
-  SELECT COUNT(*) INTO v_count FROM STG_SOURCE_FILE
+  SELECT COUNT(*) INTO v_count FROM ETL_SOURCE_FILE
   WHERE SOURCE_FILE = 'Playlist.csv' AND SOURCE_SHA256 = '7bae5596f0de27f4d77c1cbde2ece990f6aaf3f9af4ec603a40d56b0328eb2f7'
     AND EXPECTED_ROWS = 18 AND COLUMN_COUNT = 2 AND FILE_BYTES = 317;
   IF v_count <> 1 THEN RAISE_APPLICATION_ERROR(-20006, 'Manifiesto incorrecto: Playlist.csv'); END IF;
-  SELECT COUNT(*) INTO v_count FROM STG_PLAYLISTTRACK;
-  IF v_count <> 8715 THEN RAISE_APPLICATION_ERROR(-20005, 'Conteo incorrecto: STG_PLAYLISTTRACK'); END IF;
-  SELECT COUNT(*) INTO v_count FROM STG_SOURCE_FILE
+  SELECT COUNT(*) INTO v_count FROM STG_PLAYLIST_TRACK;
+  IF v_count <> 8715 THEN RAISE_APPLICATION_ERROR(-20005, 'Conteo incorrecto: STG_PLAYLIST_TRACK'); END IF;
+  SELECT COUNT(*) INTO v_count FROM ETL_SOURCE_FILE
   WHERE SOURCE_FILE = 'PlaylistTrack.csv' AND SOURCE_SHA256 = '708ce92206e64f05e5bbd31c43b937aca657222891cb0eac00445d0989b17166'
     AND EXPECTED_ROWS = 8715 AND COLUMN_COUNT = 2 AND FILE_BYTES = 67423;
   IF v_count <> 1 THEN RAISE_APPLICATION_ERROR(-20006, 'Manifiesto incorrecto: PlaylistTrack.csv'); END IF;
   SELECT COUNT(*) INTO v_count FROM STG_TRACK;
   IF v_count <> 3503 THEN RAISE_APPLICATION_ERROR(-20005, 'Conteo incorrecto: STG_TRACK'); END IF;
-  SELECT COUNT(*) INTO v_count FROM STG_SOURCE_FILE
+  SELECT COUNT(*) INTO v_count FROM ETL_SOURCE_FILE
   WHERE SOURCE_FILE = 'Track.csv' AND SOURCE_SHA256 = '53771d86981c638ee4af35cf52deff79e224a71f5711db1b1131f3ae1e5472ba'
     AND EXPECTED_ROWS = 3503 AND COLUMN_COUNT = 9 AND FILE_BYTES = 245243;
   IF v_count <> 1 THEN RAISE_APPLICATION_ERROR(-20006, 'Manifiesto incorrecto: Track.csv'); END IF;
-  SELECT COUNT(*) INTO v_count FROM STG_SOURCE_FILE;
+  SELECT COUNT(*) INTO v_count FROM ETL_SOURCE_FILE;
   IF v_count <> 11 THEN RAISE_APPLICATION_ERROR(-20008, 'Archivos adicionales en manifiesto.'); END IF;
 END;
 /
@@ -1399,9 +1399,9 @@ DECLARE
         TO_CHAR(NVL(LENGTHB(TrackId), 0), 'FM999999990') || ':' || TrackId ||
         TO_CHAR(NVL(LENGTHB(UnitPrice), 0), 'FM999999990') || ':' || UnitPrice ||
         TO_CHAR(NVL(LENGTHB(Quantity), 0), 'FM999999990') || ':' || Quantity, 'SHA256')))
-      INTO v_actual FROM STG_INVOICELINE WHERE CSV_ROW_NUMBER = p_row;
+      INTO v_actual FROM STG_INVOICE_LINE WHERE CSV_ROW_NUMBER = p_row;
     IF v_actual <> p_expected OR v_actual IS NULL THEN
-      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_INVOICELINE, registro ' || p_row);
+      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_INVOICE_LINE, registro ' || p_row);
     END IF;
   END;
 BEGIN
@@ -1818,9 +1818,9 @@ DECLARE
         TO_CHAR(NVL(LENGTHB(TrackId), 0), 'FM999999990') || ':' || TrackId ||
         TO_CHAR(NVL(LENGTHB(UnitPrice), 0), 'FM999999990') || ':' || UnitPrice ||
         TO_CHAR(NVL(LENGTHB(Quantity), 0), 'FM999999990') || ':' || Quantity, 'SHA256')))
-      INTO v_actual FROM STG_INVOICELINE WHERE CSV_ROW_NUMBER = p_row;
+      INTO v_actual FROM STG_INVOICE_LINE WHERE CSV_ROW_NUMBER = p_row;
     IF v_actual <> p_expected OR v_actual IS NULL THEN
-      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_INVOICELINE, registro ' || p_row);
+      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_INVOICE_LINE, registro ' || p_row);
     END IF;
   END;
 BEGIN
@@ -2237,9 +2237,9 @@ DECLARE
         TO_CHAR(NVL(LENGTHB(TrackId), 0), 'FM999999990') || ':' || TrackId ||
         TO_CHAR(NVL(LENGTHB(UnitPrice), 0), 'FM999999990') || ':' || UnitPrice ||
         TO_CHAR(NVL(LENGTHB(Quantity), 0), 'FM999999990') || ':' || Quantity, 'SHA256')))
-      INTO v_actual FROM STG_INVOICELINE WHERE CSV_ROW_NUMBER = p_row;
+      INTO v_actual FROM STG_INVOICE_LINE WHERE CSV_ROW_NUMBER = p_row;
     IF v_actual <> p_expected OR v_actual IS NULL THEN
-      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_INVOICELINE, registro ' || p_row);
+      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_INVOICE_LINE, registro ' || p_row);
     END IF;
   END;
 BEGIN
@@ -2656,9 +2656,9 @@ DECLARE
         TO_CHAR(NVL(LENGTHB(TrackId), 0), 'FM999999990') || ':' || TrackId ||
         TO_CHAR(NVL(LENGTHB(UnitPrice), 0), 'FM999999990') || ':' || UnitPrice ||
         TO_CHAR(NVL(LENGTHB(Quantity), 0), 'FM999999990') || ':' || Quantity, 'SHA256')))
-      INTO v_actual FROM STG_INVOICELINE WHERE CSV_ROW_NUMBER = p_row;
+      INTO v_actual FROM STG_INVOICE_LINE WHERE CSV_ROW_NUMBER = p_row;
     IF v_actual <> p_expected OR v_actual IS NULL THEN
-      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_INVOICELINE, registro ' || p_row);
+      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_INVOICE_LINE, registro ' || p_row);
     END IF;
   END;
 BEGIN
@@ -3075,9 +3075,9 @@ DECLARE
         TO_CHAR(NVL(LENGTHB(TrackId), 0), 'FM999999990') || ':' || TrackId ||
         TO_CHAR(NVL(LENGTHB(UnitPrice), 0), 'FM999999990') || ':' || UnitPrice ||
         TO_CHAR(NVL(LENGTHB(Quantity), 0), 'FM999999990') || ':' || Quantity, 'SHA256')))
-      INTO v_actual FROM STG_INVOICELINE WHERE CSV_ROW_NUMBER = p_row;
+      INTO v_actual FROM STG_INVOICE_LINE WHERE CSV_ROW_NUMBER = p_row;
     IF v_actual <> p_expected OR v_actual IS NULL THEN
-      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_INVOICELINE, registro ' || p_row);
+      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_INVOICE_LINE, registro ' || p_row);
     END IF;
   END;
 BEGIN
@@ -3494,9 +3494,9 @@ DECLARE
         TO_CHAR(NVL(LENGTHB(TrackId), 0), 'FM999999990') || ':' || TrackId ||
         TO_CHAR(NVL(LENGTHB(UnitPrice), 0), 'FM999999990') || ':' || UnitPrice ||
         TO_CHAR(NVL(LENGTHB(Quantity), 0), 'FM999999990') || ':' || Quantity, 'SHA256')))
-      INTO v_actual FROM STG_INVOICELINE WHERE CSV_ROW_NUMBER = p_row;
+      INTO v_actual FROM STG_INVOICE_LINE WHERE CSV_ROW_NUMBER = p_row;
     IF v_actual <> p_expected OR v_actual IS NULL THEN
-      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_INVOICELINE, registro ' || p_row);
+      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_INVOICE_LINE, registro ' || p_row);
     END IF;
   END;
 BEGIN
@@ -3743,7 +3743,7 @@ BEGIN
 END;
 /
 
-PROMPT OK STG_INVOICELINE: 2240 registros verificados por SHA-256
+PROMPT OK STG_INVOICE_LINE: 2240 registros verificados por SHA-256
 
 DECLARE
   PROCEDURE check_row(p_row NUMBER, p_expected VARCHAR2) IS
@@ -3752,9 +3752,9 @@ DECLARE
     SELECT LOWER(RAWTOHEX(STANDARD_HASH(
         TO_CHAR(NVL(LENGTHB(MediaTypeId), 0), 'FM999999990') || ':' || MediaTypeId ||
         TO_CHAR(NVL(LENGTHB(Name), 0), 'FM999999990') || ':' || Name, 'SHA256')))
-      INTO v_actual FROM STG_MEDIATYPE WHERE CSV_ROW_NUMBER = p_row;
+      INTO v_actual FROM STG_MEDIA_TYPE WHERE CSV_ROW_NUMBER = p_row;
     IF v_actual <> p_expected OR v_actual IS NULL THEN
-      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_MEDIATYPE, registro ' || p_row);
+      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_MEDIA_TYPE, registro ' || p_row);
     END IF;
   END;
 BEGIN
@@ -3766,7 +3766,7 @@ BEGIN
 END;
 /
 
-PROMPT OK STG_MEDIATYPE: 5 registros verificados por SHA-256
+PROMPT OK STG_MEDIA_TYPE: 5 registros verificados por SHA-256
 
 DECLARE
   PROCEDURE check_row(p_row NUMBER, p_expected VARCHAR2) IS
@@ -3811,9 +3811,9 @@ DECLARE
     SELECT LOWER(RAWTOHEX(STANDARD_HASH(
         TO_CHAR(NVL(LENGTHB(PlaylistId), 0), 'FM999999990') || ':' || PlaylistId ||
         TO_CHAR(NVL(LENGTHB(TrackId), 0), 'FM999999990') || ':' || TrackId, 'SHA256')))
-      INTO v_actual FROM STG_PLAYLISTTRACK WHERE CSV_ROW_NUMBER = p_row;
+      INTO v_actual FROM STG_PLAYLIST_TRACK WHERE CSV_ROW_NUMBER = p_row;
     IF v_actual <> p_expected OR v_actual IS NULL THEN
-      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_PLAYLISTTRACK, registro ' || p_row);
+      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_PLAYLIST_TRACK, registro ' || p_row);
     END IF;
   END;
 BEGIN
@@ -4227,9 +4227,9 @@ DECLARE
     SELECT LOWER(RAWTOHEX(STANDARD_HASH(
         TO_CHAR(NVL(LENGTHB(PlaylistId), 0), 'FM999999990') || ':' || PlaylistId ||
         TO_CHAR(NVL(LENGTHB(TrackId), 0), 'FM999999990') || ':' || TrackId, 'SHA256')))
-      INTO v_actual FROM STG_PLAYLISTTRACK WHERE CSV_ROW_NUMBER = p_row;
+      INTO v_actual FROM STG_PLAYLIST_TRACK WHERE CSV_ROW_NUMBER = p_row;
     IF v_actual <> p_expected OR v_actual IS NULL THEN
-      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_PLAYLISTTRACK, registro ' || p_row);
+      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_PLAYLIST_TRACK, registro ' || p_row);
     END IF;
   END;
 BEGIN
@@ -4643,9 +4643,9 @@ DECLARE
     SELECT LOWER(RAWTOHEX(STANDARD_HASH(
         TO_CHAR(NVL(LENGTHB(PlaylistId), 0), 'FM999999990') || ':' || PlaylistId ||
         TO_CHAR(NVL(LENGTHB(TrackId), 0), 'FM999999990') || ':' || TrackId, 'SHA256')))
-      INTO v_actual FROM STG_PLAYLISTTRACK WHERE CSV_ROW_NUMBER = p_row;
+      INTO v_actual FROM STG_PLAYLIST_TRACK WHERE CSV_ROW_NUMBER = p_row;
     IF v_actual <> p_expected OR v_actual IS NULL THEN
-      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_PLAYLISTTRACK, registro ' || p_row);
+      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_PLAYLIST_TRACK, registro ' || p_row);
     END IF;
   END;
 BEGIN
@@ -5059,9 +5059,9 @@ DECLARE
     SELECT LOWER(RAWTOHEX(STANDARD_HASH(
         TO_CHAR(NVL(LENGTHB(PlaylistId), 0), 'FM999999990') || ':' || PlaylistId ||
         TO_CHAR(NVL(LENGTHB(TrackId), 0), 'FM999999990') || ':' || TrackId, 'SHA256')))
-      INTO v_actual FROM STG_PLAYLISTTRACK WHERE CSV_ROW_NUMBER = p_row;
+      INTO v_actual FROM STG_PLAYLIST_TRACK WHERE CSV_ROW_NUMBER = p_row;
     IF v_actual <> p_expected OR v_actual IS NULL THEN
-      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_PLAYLISTTRACK, registro ' || p_row);
+      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_PLAYLIST_TRACK, registro ' || p_row);
     END IF;
   END;
 BEGIN
@@ -5475,9 +5475,9 @@ DECLARE
     SELECT LOWER(RAWTOHEX(STANDARD_HASH(
         TO_CHAR(NVL(LENGTHB(PlaylistId), 0), 'FM999999990') || ':' || PlaylistId ||
         TO_CHAR(NVL(LENGTHB(TrackId), 0), 'FM999999990') || ':' || TrackId, 'SHA256')))
-      INTO v_actual FROM STG_PLAYLISTTRACK WHERE CSV_ROW_NUMBER = p_row;
+      INTO v_actual FROM STG_PLAYLIST_TRACK WHERE CSV_ROW_NUMBER = p_row;
     IF v_actual <> p_expected OR v_actual IS NULL THEN
-      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_PLAYLISTTRACK, registro ' || p_row);
+      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_PLAYLIST_TRACK, registro ' || p_row);
     END IF;
   END;
 BEGIN
@@ -5891,9 +5891,9 @@ DECLARE
     SELECT LOWER(RAWTOHEX(STANDARD_HASH(
         TO_CHAR(NVL(LENGTHB(PlaylistId), 0), 'FM999999990') || ':' || PlaylistId ||
         TO_CHAR(NVL(LENGTHB(TrackId), 0), 'FM999999990') || ':' || TrackId, 'SHA256')))
-      INTO v_actual FROM STG_PLAYLISTTRACK WHERE CSV_ROW_NUMBER = p_row;
+      INTO v_actual FROM STG_PLAYLIST_TRACK WHERE CSV_ROW_NUMBER = p_row;
     IF v_actual <> p_expected OR v_actual IS NULL THEN
-      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_PLAYLISTTRACK, registro ' || p_row);
+      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_PLAYLIST_TRACK, registro ' || p_row);
     END IF;
   END;
 BEGIN
@@ -6307,9 +6307,9 @@ DECLARE
     SELECT LOWER(RAWTOHEX(STANDARD_HASH(
         TO_CHAR(NVL(LENGTHB(PlaylistId), 0), 'FM999999990') || ':' || PlaylistId ||
         TO_CHAR(NVL(LENGTHB(TrackId), 0), 'FM999999990') || ':' || TrackId, 'SHA256')))
-      INTO v_actual FROM STG_PLAYLISTTRACK WHERE CSV_ROW_NUMBER = p_row;
+      INTO v_actual FROM STG_PLAYLIST_TRACK WHERE CSV_ROW_NUMBER = p_row;
     IF v_actual <> p_expected OR v_actual IS NULL THEN
-      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_PLAYLISTTRACK, registro ' || p_row);
+      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_PLAYLIST_TRACK, registro ' || p_row);
     END IF;
   END;
 BEGIN
@@ -6723,9 +6723,9 @@ DECLARE
     SELECT LOWER(RAWTOHEX(STANDARD_HASH(
         TO_CHAR(NVL(LENGTHB(PlaylistId), 0), 'FM999999990') || ':' || PlaylistId ||
         TO_CHAR(NVL(LENGTHB(TrackId), 0), 'FM999999990') || ':' || TrackId, 'SHA256')))
-      INTO v_actual FROM STG_PLAYLISTTRACK WHERE CSV_ROW_NUMBER = p_row;
+      INTO v_actual FROM STG_PLAYLIST_TRACK WHERE CSV_ROW_NUMBER = p_row;
     IF v_actual <> p_expected OR v_actual IS NULL THEN
-      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_PLAYLISTTRACK, registro ' || p_row);
+      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_PLAYLIST_TRACK, registro ' || p_row);
     END IF;
   END;
 BEGIN
@@ -7139,9 +7139,9 @@ DECLARE
     SELECT LOWER(RAWTOHEX(STANDARD_HASH(
         TO_CHAR(NVL(LENGTHB(PlaylistId), 0), 'FM999999990') || ':' || PlaylistId ||
         TO_CHAR(NVL(LENGTHB(TrackId), 0), 'FM999999990') || ':' || TrackId, 'SHA256')))
-      INTO v_actual FROM STG_PLAYLISTTRACK WHERE CSV_ROW_NUMBER = p_row;
+      INTO v_actual FROM STG_PLAYLIST_TRACK WHERE CSV_ROW_NUMBER = p_row;
     IF v_actual <> p_expected OR v_actual IS NULL THEN
-      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_PLAYLISTTRACK, registro ' || p_row);
+      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_PLAYLIST_TRACK, registro ' || p_row);
     END IF;
   END;
 BEGIN
@@ -7555,9 +7555,9 @@ DECLARE
     SELECT LOWER(RAWTOHEX(STANDARD_HASH(
         TO_CHAR(NVL(LENGTHB(PlaylistId), 0), 'FM999999990') || ':' || PlaylistId ||
         TO_CHAR(NVL(LENGTHB(TrackId), 0), 'FM999999990') || ':' || TrackId, 'SHA256')))
-      INTO v_actual FROM STG_PLAYLISTTRACK WHERE CSV_ROW_NUMBER = p_row;
+      INTO v_actual FROM STG_PLAYLIST_TRACK WHERE CSV_ROW_NUMBER = p_row;
     IF v_actual <> p_expected OR v_actual IS NULL THEN
-      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_PLAYLISTTRACK, registro ' || p_row);
+      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_PLAYLIST_TRACK, registro ' || p_row);
     END IF;
   END;
 BEGIN
@@ -7971,9 +7971,9 @@ DECLARE
     SELECT LOWER(RAWTOHEX(STANDARD_HASH(
         TO_CHAR(NVL(LENGTHB(PlaylistId), 0), 'FM999999990') || ':' || PlaylistId ||
         TO_CHAR(NVL(LENGTHB(TrackId), 0), 'FM999999990') || ':' || TrackId, 'SHA256')))
-      INTO v_actual FROM STG_PLAYLISTTRACK WHERE CSV_ROW_NUMBER = p_row;
+      INTO v_actual FROM STG_PLAYLIST_TRACK WHERE CSV_ROW_NUMBER = p_row;
     IF v_actual <> p_expected OR v_actual IS NULL THEN
-      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_PLAYLISTTRACK, registro ' || p_row);
+      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_PLAYLIST_TRACK, registro ' || p_row);
     END IF;
   END;
 BEGIN
@@ -8387,9 +8387,9 @@ DECLARE
     SELECT LOWER(RAWTOHEX(STANDARD_HASH(
         TO_CHAR(NVL(LENGTHB(PlaylistId), 0), 'FM999999990') || ':' || PlaylistId ||
         TO_CHAR(NVL(LENGTHB(TrackId), 0), 'FM999999990') || ':' || TrackId, 'SHA256')))
-      INTO v_actual FROM STG_PLAYLISTTRACK WHERE CSV_ROW_NUMBER = p_row;
+      INTO v_actual FROM STG_PLAYLIST_TRACK WHERE CSV_ROW_NUMBER = p_row;
     IF v_actual <> p_expected OR v_actual IS NULL THEN
-      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_PLAYLISTTRACK, registro ' || p_row);
+      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_PLAYLIST_TRACK, registro ' || p_row);
     END IF;
   END;
 BEGIN
@@ -8803,9 +8803,9 @@ DECLARE
     SELECT LOWER(RAWTOHEX(STANDARD_HASH(
         TO_CHAR(NVL(LENGTHB(PlaylistId), 0), 'FM999999990') || ':' || PlaylistId ||
         TO_CHAR(NVL(LENGTHB(TrackId), 0), 'FM999999990') || ':' || TrackId, 'SHA256')))
-      INTO v_actual FROM STG_PLAYLISTTRACK WHERE CSV_ROW_NUMBER = p_row;
+      INTO v_actual FROM STG_PLAYLIST_TRACK WHERE CSV_ROW_NUMBER = p_row;
     IF v_actual <> p_expected OR v_actual IS NULL THEN
-      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_PLAYLISTTRACK, registro ' || p_row);
+      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_PLAYLIST_TRACK, registro ' || p_row);
     END IF;
   END;
 BEGIN
@@ -9219,9 +9219,9 @@ DECLARE
     SELECT LOWER(RAWTOHEX(STANDARD_HASH(
         TO_CHAR(NVL(LENGTHB(PlaylistId), 0), 'FM999999990') || ':' || PlaylistId ||
         TO_CHAR(NVL(LENGTHB(TrackId), 0), 'FM999999990') || ':' || TrackId, 'SHA256')))
-      INTO v_actual FROM STG_PLAYLISTTRACK WHERE CSV_ROW_NUMBER = p_row;
+      INTO v_actual FROM STG_PLAYLIST_TRACK WHERE CSV_ROW_NUMBER = p_row;
     IF v_actual <> p_expected OR v_actual IS NULL THEN
-      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_PLAYLISTTRACK, registro ' || p_row);
+      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_PLAYLIST_TRACK, registro ' || p_row);
     END IF;
   END;
 BEGIN
@@ -9635,9 +9635,9 @@ DECLARE
     SELECT LOWER(RAWTOHEX(STANDARD_HASH(
         TO_CHAR(NVL(LENGTHB(PlaylistId), 0), 'FM999999990') || ':' || PlaylistId ||
         TO_CHAR(NVL(LENGTHB(TrackId), 0), 'FM999999990') || ':' || TrackId, 'SHA256')))
-      INTO v_actual FROM STG_PLAYLISTTRACK WHERE CSV_ROW_NUMBER = p_row;
+      INTO v_actual FROM STG_PLAYLIST_TRACK WHERE CSV_ROW_NUMBER = p_row;
     IF v_actual <> p_expected OR v_actual IS NULL THEN
-      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_PLAYLISTTRACK, registro ' || p_row);
+      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_PLAYLIST_TRACK, registro ' || p_row);
     END IF;
   END;
 BEGIN
@@ -10051,9 +10051,9 @@ DECLARE
     SELECT LOWER(RAWTOHEX(STANDARD_HASH(
         TO_CHAR(NVL(LENGTHB(PlaylistId), 0), 'FM999999990') || ':' || PlaylistId ||
         TO_CHAR(NVL(LENGTHB(TrackId), 0), 'FM999999990') || ':' || TrackId, 'SHA256')))
-      INTO v_actual FROM STG_PLAYLISTTRACK WHERE CSV_ROW_NUMBER = p_row;
+      INTO v_actual FROM STG_PLAYLIST_TRACK WHERE CSV_ROW_NUMBER = p_row;
     IF v_actual <> p_expected OR v_actual IS NULL THEN
-      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_PLAYLISTTRACK, registro ' || p_row);
+      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_PLAYLIST_TRACK, registro ' || p_row);
     END IF;
   END;
 BEGIN
@@ -10467,9 +10467,9 @@ DECLARE
     SELECT LOWER(RAWTOHEX(STANDARD_HASH(
         TO_CHAR(NVL(LENGTHB(PlaylistId), 0), 'FM999999990') || ':' || PlaylistId ||
         TO_CHAR(NVL(LENGTHB(TrackId), 0), 'FM999999990') || ':' || TrackId, 'SHA256')))
-      INTO v_actual FROM STG_PLAYLISTTRACK WHERE CSV_ROW_NUMBER = p_row;
+      INTO v_actual FROM STG_PLAYLIST_TRACK WHERE CSV_ROW_NUMBER = p_row;
     IF v_actual <> p_expected OR v_actual IS NULL THEN
-      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_PLAYLISTTRACK, registro ' || p_row);
+      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_PLAYLIST_TRACK, registro ' || p_row);
     END IF;
   END;
 BEGIN
@@ -10883,9 +10883,9 @@ DECLARE
     SELECT LOWER(RAWTOHEX(STANDARD_HASH(
         TO_CHAR(NVL(LENGTHB(PlaylistId), 0), 'FM999999990') || ':' || PlaylistId ||
         TO_CHAR(NVL(LENGTHB(TrackId), 0), 'FM999999990') || ':' || TrackId, 'SHA256')))
-      INTO v_actual FROM STG_PLAYLISTTRACK WHERE CSV_ROW_NUMBER = p_row;
+      INTO v_actual FROM STG_PLAYLIST_TRACK WHERE CSV_ROW_NUMBER = p_row;
     IF v_actual <> p_expected OR v_actual IS NULL THEN
-      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_PLAYLISTTRACK, registro ' || p_row);
+      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_PLAYLIST_TRACK, registro ' || p_row);
     END IF;
   END;
 BEGIN
@@ -11299,9 +11299,9 @@ DECLARE
     SELECT LOWER(RAWTOHEX(STANDARD_HASH(
         TO_CHAR(NVL(LENGTHB(PlaylistId), 0), 'FM999999990') || ':' || PlaylistId ||
         TO_CHAR(NVL(LENGTHB(TrackId), 0), 'FM999999990') || ':' || TrackId, 'SHA256')))
-      INTO v_actual FROM STG_PLAYLISTTRACK WHERE CSV_ROW_NUMBER = p_row;
+      INTO v_actual FROM STG_PLAYLIST_TRACK WHERE CSV_ROW_NUMBER = p_row;
     IF v_actual <> p_expected OR v_actual IS NULL THEN
-      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_PLAYLISTTRACK, registro ' || p_row);
+      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_PLAYLIST_TRACK, registro ' || p_row);
     END IF;
   END;
 BEGIN
@@ -11715,9 +11715,9 @@ DECLARE
     SELECT LOWER(RAWTOHEX(STANDARD_HASH(
         TO_CHAR(NVL(LENGTHB(PlaylistId), 0), 'FM999999990') || ':' || PlaylistId ||
         TO_CHAR(NVL(LENGTHB(TrackId), 0), 'FM999999990') || ':' || TrackId, 'SHA256')))
-      INTO v_actual FROM STG_PLAYLISTTRACK WHERE CSV_ROW_NUMBER = p_row;
+      INTO v_actual FROM STG_PLAYLIST_TRACK WHERE CSV_ROW_NUMBER = p_row;
     IF v_actual <> p_expected OR v_actual IS NULL THEN
-      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_PLAYLISTTRACK, registro ' || p_row);
+      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_PLAYLIST_TRACK, registro ' || p_row);
     END IF;
   END;
 BEGIN
@@ -12131,9 +12131,9 @@ DECLARE
     SELECT LOWER(RAWTOHEX(STANDARD_HASH(
         TO_CHAR(NVL(LENGTHB(PlaylistId), 0), 'FM999999990') || ':' || PlaylistId ||
         TO_CHAR(NVL(LENGTHB(TrackId), 0), 'FM999999990') || ':' || TrackId, 'SHA256')))
-      INTO v_actual FROM STG_PLAYLISTTRACK WHERE CSV_ROW_NUMBER = p_row;
+      INTO v_actual FROM STG_PLAYLIST_TRACK WHERE CSV_ROW_NUMBER = p_row;
     IF v_actual <> p_expected OR v_actual IS NULL THEN
-      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_PLAYLISTTRACK, registro ' || p_row);
+      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_PLAYLIST_TRACK, registro ' || p_row);
     END IF;
   END;
 BEGIN
@@ -12547,9 +12547,9 @@ DECLARE
     SELECT LOWER(RAWTOHEX(STANDARD_HASH(
         TO_CHAR(NVL(LENGTHB(PlaylistId), 0), 'FM999999990') || ':' || PlaylistId ||
         TO_CHAR(NVL(LENGTHB(TrackId), 0), 'FM999999990') || ':' || TrackId, 'SHA256')))
-      INTO v_actual FROM STG_PLAYLISTTRACK WHERE CSV_ROW_NUMBER = p_row;
+      INTO v_actual FROM STG_PLAYLIST_TRACK WHERE CSV_ROW_NUMBER = p_row;
     IF v_actual <> p_expected OR v_actual IS NULL THEN
-      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_PLAYLISTTRACK, registro ' || p_row);
+      RAISE_APPLICATION_ERROR(-20007, 'Contenido distinto: STG_PLAYLIST_TRACK, registro ' || p_row);
     END IF;
   END;
 BEGIN
@@ -12871,7 +12871,7 @@ BEGIN
 END;
 /
 
-PROMPT OK STG_PLAYLISTTRACK: 8715 registros verificados por SHA-256
+PROMPT OK STG_PLAYLIST_TRACK: 8715 registros verificados por SHA-256
 
 DECLARE
   PROCEDURE check_row(p_row NUMBER, p_expected VARCHAR2) IS

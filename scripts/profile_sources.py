@@ -23,6 +23,8 @@ HEADERS = {
     "PlaylistTrack": "PlaylistId,TrackId",
     "Track": "TrackId,Name,AlbumId,MediaTypeId,GenreId,Composer,Milliseconds,Bytes,UnitPrice",
 }
+TABLE_NAMES = {name: "STG_" + re.sub(r"(?<!^)(?=[A-Z])", "_", name).upper()
+               for name in HEADERS}
 RELATIONS = [
     ("Album", "ArtistId", "Artist", "ArtistId"),
     ("Customer", "SupportRepId", "Employee", "EmployeeId"),
@@ -85,7 +87,7 @@ def build_profile(source_dir: Path = ROOT / "data" / "raw") -> dict:
                 "distinct_values": len(set(values)),
             })
         sources.append({
-            "file": path.name, "table": f"STG_{name.upper()}",
+            "file": path.name, "table": TABLE_NAMES[name],
             "encoding": "UTF-8", "utf8_bom": raw.startswith(b"\xef\xbb\xbf"),
             "bytes": len(raw), "sha256": hashlib.sha256(raw).hexdigest(),
             "rows": len(rows), "columns": columns,

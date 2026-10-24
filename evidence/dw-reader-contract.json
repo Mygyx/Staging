@@ -1,0 +1,67 @@
+{
+  "sources": [
+    {
+      "table": "STG_ALBUM",
+      "rows": 347,
+      "column_names_match_csv": true
+    },
+    {
+      "table": "STG_ARTIST",
+      "rows": 275,
+      "column_names_match_csv": true
+    },
+    {
+      "table": "STG_CUSTOMER",
+      "rows": 59,
+      "column_names_match_csv": true
+    },
+    {
+      "table": "STG_EMPLOYEE",
+      "rows": 8,
+      "column_names_match_csv": true
+    },
+    {
+      "table": "STG_GENRE",
+      "rows": 25,
+      "column_names_match_csv": true
+    },
+    {
+      "table": "STG_INVOICE",
+      "rows": 412,
+      "column_names_match_csv": true
+    },
+    {
+      "table": "STG_INVOICE_LINE",
+      "rows": 2240,
+      "column_names_match_csv": true
+    },
+    {
+      "table": "STG_MEDIA_TYPE",
+      "rows": 5,
+      "column_names_match_csv": true
+    },
+    {
+      "table": "STG_PLAYLIST",
+      "rows": 18,
+      "column_names_match_csv": true
+    },
+    {
+      "table": "STG_PLAYLIST_TRACK",
+      "rows": 8715,
+      "column_names_match_csv": true
+    },
+    {
+      "table": "STG_TRACK",
+      "rows": 3503,
+      "column_names_match_csv": true
+    }
+  ],
+  "total_rows": 15607,
+  "sales_total": "2328.60",
+  "invoice_total": "2328.60",
+  "all_checks_passed": true,
+  "dsn_tested_on_server": "192.168.0.250:1521/XEPDB1",
+  "tested_from_other_pc": false,
+  "source_tables_visible_to_reader": 11,
+  "write_access_rejected_with_ora_01031": true
+}

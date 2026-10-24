@@ -47,7 +47,7 @@ def block(body: list[str], declarations: list[str] | None = None) -> str:
 
 def generate(profile: dict, source_dir: Path = ROOT / "data" / "raw") -> dict[str, str]:
     sources = profile["sources"]
-    tables = [s["table"] for s in sources] + ["STG_SOURCE_FILE"]
+    tables = [s["table"] for s in sources] + ["ETL_SOURCE_FILE"]
     env = block([
         "  SELECT value INTO v_charset FROM nls_database_parameters WHERE parameter = 'NLS_CHARACTERSET';",
         "  IF v_charset <> 'AL32UTF8' THEN",
@@ -78,13 +78,13 @@ def generate(profile: dict, source_dir: Path = ROOT / "data" / "raw") -> dict[st
         definitions.append("  CSV_ROW_NUMBER NUMBER(10) NOT NULL")
         definitions.append(f"  CONSTRAINT PK_{source['table']} PRIMARY KEY (CSV_ROW_NUMBER)")
         ddl.append(f"CREATE TABLE {source['table']} (\n" + ",\n".join(definitions) + "\n);\n")
-    ddl.append("""CREATE TABLE STG_SOURCE_FILE (
+    ddl.append("""CREATE TABLE ETL_SOURCE_FILE (
   SOURCE_FILE VARCHAR2(128 BYTE) NOT NULL,
   SOURCE_SHA256 VARCHAR2(64 BYTE) NOT NULL,
   EXPECTED_ROWS NUMBER(10) NOT NULL,
   COLUMN_COUNT NUMBER(10) NOT NULL,
   FILE_BYTES NUMBER(10) NOT NULL,
-  CONSTRAINT PK_STG_SOURCE_FILE PRIMARY KEY (SOURCE_FILE)
+  CONSTRAINT PK_ETL_SOURCE_FILE PRIMARY KEY (SOURCE_FILE)
 );
 """)
     load = [BANNER, SETTINGS, env]
@@ -110,11 +110,11 @@ def generate(profile: dict, source_dir: Path = ROOT / "data" / "raw") -> dict[st
             if len(statement) > 2400:
                 raise ValueError(f"{filename}:{number}: sentencia demasiado larga para SQL*Plus")
             load.append(statement)
-        load.append("INSERT INTO STG_SOURCE_FILE (SOURCE_FILE, SOURCE_SHA256, EXPECTED_ROWS, COLUMN_COUNT, FILE_BYTES) "
+        load.append("INSERT INTO ETL_SOURCE_FILE (SOURCE_FILE, SOURCE_SHA256, EXPECTED_ROWS, COLUMN_COUNT, FILE_BYTES) "
                     f"VALUES ({literal(filename)}, {literal(source['sha256'])}, {len(rows)}, {len(header)}, {source['bytes']});\n")
         counts += [f"  SELECT COUNT(*) INTO v_count FROM {table};",
                    f"  IF v_count <> {len(rows)} THEN RAISE_APPLICATION_ERROR(-20005, 'Conteo incorrecto: {table}'); END IF;"]
-        counts += ["  SELECT COUNT(*) INTO v_count FROM STG_SOURCE_FILE",
+        counts += ["  SELECT COUNT(*) INTO v_count FROM ETL_SOURCE_FILE",
                    f"  WHERE SOURCE_FILE = {literal(filename)} AND SOURCE_SHA256 = {literal(source['sha256'])}",
                    f"    AND EXPECTED_ROWS = {len(rows)} AND COLUMN_COUNT = {len(header)} AND FILE_BYTES = {source['bytes']};",
                    f"  IF v_count <> 1 THEN RAISE_APPLICATION_ERROR(-20006, 'Manifiesto incorrecto: {filename}'); END IF;"]
@@ -137,7 +137,7 @@ def generate(profile: dict, source_dir: Path = ROOT / "data" / "raw") -> dict[st
                      for i, row in enumerate(rows[start:start+400], start+1)]
             validate.append(block(calls, declarations))
         validate.append(f"PROMPT OK {table}: {len(rows)} registros verificados por SHA-256\n")
-    counts += ["  SELECT COUNT(*) INTO v_count FROM STG_SOURCE_FILE;",
+    counts += ["  SELECT COUNT(*) INTO v_count FROM ETL_SOURCE_FILE;",
                f"  IF v_count <> {len(sources)} THEN RAISE_APPLICATION_ERROR(-20008, 'Archivos adicionales en manifiesto.'); END IF;"]
     validate.insert(3, block(counts, ["  v_count NUMBER;"]))
     validate.append(f"PROMPT OK: {profile['total_rows']} registros, {len(sources)} CSV; contenido verificado.\n")
@@ -150,8 +150,8 @@ PROMPT Carga confirmada despues de validar todos los registros.
 @@04_summary.sql
 """
     summary = BANNER + "SET PAGESIZE 100\nSET LINESIZE 180\nCOLUMN SOURCE_FILE FORMAT A22\nCOLUMN SOURCE_SHA256 FORMAT A64\n" + \
-        "SELECT SOURCE_FILE, EXPECTED_ROWS, SOURCE_SHA256 FROM STG_SOURCE_FILE ORDER BY SOURCE_FILE;\n" + \
-        "SELECT SUM(EXPECTED_ROWS) AS TOTAL_SOURCE_ROWS FROM STG_SOURCE_FILE;\n"
+        "SELECT SOURCE_FILE, EXPECTED_ROWS, SOURCE_SHA256 FROM ETL_SOURCE_FILE ORDER BY SOURCE_FILE;\n" + \
+        "SELECT SUM(EXPECTED_ROWS) AS TOTAL_SOURCE_ROWS FROM ETL_SOURCE_FILE;\n"
     return {"00_install.sql": install, "01_create_tables.sql": "\n".join(ddl),
             "02_load_data.sql": "\n".join(load), "03_validate_data.sql": "\n".join(validate),
             "04_summary.sql": summary}

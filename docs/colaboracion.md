@@ -40,18 +40,18 @@ trabajo. No se cambian las fechas ni se simulan aportes de otros integrantes.
 
 ## Transporte sin remoto
 
-`staging-oracle.bundle` junto a la carpeta `proyecto-oracle` contiene el historial
+`chinook_staging_etl.bundle` junto a la carpeta `proyecto-oracle` contiene el historial
 completo y los archivos versionados. Se puede enviar al compañero y clonar:
 
 ```powershell
-git clone .\staging-oracle.bundle invacom-staging
+git clone .\chinook_staging_etl.bundle invacom-staging
 ```
 
 Después de nuevos commits se regenera con:
 
 ```powershell
-git bundle create ..\staging-oracle.bundle --all
-git bundle verify ..\staging-oracle.bundle
+git bundle create ..\chinook_staging_etl.bundle --all
+git bundle verify ..\chinook_staging_etl.bundle
 ```
 
 No se comparte `.venv/` ni `local/`; en particular, no se comparte la credencial.

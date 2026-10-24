@@ -1,4 +1,4 @@
-# Invacom: staging Oracle con Prefect
+# chinook_staging_etl
 
 Proyecto 1 de Minería de Datos, UTN, 3C2026. Entrega del área de staging:
 **11 CSV, 15.607 registros**, conservados sin limpieza ni conversión de valores.
@@ -51,7 +51,7 @@ Las versiones exactas del entorno validado también están en
 `requirements-lock.txt`; se pueden instalar con `pip install -r requirements-lock.txt`.
 
 Para una instalación local nueva de Oracle XE en Windows, el siguiente paso
-opcional crea **solo** `INVACOM_STG` en `XEPDB1` y cifra su contraseña con tu
+opcional crea **solo** `CHINOOK_STAGING` en `XEPDB1` y cifra su contraseña con tu
 cuenta Windows. Requiere que `sqlplus.exe` esté en PATH y que tu usuario tenga
 autenticación OS como administrador Oracle. Se detiene si el usuario ya existe.
 
@@ -73,7 +73,7 @@ En otros sistemas, define `ORACLE_USER`, `ORACLE_PASSWORD` y `ORACLE_DSN` en el
 entorno y ejecuta `python scripts/staging_flow.py`. La contraseña no se pasa
 como parámetro de Prefect ni se incluye en Git.
 
-La primera ejecución crea 12 tablas: 11 fuentes y `STG_SOURCE_FILE` como
+La primera ejecución crea 12 tablas: 11 fuentes y `ETL_SOURCE_FILE` como
 manifiesto. Inserta los datos con `executemany` y bind variables. Antes del
 `COMMIT`, relee **cada campo de cada fila** y lo compara con los CSV. También
 verifica sus hashes, orden y conteos. Ante errores se revierte todo el DML.
@@ -146,8 +146,9 @@ CSV y el código; `local/`, `.venv/` y las contraseñas están excluidos de Git.
 Cada compañero debe configurar su propia conexión, porque la credencial cifrada
 local solo funciona con la cuenta Windows que la creó.
 
-La ejecución real y sus comprobaciones están descritas en
-[el avance de staging](docs/avance-staging.md), con archivos de evidencia.
+La entrega al DW se describe en [el contrato de conexión](docs/entrega-dw.md).
+La adaptación y sus resultados están en [el avance de Chinook](docs/avance-contrato-chinook.md).
+El [avance inicial](docs/avance-staging.md) conserva la evidencia histórica del primer esquema.
 
 Los commits registran avances reales por entregable. Los avances semanales,
 aportes de otros integrantes y tablero Kanban deben mantenerse durante las

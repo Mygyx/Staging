@@ -1,0 +1,161 @@
+{
+  "contract_version": 1,
+  "repository": "chinook_staging_etl",
+  "oracle_service": "XEPDB1",
+  "schema": "CHINOOK_STAGING",
+  "source_values": "VARCHAR2; empty CSV fields are NULL; no normalization",
+  "sources": [
+    {
+      "source": "Album",
+      "table": "STG_ALBUM",
+      "rows": 347,
+      "columns": [
+        "AlbumId",
+        "Title",
+        "ArtistId"
+      ],
+      "query": "SELECT AlbumId AS \"AlbumId\", Title AS \"Title\", ArtistId AS \"ArtistId\" FROM CHINOOK_STAGING.STG_ALBUM ORDER BY CSV_ROW_NUMBER"
+    },
+    {
+      "source": "Artist",
+      "table": "STG_ARTIST",
+      "rows": 275,
+      "columns": [
+        "ArtistId",
+        "Name"
+      ],
+      "query": "SELECT ArtistId AS \"ArtistId\", Name AS \"Name\" FROM CHINOOK_STAGING.STG_ARTIST ORDER BY CSV_ROW_NUMBER"
+    },
+    {
+      "source": "Customer",
+      "table": "STG_CUSTOMER",
+      "rows": 59,
+      "columns": [
+        "CustomerId",
+        "FirstName",
+        "LastName",
+        "Company",
+        "Address",
+        "City",
+        "State",
+        "Country",
+        "PostalCode",
+        "Phone",
+        "Fax",
+        "Email",
+        "SupportRepId"
+      ],
+      "query": "SELECT CustomerId AS \"CustomerId\", FirstName AS \"FirstName\", LastName AS \"LastName\", Company AS \"Company\", Address AS \"Address\", City AS \"City\", State AS \"State\", Country AS \"Country\", PostalCode AS \"PostalCode\", Phone AS \"Phone\", Fax AS \"Fax\", Email AS \"Email\", SupportRepId AS \"SupportRepId\" FROM CHINOOK_STAGING.STG_CUSTOMER ORDER BY CSV_ROW_NUMBER"
+    },
+    {
+      "source": "Employee",
+      "table": "STG_EMPLOYEE",
+      "rows": 8,
+      "columns": [
+        "EmployeeId",
+        "LastName",
+        "FirstName",
+        "Title",
+        "ReportsTo",
+        "BirthDate",
+        "HireDate",
+        "Address",
+        "City",
+        "State",
+        "Country",
+        "PostalCode",
+        "Phone",
+        "Fax",
+        "Email"
+      ],
+      "query": "SELECT EmployeeId AS \"EmployeeId\", LastName AS \"LastName\", FirstName AS \"FirstName\", Title AS \"Title\", ReportsTo AS \"ReportsTo\", BirthDate AS \"BirthDate\", HireDate AS \"HireDate\", Address AS \"Address\", City AS \"City\", State AS \"State\", Country AS \"Country\", PostalCode AS \"PostalCode\", Phone AS \"Phone\", Fax AS \"Fax\", Email AS \"Email\" FROM CHINOOK_STAGING.STG_EMPLOYEE ORDER BY CSV_ROW_NUMBER"
+    },
+    {
+      "source": "Genre",
+      "table": "STG_GENRE",
+      "rows": 25,
+      "columns": [
+        "GenreId",
+        "Name"
+      ],
+      "query": "SELECT GenreId AS \"GenreId\", Name AS \"Name\" FROM CHINOOK_STAGING.STG_GENRE ORDER BY CSV_ROW_NUMBER"
+    },
+    {
+      "source": "Invoice",
+      "table": "STG_INVOICE",
+      "rows": 412,
+      "columns": [
+        "InvoiceId",
+        "CustomerId",
+        "InvoiceDate",
+        "BillingAddress",
+        "BillingCity",
+        "BillingState",
+        "BillingCountry",
+        "BillingPostalCode",
+        "Total"
+      ],
+      "query": "SELECT InvoiceId AS \"InvoiceId\", CustomerId AS \"CustomerId\", InvoiceDate AS \"InvoiceDate\", BillingAddress AS \"BillingAddress\", BillingCity AS \"BillingCity\", BillingState AS \"BillingState\", BillingCountry AS \"BillingCountry\", BillingPostalCode AS \"BillingPostalCode\", Total AS \"Total\" FROM CHINOOK_STAGING.STG_INVOICE ORDER BY CSV_ROW_NUMBER"
+    },
+    {
+      "source": "InvoiceLine",
+      "table": "STG_INVOICE_LINE",
+      "rows": 2240,
+      "columns": [
+        "InvoiceLineId",
+        "InvoiceId",
+        "TrackId",
+        "UnitPrice",
+        "Quantity"
+      ],
+      "query": "SELECT InvoiceLineId AS \"InvoiceLineId\", InvoiceId AS \"InvoiceId\", TrackId AS \"TrackId\", UnitPrice AS \"UnitPrice\", Quantity AS \"Quantity\" FROM CHINOOK_STAGING.STG_INVOICE_LINE ORDER BY CSV_ROW_NUMBER"
+    },
+    {
+      "source": "MediaType",
+      "table": "STG_MEDIA_TYPE",
+      "rows": 5,
+      "columns": [
+        "MediaTypeId",
+        "Name"
+      ],
+      "query": "SELECT MediaTypeId AS \"MediaTypeId\", Name AS \"Name\" FROM CHINOOK_STAGING.STG_MEDIA_TYPE ORDER BY CSV_ROW_NUMBER"
+    },
+    {
+      "source": "Playlist",
+      "table": "STG_PLAYLIST",
+      "rows": 18,
+      "columns": [
+        "PlaylistId",
+        "Name"
+      ],
+      "query": "SELECT PlaylistId AS \"PlaylistId\", Name AS \"Name\" FROM CHINOOK_STAGING.STG_PLAYLIST ORDER BY CSV_ROW_NUMBER"
+    },
+    {
+      "source": "PlaylistTrack",
+      "table": "STG_PLAYLIST_TRACK",
+      "rows": 8715,
+      "columns": [
+        "PlaylistId",
+        "TrackId"
+      ],
+      "query": "SELECT PlaylistId AS \"PlaylistId\", TrackId AS \"TrackId\" FROM CHINOOK_STAGING.STG_PLAYLIST_TRACK ORDER BY CSV_ROW_NUMBER"
+    },
+    {
+      "source": "Track",
+      "table": "STG_TRACK",
+      "rows": 3503,
+      "columns": [
+        "TrackId",
+        "Name",
+        "AlbumId",
+        "MediaTypeId",
+        "GenreId",
+        "Composer",
+        "Milliseconds",
+        "Bytes",
+        "UnitPrice"
+      ],
+      "query": "SELECT TrackId AS \"TrackId\", Name AS \"Name\", AlbumId AS \"AlbumId\", MediaTypeId AS \"MediaTypeId\", GenreId AS \"GenreId\", Composer AS \"Composer\", Milliseconds AS \"Milliseconds\", Bytes AS \"Bytes\", UnitPrice AS \"UnitPrice\" FROM CHINOOK_STAGING.STG_TRACK ORDER BY CSV_ROW_NUMBER"
+    }
+  ]
+}

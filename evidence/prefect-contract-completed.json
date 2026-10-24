@@ -1,0 +1,41 @@
+{
+  "flow_run": {
+    "id": "94c3f2b3-fcb5-43b7-ab8d-aa724a58c835",
+    "name": "whispering-duck",
+    "state_name": "Completed",
+    "start_time": "2026-10-24 17:37:20.427075",
+    "end_time": "2026-10-24 17:37:25.514331"
+  },
+  "tasks": [
+    {
+      "name": "Extraer CSV-9f8",
+      "state_name": "Completed",
+      "start_time": "2026-10-24 17:37:20.461672",
+      "end_time": "2026-10-24 17:37:20.742690"
+    },
+    {
+      "name": "Preparar tablas Oracle-02c",
+      "state_name": "Completed",
+      "start_time": "2026-10-24 17:37:22.022626",
+      "end_time": "2026-10-24 17:37:22.088538"
+    },
+    {
+      "name": "Cargar Staging-d81",
+      "state_name": "Completed",
+      "start_time": "2026-10-24 17:37:23.513372",
+      "end_time": "2026-10-24 17:37:23.669579"
+    },
+    {
+      "name": "Validar Staging-173",
+      "state_name": "Completed",
+      "start_time": "2026-10-24 17:37:25.167865",
+      "end_time": "2026-10-24 17:37:25.444528"
+    },
+    {
+      "name": "Guardar evidencia-e4e",
+      "state_name": "Completed",
+      "start_time": "2026-10-24 17:37:25.472073",
+      "end_time": "2026-10-24 17:37:25.492810"
+    }
+  ]
+}

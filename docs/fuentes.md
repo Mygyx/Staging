@@ -10,10 +10,10 @@ Generado por `python scripts/profile_sources.py`. No se modifica ningun CSV.
 | Employee.csv | STG_EMPLOYEE | 8 | 15 | 1 | 0 |
 | Genre.csv | STG_GENRE | 25 | 2 | 0 | 0 |
 | Invoice.csv | STG_INVOICE | 412 | 9 | 230 | 0 |
-| InvoiceLine.csv | STG_INVOICELINE | 2240 | 5 | 0 | 0 |
-| MediaType.csv | STG_MEDIATYPE | 5 | 2 | 0 | 0 |
+| InvoiceLine.csv | STG_INVOICE_LINE | 2240 | 5 | 0 | 0 |
+| MediaType.csv | STG_MEDIA_TYPE | 5 | 2 | 0 | 0 |
 | Playlist.csv | STG_PLAYLIST | 18 | 2 | 0 | 0 |
-| PlaylistTrack.csv | STG_PLAYLISTTRACK | 8715 | 2 | 0 | 0 |
+| PlaylistTrack.csv | STG_PLAYLIST_TRACK | 8715 | 2 | 0 | 0 |
 | Track.csv | STG_TRACK | 3503 | 9 | 978 | 0 |
 
 Total: **15607 registros**.

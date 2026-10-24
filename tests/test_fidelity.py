@@ -11,7 +11,7 @@ from profile_sources import build_profile, read_source, row_digest
 from generate_sql import literal
 
 TOKEN = re.compile(r"\s*(NULL|UNISTR\('(?:''|[^'])*'\)|'(?:''|[^'])*'|[0-9]+)\s*(,|$)")
-INSERT = re.compile(r"INSERT INTO (STG_\w+) \((.*?)\) VALUES \((.*)\);")
+INSERT = re.compile(r"INSERT INTO (STG_\w+|ETL_SOURCE_FILE) \((.*?)\) VALUES \((.*)\);")
 
 
 def decode_token(token):
@@ -59,7 +59,7 @@ class FidelityTests(unittest.TestCase):
             match = INSERT.fullmatch(line)
             self.assertIsNotNone(match)
             table, columns, payload = match.groups()
-            if table == "STG_SOURCE_FILE":
+            if table == "ETL_SOURCE_FILE":
                 continue
             generated.setdefault(table, []).append((columns.split(", "), decode_values(payload)))
         profile = build_profile()

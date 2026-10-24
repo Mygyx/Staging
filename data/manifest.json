@@ -428,7 +428,7 @@
     },
     {
       "file": "InvoiceLine.csv",
-      "table": "STG_INVOICELINE",
+      "table": "STG_INVOICE_LINE",
       "encoding": "UTF-8",
       "utf8_bom": false,
       "bytes": 46914,
@@ -480,7 +480,7 @@
     },
     {
       "file": "MediaType.csv",
-      "table": "STG_MEDIATYPE",
+      "table": "STG_MEDIA_TYPE",
       "encoding": "UTF-8",
       "utf8_bom": false,
       "bytes": 142,
@@ -536,7 +536,7 @@
     },
     {
       "file": "PlaylistTrack.csv",
-      "table": "STG_PLAYLISTTRACK",
+      "table": "STG_PLAYLIST_TRACK",
       "encoding": "UTF-8",
       "utf8_bom": false,
       "bytes": 67423,

@@ -66,7 +66,7 @@ def check_table_shapes(connection, profile: dict) -> None:
 
 def prepare_tables(snapshot: dict) -> str:
     profile = snapshot["profile"]
-    names = [s["table"] for s in profile["sources"]] + ["STG_SOURCE_FILE"]
+    names = [s["table"] for s in profile["sources"]] + ["ETL_SOURCE_FILE"]
     placeholders = ",".join(f":{i}" for i in range(1, len(names)+1))
     with connect() as connection:
         check_environment(connection)
@@ -114,7 +114,7 @@ def verify_connection(connection, snapshot: dict) -> dict:
             verified.append({"file": source["file"], "table": table, "rows": count,
                              "source_sha256": source["sha256"], "all_values_equal": True})
         cursor.execute("SELECT SOURCE_FILE, SOURCE_SHA256, EXPECTED_ROWS, COLUMN_COUNT, FILE_BYTES "
-                       "FROM STG_SOURCE_FILE ORDER BY SOURCE_FILE")
+                       "FROM ETL_SOURCE_FILE ORDER BY SOURCE_FILE")
         expected_manifest = sorted((s["file"], s["sha256"], s["rows"], len(s["columns"]), s["bytes"])
                                    for s in profile["sources"])
         if cursor.fetchall() != expected_manifest:
@@ -124,38 +124,43 @@ def verify_connection(connection, snapshot: dict) -> dict:
             "comparison": "Every source field equals its Oracle value; empty CSV fields map to NULL"}
 
 
+def insert_snapshot(connection, snapshot: dict, log=print) -> dict:
+    """Inserta sin COMMIT: el llamador conserva la transaccion para validarla."""
+    check_environment(connection)
+    check_table_shapes(connection, snapshot["profile"])
+    loaded = 0
+    with connection.cursor() as cursor:
+        tables = [s["table"] for s in snapshot["profile"]["sources"]] + ["ETL_SOURCE_FILE"]
+        for table in tables:
+            cursor.execute(f"LOCK TABLE {table} IN EXCLUSIVE MODE NOWAIT")
+            cursor.execute(f"SELECT COUNT(*) FROM {table}")
+            if cursor.fetchone()[0] != 0:
+                raise ValueError(f"{table} contiene datos. Use --validate-only para revisarlos.")
+        for source in snapshot["profile"]["sources"]:
+            table = source["table"]
+            data = snapshot["tables"][table]
+            columns = data["header"] + ["CSV_ROW_NUMBER"]
+            placeholders = ", ".join(f":{i}" for i in range(1, len(columns)+1))
+            statement = f"INSERT INTO {table} ({', '.join(columns)}) VALUES ({placeholders})"
+            cursor.setinputsizes(*[max(1, c["max_utf8_bytes"]) for c in source["columns"]], oracledb.DB_TYPE_NUMBER)
+            rows = [tuple(None if value == "" else value for value in row) + (number,)
+                    for number, row in enumerate(data["rows"], 1)]
+            cursor.executemany(statement, rows)
+            with connection.cursor() as metadata_cursor:
+                metadata_cursor.execute("INSERT INTO ETL_SOURCE_FILE "
+                    "(SOURCE_FILE, SOURCE_SHA256, EXPECTED_ROWS, COLUMN_COUNT, FILE_BYTES) "
+                    "VALUES (:1, :2, :3, :4, :5)",
+                    [source["file"], source["sha256"], source["rows"], len(source["columns"]), source["bytes"]])
+            loaded += len(rows)
+            log(f"Cargado {table}: {len(rows)} registros, pendiente de validacion")
+    return {"rows_loaded": loaded}
+
+
 def load_and_validate(snapshot: dict, log=print) -> dict:
-    """Una conexion y una transaccion para las 11 fuentes y su manifiesto."""
+    """Ruta Python reutilizable con la misma transaccion que el flujo Prefect."""
     with connect() as connection:
-        check_environment(connection)
-        check_table_shapes(connection, snapshot["profile"])
         try:
-            with connection.cursor() as cursor:
-                tables = [s["table"] for s in snapshot["profile"]["sources"]] + ["STG_SOURCE_FILE"]
-                # Mismo orden para bloquear ejecuciones concurrentes. NOWAIT no deja
-                # dos cargas avanzar juntas; no hay DELETE, TRUNCATE ni sobreescritura.
-                for table in tables:
-                    cursor.execute(f"LOCK TABLE {table} IN EXCLUSIVE MODE NOWAIT")
-                    cursor.execute(f"SELECT COUNT(*) FROM {table}")
-                    if cursor.fetchone()[0] != 0:
-                        raise ValueError(f"{table} contiene datos. Use --validate-only para revisarlos.")
-                for source in snapshot["profile"]["sources"]:
-                    table = source["table"]
-                    data = snapshot["tables"][table]
-                    columns = data["header"] + ["CSV_ROW_NUMBER"]
-                    placeholders = ", ".join(f":{i}" for i in range(1, len(columns)+1))
-                    statement = f"INSERT INTO {table} ({', '.join(columns)}) VALUES ({placeholders})"
-                    cursor.setinputsizes(*[max(1, c["max_utf8_bytes"]) for c in source["columns"]], oracledb.DB_TYPE_NUMBER)
-                    rows = [tuple(None if value == "" else value for value in row) + (number,)
-                            for number, row in enumerate(data["rows"], 1)]
-                    cursor.executemany(statement, rows)
-                    # Nueva sentencia: liberar los tamaños de binds de la tabla anterior.
-                    with connection.cursor() as metadata_cursor:
-                        metadata_cursor.execute("INSERT INTO STG_SOURCE_FILE "
-                            "(SOURCE_FILE, SOURCE_SHA256, EXPECTED_ROWS, COLUMN_COUNT, FILE_BYTES) "
-                            "VALUES (:1, :2, :3, :4, :5)",
-                            [source["file"], source["sha256"], source["rows"], len(source["columns"]), source["bytes"]])
-                    log(f"Cargado {table}: {len(rows)} registros, pendiente de validacion")
+            insert_snapshot(connection, snapshot, log)
             evidence = verify_connection(connection, snapshot)
             connection.commit()
             evidence["committed"] = True

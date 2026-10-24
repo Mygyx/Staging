@@ -32,7 +32,7 @@ class OracleIntegrationTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "Fallo de validacion provocado"):
                 self.core.load_and_validate(self.snapshot, log=lambda message: None)
         with self.core.connect() as connection, connection.cursor() as cursor:
-            tables = list(self.snapshot["tables"]) + ["STG_SOURCE_FILE"]
+            tables = list(self.snapshot["tables"]) + ["ETL_SOURCE_FILE"]
             for table in tables:
                 cursor.execute(f"SELECT COUNT(*) FROM {table}")
                 self.assertEqual(cursor.fetchone()[0], 0, table)

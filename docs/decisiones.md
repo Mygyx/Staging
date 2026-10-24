@@ -17,7 +17,7 @@
 5. Los scripts son ASCII; los caracteres Unicode se expresan con `UNISTR`.
    Se exige `AL32UTF8` en la base para evitar pérdidas al convertir a VARCHAR2.
    `SET DEFINE OFF` conserva los ampersands sin pedir valores al usuario.
-6. `STG_SOURCE_FILE` registra el hash del CSV, su tamaño, cantidad de campos y
+6. `ETL_SOURCE_FILE` registra el hash del CSV, su tamaño, cantidad de campos y
    registros. Los hashes del contenido se recalculan leyendo las columnas reales
    de Oracle: no se da por válido un hash almacenado junto con una fila.
 7. La serialización para SHA-256 concatena cada campo como

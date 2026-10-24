@@ -10,7 +10,7 @@ if (Test-Path -LiteralPath $credentialPath) {
     $savedCredential = Import-Clixml -LiteralPath $credentialPath
 }
 if (-not $env:ORACLE_USER) {
-    $env:ORACLE_USER = if ($savedCredential) { $savedCredential.UserName } else { 'INVACOM_STG' }
+    $env:ORACLE_USER = if ($savedCredential) { $savedCredential.UserName } else { 'CHINOOK_STAGING' }
 }
 if (-not $env:ORACLE_DSN) { $env:ORACLE_DSN = 'localhost:1521/XEPDB1' }
 $providedPassword = -not [string]::IsNullOrEmpty($env:ORACLE_PASSWORD)

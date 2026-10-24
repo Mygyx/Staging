@@ -1,0 +1,19 @@
+{
+    "local_ipv4":  "192.168.0.250",
+    "oracle_port":  1521,
+    "oracle_service":  "XEPDB1",
+    "schema":  "CHINOOK_STAGING",
+    "reader_user":  "CHINOOK_STG_READ",
+    "firewall_rule_present":  true,
+    "firewall_rule_name":  "ChinookStagingOracleLAN",
+    "enabled":  "True",
+    "action":  "Allow",
+    "direction":  "Inbound",
+    "protocol":  "TCP",
+    "local_port":  "1521",
+    "local_addresses":  "192.168.0.250",
+    "allowed_remote_addresses":  "192.168.0.0/255.255.255.0",
+    "interface":  "Wi-Fi",
+    "created_by_user_in_administrator_terminal":  true,
+    "tested_from_another_pc":  false
+}
