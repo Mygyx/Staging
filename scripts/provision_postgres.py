@@ -22,7 +22,7 @@ def administrative_settings(path: Path) -> Settings:
     values.update({key: value for key, value in os.environ.items() if key in {
         "PGHOST", "PGPORT", "PGDATABASE", "PGUSER", "PGPASSWORD"}})
     if any(not values.get(key) or values[key] == "CHANGE_ME" for key in ("PGUSER", "PGPASSWORD")):
-        raise ConfigurationError("Faltan PGUSER/PGPASSWORD en .env.admin. No se intentan claves predeterminadas ni credenciales Oracle.")
+        raise ConfigurationError("Faltan PGUSER/PGPASSWORD en .env.admin. Configure el acceso administrativo PostgreSQL autorizado.")
     return Settings(values.get("PGHOST") or "127.0.0.1", int(values.get("PGPORT") or 5433),
                     values.get("PGDATABASE") or "postgres", "public", values["PGUSER"], values["PGPASSWORD"])
 

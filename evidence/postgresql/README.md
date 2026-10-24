@@ -1,7 +1,7 @@
 # Evidencias PostgreSQL
 
-Solo esta carpeta representa la migración nueva. Los reportes Oracle permanecen
-en `../oracle/` y no demuestran que PostgreSQL funcione.
+Esta carpeta contiene las evidencias de PostgreSQL. Los reportes de la etapa
+Oracle se consultan desde Git, en la referencia `pre-cleanup-b54ab4e`.
 
 Cada `run-<UUID>.json` generado por Prefect incluye la validación crítica que
 precedió al COMMIT y una segunda comparación en una transacción de solo lectura.
@@ -33,3 +33,19 @@ ejecutan en los esquemas de pruebas expresamente autorizados, nunca en public.
 Siguen pendientes únicamente la prueba desde las computadoras del equipo DW y
 la publicación en el remoto que el usuario proporcione. No se presentan como
 realizadas ni se abrió el acceso de red automáticamente.
+
+## Comprobaciones posteriores a la limpieza
+
+- `cleanup-audit.json`: inventario retirado, punto de recuperación, tamaños
+  iniciales y archivos locales preservados.
+- `cleanup-tests.json` y `.txt`: resultado de las pruebas posteriores, con
+  temporales dentro del repositorio e integración en esquemas aislados.
+- `cleanup-validation.json`: comparación de todos los datos, contrato lector,
+  firma de public y preservación de credenciales.
+- `cleanup-prefect.txt`: ejecución del lanzador en modo de solo validación.
+
+La eliminación local de cachés fue rechazada por la revisión automática de
+aprobación. Se conservan excluidos de Git y se documentan en la auditoría.
+El primer intento de capturar unittest con redirección PowerShell se interrumpió
+por NativeCommandError; se repitió con captura directa desde Python. Los
+reportes cleanup-tests describen esta segunda ejecución completa.

@@ -1,4 +1,4 @@
-# Entorno comprobado: Python 3.13. Dependencias Oracle retiradas del conjunto activo.
+# Entorno comprobado: Python 3.13, Prefect 3 y PostgreSQL mediante psycopg 3.
 aiosqlite==0.22.1
 alembic==1.20.1
 amplitude-analytics==1.3.0

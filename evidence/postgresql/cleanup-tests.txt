@@ -1,0 +1,61 @@
+test_connection_errors_do_not_reveal_credentials (test_config.SettingsTests.test_connection_errors_do_not_reveal_credentials) ... ok
+test_dotenv_preserves_dollar_signs_without_interpolation (test_config.SettingsTests.test_dotenv_preserves_dollar_signs_without_interpolation) ... ok
+test_environment_is_supported_without_oracle_fallback (test_config.SettingsTests.test_environment_is_supported_without_oracle_fallback) ... ok
+test_missing_credentials_are_explicit_and_never_guessed (test_config.SettingsTests.test_missing_credentials_are_explicit_and_never_guessed) ... ok
+test_wrong_database_and_unsafe_schema_are_rejected (test_config.SettingsTests.test_wrong_database_and_unsafe_schema_are_rejected) ... ok
+test_contract_matches_requested_postgresql_interface (test_contract.ContractTests.test_contract_matches_requested_postgresql_interface) ... ok
+test_query_uses_escaped_identifiers (test_contract.ContractTests.test_query_uses_escaped_identifiers) ... ok
+test_all_eleven_original_file_hashes_are_unchanged (test_fidelity.FidelityTests.test_all_eleven_original_file_hashes_are_unchanged) ... ok
+test_csv_special_values_survive_without_inference_or_normalization (test_fidelity.FidelityTests.test_csv_special_values_survive_without_inference_or_normalization) ... ok
+test_ddl_has_the_complete_original_text_columns (test_fidelity.FidelityTests.test_ddl_has_the_complete_original_text_columns) ... ok
+test_hash_preserves_boundaries_empty_strings_spaces_and_unicode (test_fidelity.FidelityTests.test_hash_preserves_boundaries_empty_strings_spaces_and_unicode) ... ok
+test_malformed_csv_is_rejected (test_fidelity.FidelityTests.test_malformed_csv_is_rejected) ... ok
+test_manifest_and_all_source_controls_match (test_fidelity.FidelityTests.test_manifest_and_all_source_controls_match) ... ok
+test_evidence_distinguishes_precommit_and_postcommit_verification (test_flow_reporting.FlowReportingTests.test_evidence_distinguishes_precommit_and_postcommit_verification) ... ok
+test_failure_after_commit_is_not_described_as_a_rollback (test_flow_reporting.FlowReportingTests.test_failure_after_commit_is_not_described_as_a_rollback) ... ok
+test_validate_only_failure_keeps_original_validation_error (test_flow_reporting.FlowReportingTests.test_validate_only_failure_keeps_original_validation_error) ... ok
+test_concurrent_refresh_is_rejected_without_data_changes (test_postgres_integration.PostgreSQLIntegrationTests.test_concurrent_refresh_is_rejected_without_data_changes) ... ok
+test_corrupted_test_value_is_detected_before_commit (test_postgres_integration.PostgreSQLIntegrationTests.test_corrupted_test_value_is_detected_before_commit) ... ok
+test_empty_strings_are_not_null (test_postgres_integration.PostgreSQLIntegrationTests.test_empty_strings_are_not_null) ... ok
+test_error_during_load_restores_previous_photo (test_postgres_integration.PostgreSQLIntegrationTests.test_error_during_load_restores_previous_photo) ... ok
+test_failed_validation_restores_previous_photo_not_empty_tables (test_postgres_integration.PostgreSQLIntegrationTests.test_failed_validation_restores_previous_photo_not_empty_tables) ... ok
+test_first_load_and_actual_structure (test_postgres_integration.PostgreSQLIntegrationTests.test_first_load_and_actual_structure) ... ok
+test_leading_zeros_survive (test_postgres_integration.PostgreSQLIntegrationTests.test_leading_zeros_survive) ... ok
+test_prefect_flow_completes_using_only_the_isolated_schema (test_postgres_integration.PostgreSQLIntegrationTests.test_prefect_flow_completes_using_only_the_isolated_schema) ... 14:22:15.755 | INFO    | prefect - Starting temporary server on http://127.0.0.1:8687
+See https://docs.prefect.io/v3/concepts/server#how-to-guides for more information on running a dedicated Prefect server.
+14:24:05.388 | INFO    | Flow run 'beneficial-ermine' - Beginning flow run 'beneficial-ermine' for flow 'Chinook Staging ETL'
+14:24:05.946 | INFO    | Task run 'Extraer CSV-ab7' - 11 CSV verificados: 15607 registros; vacios conservados como strings
+14:24:05.950 | INFO    | Task run 'Extraer CSV-ab7' - Finished in state Completed()
+14:24:08.845 | INFO    | Task run 'Cargar Staging-94d' - stg_album: 347 registros insertados, pendientes de validacion
+14:24:08.944 | INFO    | Task run 'Cargar Staging-94d' - stg_artist: 275 registros insertados, pendientes de validacion
+14:24:08.959 | INFO    | Task run 'Cargar Staging-94d' - stg_customer: 59 registros insertados, pendientes de validacion
+14:24:08.966 | INFO    | Task run 'Cargar Staging-94d' - stg_employee: 8 registros insertados, pendientes de validacion
+14:24:08.973 | INFO    | Task run 'Cargar Staging-94d' - stg_genre: 25 registros insertados, pendientes de validacion
+14:24:09.011 | INFO    | Task run 'Cargar Staging-94d' - stg_invoice: 412 registros insertados, pendientes de validacion
+14:24:09.205 | INFO    | Task run 'Cargar Staging-94d' - stg_invoice_line: 2240 registros insertados, pendientes de validacion
+14:24:09.209 | INFO    | Task run 'Cargar Staging-94d' - stg_media_type: 5 registros insertados, pendientes de validacion
+14:24:09.214 | INFO    | Task run 'Cargar Staging-94d' - stg_playlist: 18 registros insertados, pendientes de validacion
+14:24:10.643 | INFO    | Task run 'Cargar Staging-94d' - stg_playlist_track: 8715 registros insertados, pendientes de validacion
+14:24:11.113 | INFO    | Task run 'Cargar Staging-94d' - stg_track: 3503 registros insertados, pendientes de validacion
+14:24:11.961 | INFO    | Task run 'Cargar Staging-94d' - COMMIT: 15607 registros validados dentro de la transaccion de carga
+14:24:11.982 | INFO    | Task run 'Cargar Staging-94d' - Finished in state Completed()
+14:24:15.207 | INFO    | Task run 'Validar Staging-e2a' - Validacion independiente correcta; evidencia: run-4824e472-d7e2-45da-9cc5-6544490158bf.json
+14:24:15.217 | INFO    | Task run 'Validar Staging-e2a' - Finished in state Completed()
+14:24:15.878 | INFO    | Flow run 'beneficial-ermine' - Finished in state Completed()
+ok
+test_reader_can_query_all_source_values (test_postgres_integration.PostgreSQLIntegrationTests.test_reader_can_query_all_source_values) ... ok
+test_reader_cannot_insert_update_or_delete (test_postgres_integration.PostgreSQLIntegrationTests.test_reader_cannot_insert_update_or_delete) ... ok
+test_repeatable_read_retains_previous_snapshot_during_refresh (test_postgres_integration.PostgreSQLIntegrationTests.test_repeatable_read_retains_previous_snapshot_during_refresh) ... ok
+test_second_full_refresh_does_not_duplicate (test_postgres_integration.PostgreSQLIntegrationTests.test_second_full_refresh_does_not_duplicate) ... ok
+test_trailing_spaces_survive (test_postgres_integration.PostgreSQLIntegrationTests.test_trailing_spaces_survive) ... ok
+test_unexpected_column_type_is_rejected_without_refresh (test_postgres_integration.PostgreSQLIntegrationTests.test_unexpected_column_type_is_rejected_without_refresh) ... ok
+test_unicode_survives (test_postgres_integration.PostgreSQLIntegrationTests.test_unicode_survives) ... ok
+test_instance_with_the_dw_is_rejected (test_provision_safety.ProvisionSafetyTests.test_instance_with_the_dw_is_rejected) ... ok
+test_postgresql_12_is_not_used_as_fallback (test_provision_safety.ProvisionSafetyTests.test_postgresql_12_is_not_used_as_fallback) ... ok
+test_unknown_existing_database_is_never_adopted (test_provision_safety.ProvisionSafetyTests.test_unknown_existing_database_is_never_adopted) ... ok
+
+----------------------------------------------------------------------
+Ran 34 tests in 428.922s
+
+OK
+14:24:34.441 | INFO    | prefect - Stopping temporary server on http://127.0.0.1:8687

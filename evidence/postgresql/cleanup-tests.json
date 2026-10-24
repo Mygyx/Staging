@@ -1,0 +1,17 @@
+{
+  "checked_at_utc": "2026-10-24T20:24:35.342996+00:00",
+  "command": "RUN_PG_INTEGRATION=1 STG_TEST_SCHEMA_AUTHORIZED=1 python -B -m unittest discover -s tests -v",
+  "exit_code": 0,
+  "tests_run": 34,
+  "passed": 34,
+  "skipped": 0,
+  "isolated_postgresql_cases": 15,
+  "unit_cases": 19,
+  "temporary_files_directory": "local/test-tmp",
+  "public_fingerprint_checked_by_suite": true,
+  "prefect_full_flow_test_in_isolated_schema": true,
+  "elapsed_seconds": 428.922,
+  "failures": 0,
+  "errors": 0,
+  "initial_shell_capture": "Interrupted by PowerShell NativeCommandError on unittest stderr; full suite rerun successfully with direct Python subprocess capture."
+}

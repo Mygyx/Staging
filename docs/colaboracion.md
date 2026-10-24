@@ -1,14 +1,14 @@
 # Colaboración y reproducción
 
-El repositorio principal es `chinook_staging_etl`. Las carpetas externas
-`proyecto-oracle`, la copia del Vault y los bundles existentes son antecedentes,
-no la implementación activa. No se eliminaron ni se sobrescribieron.
+El repositorio principal es `chinook_staging_etl`: CSV, Python/Prefect y
+PostgreSQL. El código, pruebas y documentación vigentes están en este repositorio.
 
 ## Dos estudiantes, dos identidades reales
 
 Cada estudiante configura su propia identidad Git y registra sus aportes reales.
 No se modifican autores/fechas previos ni se crean commits en nombre del compañero.
-Los siete commits iniciales permanecen accesibles en `oracle-baseline-361bb17`.
+Los siete commits iniciales permanecen accesibles en `oracle-baseline-361bb17`;
+los once anteriores a la limpieza están en `pre-cleanup-b54ab4e`.
 Los avances semanales y el tablero deben mantenerse durante el curso; los
 commits de un solo día no demuestran varias semanas de actividad.
 
@@ -31,19 +31,19 @@ No hay remoto configurado. Solo cuando el usuario proporcione la URL correcta
 se añadirá origin y se enviarán los commits. No publicar en otra cuenta ni
 sobrescribir un repositorio con historial existente.
 
-Los bundles anteriores representan versiones Oracle y no se regeneraron como
-parte de esta migración. Se mantienen para recuperación; no equivalen a una
-base de datos ni contienen .env, contraseñas, .venv o metadatos locales.
-
 ## Históricos y evidencias
 
-`archive/oracle/` contiene código retirado del flujo activo. `evidence/oracle/`
-y `docs/historico/oracle/` conservan los resultados anteriores, con enlaces
-actualizados y etiquetas de motor. Para consultar un archivo original:
+El código y las evidencias de Oracle se retiraron del árbol de trabajo una vez
+verificada la implementación PostgreSQL. Permanecen recuperables desde Git.
+Para consultar un archivo anterior a la limpieza sin cambiar de versión:
 
 ```powershell
-git show oracle-baseline-361bb17:scripts/staging_core.py
+git show pre-cleanup-b54ab4e:archive/oracle/scripts/generate_sql.py
 ```
+
+La [nota de limpieza](limpieza-repositorio.md) documenta qué se retiró y qué
+archivos locales se preservaron. No ejecutar instrucciones históricas como
+parte de la instalación actual.
 
 Los resultados nuevos deben registrarse en `evidence/postgresql/`, indicando
 qué pruebas se ejecutaron y cuáles están bloqueadas u omitidas. Una simulación

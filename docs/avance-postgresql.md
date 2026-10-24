@@ -80,7 +80,7 @@ Dos cargas reales adicionales en public terminaron en Completed:
 Ambas muestran Extraer CSV, Cargar Staging y Validar Staging en Completed y
 conservan las mismas cantidades. Sus reportes se encuentran en
 `evidence/postgresql`, junto con la aceptación y los resultados individuales
-de unittest. La evidencia Oracle se mantiene separada en `evidence/oracle`.
+de unittest. Las evidencias Oracle anteriores se consultan desde el historial Git.
 
 ## Git y entrega
 
@@ -88,9 +88,10 @@ Los siete commits iniciales permanecen en `oracle-baseline-361bb17` y son
 antecesores de la implementación. Se agregaron commits reales para backend,
 pruebas/aprovisionamiento, documentación/archivo y evidencia de ejecución.
 
-La carpeta activa es `chinook_staging_etl`. Los archivos específicos de Oracle
-quedaron en `archive/oracle`, conservando su contenido y recuperación por Git.
-Las credenciales Oracle existentes en local no se utilizan ni se eliminan.
+La carpeta activa es `chinook_staging_etl`. Tras la entrega, los archivos
+específicos de Oracle se retiraron del árbol de trabajo, conservando su
+recuperación en `pre-cleanup-b54ab4e`. La [limpieza posterior](limpieza-repositorio.md)
+documenta esta decisión. Las credenciales antiguas de local se preservaron.
 
 Brian y Miguel reciben `contracts/staging_sources.json` y `docs/entrega-dw.md`,
 los datos de conexión PostgreSQL y la clave del lector por un canal privado.

@@ -33,9 +33,10 @@
     modifica el servidor del DW, sus transformaciones, servicios o firewall.
 11. Las pruebas destructivas requieren dos indicadores explícitos y utilizan
     esquemas aleatorios propios dentro de chinook_staging, nunca public.
-12. El punto de recuperación Oracle conserva los siete commits anteriores. Los
-    reportes Oracle se mantienen como antecedentes, sin presentarlos como prueba
-    PostgreSQL. Ninguna contraseña real se incluye en código o Git.
+12. Git conserva los siete commits iniciales en `oracle-baseline-361bb17` y los
+    once previos a la limpieza en `pre-cleanup-b54ab4e`. El código y evidencias
+    Oracle se consultan desde ese historial; el árbol activo usa PostgreSQL.
+    Ninguna contraseña real se incluye en código o Git.
 
 Referencias oficiales: [psycopg y transacciones](https://www.psycopg.org/psycopg3/docs/basic/transactions.html),
 [identificadores seguros](https://www.psycopg.org/psycopg3/docs/api/sql.html),

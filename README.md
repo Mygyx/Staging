@@ -166,14 +166,15 @@ Abrir `http://127.0.0.1:4200`. No se requiere Cloud, Docker, deployments ni
 workers para esta entrega. La SQLite de `local/prefect` solo guarda metadatos
 de orquestación; no reemplaza las dos bases PostgreSQL del proyecto.
 
-## Entrega y antecedentes
+## Entrega e historial
 
 [Contrato DW](docs/entrega-dw.md), [colaboración](docs/colaboracion.md),
 [evidencia PostgreSQL](evidence/postgresql/README.md).
 La [entrega comprobada](docs/avance-postgresql.md) registra 34 pruebas aprobadas
 y dos cargas Prefect reales en Completed, con 15607 registros verificados.
-El código Oracle quedó fuera de la ejecución activa, en `archive/oracle/`,
-y es recuperable en la referencia `oracle-baseline-361bb17`. Sus evidencias
-están etiquetadas en `evidence/oracle/` y sus informes en `docs/historico/oracle/`.
-No se eliminaron instalaciones Oracle, esquemas, usuarios ni credenciales.
-Tampoco se eliminaron copias externas ni bundles, ni se modificó el Repo 2.
+El árbol de trabajo contiene la implementación PostgreSQL. La migración desde
+Oracle y la limpieza posterior se explican en [limpieza del repositorio](docs/limpieza-repositorio.md).
+La referencia Git `pre-cleanup-b54ab4e` permite consultar el estado completo
+anterior a la limpieza; `oracle-baseline-361bb17` conserva la versión Oracle.
+Los once commits anteriores permanecen en el historial. Las credenciales,
+el entorno Python y el historial local de Prefect se mantienen privados en esta PC.

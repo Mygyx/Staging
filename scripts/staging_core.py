@@ -63,7 +63,7 @@ class Settings:
         missing = [key for key in ("STG_USER", "STG_PASSWORD")
                    if not values.get(key) or values[key] in {"CHANGE_ME", "TU_PASSWORD", "USUARIO_CARGADOR"}]
         if missing:
-            raise ConfigurationError("Complete " + ", ".join(missing) + " en .env o en el entorno; no use credenciales Oracle.")
+            raise ConfigurationError("Complete " + ", ".join(missing) + " en .env o en el entorno con las credenciales PostgreSQL del proyecto.")
         result = cls(host=values.get("STG_HOST") or "127.0.0.1",
                      port=int(values.get("STG_PORT") or 5433),
                      database=values.get("STG_DATABASE") or DATABASE,
