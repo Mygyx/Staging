@@ -1,100 +1,153 @@
-# chinook_staging_etl
+# Chinook Staging ETL
 
-Proyecto 1 de Minería de Datos, UTN, 3C2026. Entrega del área de staging:
-**11 CSV, 15.607 registros**, conservados sin limpieza ni conversión de valores.
+Repo 1 de Jeremy y compañero, UTN: **11 CSV -> Python/Prefect 3 -> PostgreSQL**.
+La base de staging es `chinook_staging`, esquema `public`, en un entorno distinto
+del PostgreSQL DW de Brian y Miguel. Este repositorio no transforma dimensiones.
 
-Prefect orquesta la lectura, la preparación de tablas, la carga, la comparación
-de cada campo y la evidencia. Los CSV originales están en `data/raw/` y sus
-SHA-256 en `data/manifest.json`. La limpieza y el modelo dimensional continúan
-desde estas tablas con el trabajo del compañero.
+Hay 11 tablas `stg_*` con **15.607 filas y 66.439 campos originales**. Todos los
+campos fuente son `TEXT`, conservan CamelCase y sus valores exactos. Los 1.339
+vacíos son `''`, no NULL. Se mantienen ceros iniciales, Unicode y espacios finales.
+Las comillas delimitadoras y terminadores se conservan en los CSV originales.
+`CSV_ROW_NUMBER` es un ordinal técnico INTEGER; `etl_source_file` es una tabla
+de metadatos adicional. Véanse [fuentes](docs/fuentes.md) y
+[decisiones](docs/decisiones.md).
 
-```mermaid
-flowchart LR
-    A[11 CSV originales] --> B[Prefect: verificar manifiesto]
-    B --> C[Preparar tablas Oracle]
-    C --> D[Cargar con binds en una transacción]
-    D --> E[Comparar cada campo contra CSV]
-    E --> F[COMMIT y evidencia]
-    E -->|Error| G[ROLLBACK del DML]
-```
+## Instalar
 
-## Datos conservados
-
-Cada columna fuente es `VARCHAR2`, incluidos identificadores, fechas e importes:
-así se mantienen ceros iniciales, representación decimal, espacios y Unicode.
-No hay `TRIM`, redondeos, deduplicación ni valores inventados. `CSV_ROW_NUMBER`
-identifica cada registro desde 1, después del encabezado, y conserva su orden.
-Para leer en el orden original se debe usar `ORDER BY CSV_ROW_NUMBER`.
-
-**Oracle representa las cadenas vacías como `NULL`.** Esta es la correspondencia
-esperada para un campo vacío del CSV. El literal `NULL`, si aparece como texto,
-se conserva como texto. Los archivos originales preservan también comillas,
-codificación y saltos de línea byte por byte. Véanse
-[las decisiones](docs/decisiones.md) y [el inventario](docs/fuentes.md).
-
-## Ejecutar con Prefect
-
-Requisitos: Python 3.11 o superior y acceso a una PDB Oracle con `AL32UTF8`.
-Se probó con Python 3.13 y Oracle XE 21c, servicio `XEPDB1`.
-El usuario requiere `CREATE SESSION`, `CREATE TABLE` y cuota en su tablespace.
-No se debe conectar el flujo como `SYS` ni `SYSTEM`.
-
-Desde PowerShell, dentro de esta carpeta:
+Se utiliza Python 3.13, Prefect 3.9.0, psycopg 3.3.6 y python-dotenv 1.2.4.
+Pandas no es necesario para cargar el staging.
 
 ```powershell
 py -3.13 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
 ```
 
-Si usas otra instalación compatible de Python, úsala para crear `.venv`.
-Las versiones exactas del entorno validado también están en
-`requirements-lock.txt`; se pueden instalar con `pip install -r requirements-lock.txt`.
+`requirements-lock.txt` fija el entorno comprobado. Puede instalarse en lugar de
+`requirements.txt`. El marcador de pywin32 limita ese paquete a Windows; no se
+afirma que el proyecto se haya probado en todos los sistemas operativos.
 
-Para una instalación local nueva de Oracle XE en Windows, el siguiente paso
-opcional crea **solo** `CHINOOK_STAGING` en `XEPDB1` y cifra su contraseña con tu
-cuenta Windows. Requiere que `sqlplus.exe` esté en PATH y que tu usuario tenga
-autenticación OS como administrador Oracle. Se detiene si el usuario ya existe.
+## Configurar
+
+Crear `.env`, `.env.reader` y, solo para aprovisionar, `.env.admin`, a partir de sus
+ejemplos. Completar contraseñas reales localmente; todos esos archivos reales
+están excluidos de Git. No sobrescribir una configuración existente.
 
 ```powershell
-.\setup-local-oracle.ps1
+if (-not (Test-Path .env)) { Copy-Item .env.example .env }
+if (-not (Test-Path .env.reader)) { Copy-Item .env.reader.example .env.reader }
+if (-not (Test-Path .env.admin)) { Copy-Item .env.admin.example .env.admin }
+```
+
+Variables de ejecución: `STG_HOST`, `STG_PORT`, `STG_DATABASE=chinook_staging`,
+`STG_SCHEMA=public`, `STG_USER`, `STG_PASSWORD`, `STG_SSLMODE`. El puerto 5433 es
+el candidato local comprobado, no una regla universal. Las variables exportadas
+prevalecen sobre `.env`. No se interpolan `$VARIABLES` dentro de contraseñas.
+
+La cuenta administrativa usa únicamente `PGHOST`, `PGPORT`, `PGDATABASE`,
+`PGUSER`, `PGPASSWORD`. Sus credenciales no se reutilizan en el ETL. El programa
+rechaza ejecutar cargas o comprobaciones normales como superusuario.
+
+## Aprovisionar la base y las tablas
+
+Primero consultar la instancia mediante autenticación:
+
+```powershell
+.\.venv\Scripts\python.exe scripts/provision_postgres.py --inspect
+```
+
+Después de comprobar que PostgreSQL 17 es la instancia autorizada e independiente
+del DW, se puede aprovisionar nuestra base nueva con las configuraciones completas:
+
+```powershell
+.\.venv\Scripts\python.exe scripts/provision_postgres.py --create-new
+```
+
+El aprovisionador crea únicamente `chinook_staging`, `chinook_stg_loader` y
+`chinook_stg_reader`, si no existen homónimos ajenos. No cambia contraseñas de
+roles existentes, no borra bases y no modifica servicios ni firewall. Una base
+homónima sin la marca `chinook_staging_etl:postgres:v1` provoca una detención.
+También se detiene si encuentra `chinook_dw` o `chinook_datawarehouse` en la misma
+instancia. Otras bases permanecen fuera de todas las sentencias de escritura.
+
+El DDL completo está en `sql/create_staging.sql`; los permisos revisables están
+en `sql/provision_access.sql`. Este último exige la base marcada y los dos roles
+antes de actuar. El usuario cargador es propietario de la base y de las tablas;
+el lector recibe conexión, uso de esquema y SELECT sobre las once fuentes.
+
+CREATE DATABASE no participa en una transacción PostgreSQL. Si se interrumpe el
+aprovisionamiento, revisar los recursos creados; no se aplica una limpieza ni
+adopción automática de objetos desconocidos. No utilizar el aprovisionador para
+convertir por la fuerza una base existente de otro proyecto.
+
+## Ejecutar
+
+Un comando desde esta carpeta:
+
+```powershell
 .\run.ps1
 ```
 
-Si el esquema ya está preparado, configura tu conexión y ejecuta el flujo.
-`run.ps1` pide la contraseña de forma oculta cuando hace falta:
+En otros sistemas, con el entorno configurado: `python scripts/staging_flow.py`.
+El flujo **Chinook Staging ETL** muestra tres tareas locales y secuenciales:
 
-```powershell
-$env:ORACLE_USER = 'TU_USUARIO_STAGING'
-$env:ORACLE_DSN = 'localhost:1521/XEPDB1'
-.\run.ps1
-```
+1. **Extraer CSV:** verifica archivos, manifiesto, estructura y controles antes
+   de abrir una conexión de carga.
+2. **Cargar Staging:** obtiene un bloqueo transaccional, prepara las tablas solo
+   si aún no existen, hace DELETE + INSERT, valida todos los campos, hashes,
+   ordinales, catálogo y totales; el COMMIT sucede únicamente después de validar.
+3. **Validar Staging:** abre otra transacción REPEATABLE READ READ ONLY, compara
+   nuevamente y guarda evidencia en `evidence/postgresql/run-<UUID>.json`.
 
-En otros sistemas, define `ORACLE_USER`, `ORACLE_PASSWORD` y `ORACLE_DSN` en el
-entorno y ejecuta `python scripts/staging_flow.py`. La contraseña no se pasa
-como parámetro de Prefect ni se incluye en Git.
-
-La primera ejecución crea 12 tablas: 11 fuentes y `ETL_SOURCE_FILE` como
-manifiesto. Inserta los datos con `executemany` y bind variables. Antes del
-`COMMIT`, relee **cada campo de cada fila** y lo compara con los CSV. También
-verifica sus hashes, orden y conteos. Ante errores se revierte todo el DML.
-El DDL de Oracle puede dejar tablas vacías si falla la instalación.
-
-La carga requiere tablas vacías; no borra ni reemplaza datos. Una ejecución
-posterior se usa para validar lo que ya está cargado:
+Las recargas no eliminan ni recrean tablas y conservan los permisos. Si falla la
+carga o su validación crítica, el rollback recupera la fotografía anterior.
+Si falla la tercera tarea después del COMMIT, los datos ya confirmados no se
+revierten. El error lo indica expresamente; revisar y ejecutar una auditoría:
 
 ```powershell
 .\run.ps1 -ValidateOnly
 ```
 
-Si la tarea de evidencia falla después del `COMMIT`, los datos ya fueron
-confirmados: ejecuta `-ValidateOnly` para generar la evidencia pendiente.
-El flujo y sus tareas no tienen reintentos automáticos ni caché de resultados.
+Ese modo solo lee PostgreSQL, pero escribe evidencia y metadatos locales Prefect.
+Para comprobar el usuario lector:
 
-## Ver ejecuciones en la interfaz de Prefect
+```powershell
+.\.venv\Scripts\python.exe scripts/staging_contract.py --check --env-file .env.reader
+```
 
-Sin un API configurado, Prefect inicia su servidor temporal para la ejecución.
-Para conservar historial y mostrarlo durante la sustentación, usa un servidor
-local persistente. En una terminal del proyecto:
+Las tareas no comparten conexiones abiertas ni tienen caché o reintentos
+automáticos. La segunda recarga usa el mismo mecanismo transaccional que la
+primera. Una recarga concurrente se rechaza sin borrar registros.
+
+## Pruebas
+
+Sin acceso a PostgreSQL:
+
+```powershell
+.\.venv\Scripts\python.exe -m unittest discover -s tests -v
+.\.venv\Scripts\python.exe scripts/profile_sources.py --check
+```
+
+Las pruebas de integración quedan omitidas por defecto. Solo después de contar
+con nuestra base, roles y autorización explícita para esquemas aislados:
+
+```powershell
+$env:RUN_PG_INTEGRATION = '1'
+$env:STG_TEST_SCHEMA_AUTHORIZED = '1'
+.\.venv\Scripts\python.exe -m unittest discover -s tests -v
+Remove-Item Env:RUN_PG_INTEGRATION
+Remove-Item Env:STG_TEST_SCHEMA_AUTHORIZED
+```
+
+Cada prueba escribe exclusivamente en un esquema aleatorio `stg_test_*` y lo
+elimina solo si conserva su marca exclusiva. Nunca corrompe ni vacía `public`.
+Se prueban segunda carga, rollback a datos anteriores, fallos durante la carga,
+Unicode, vacíos, espacios, ceros, lector, permisos y concurrencia. No ejecutar
+estos escenarios en bases o esquemas ajenos al proyecto.
+
+## Interfaz web de Prefect
+
+Sin API configurada, Prefect inicia un servidor temporal. Para una interfaz
+local disponible mientras se ejecutan los flujos, abrir otra terminal:
 
 ```powershell
 $env:PREFECT_HOME = Join-Path (Get-Location) 'local\prefect'
@@ -102,58 +155,25 @@ $env:PREFECT_SERVER_ANALYTICS_ENABLED = 'false'
 .\.venv\Scripts\prefect.exe server start --host 127.0.0.1
 ```
 
-En otra terminal del mismo proyecto:
+En la terminal que ejecuta `run.ps1`:
 
 ```powershell
 $env:PREFECT_API_URL = 'http://127.0.0.1:4200/api'
-.\run.ps1 -ValidateOnly
+.\run.ps1
 ```
 
-Abre `http://127.0.0.1:4200`. Para las siguientes ejecuciones usa siempre ese
-`PREFECT_HOME` y API. No hace falta Prefect Cloud para esta entrega.
+Abrir `http://127.0.0.1:4200`. No se requiere Cloud, Docker, deployments ni
+workers para esta entrega. La SQLite de `local/prefect` solo guarda metadatos
+de orquestación; no reemplaza las dos bases PostgreSQL del proyecto.
 
-## Comprobar archivos y SQL
+## Entrega y antecedentes
 
-Estas comprobaciones no necesitan conexión a Oracle:
-
-```powershell
-.\.venv\Scripts\python.exe scripts/profile_sources.py --check
-.\.venv\Scripts\python.exe scripts/generate_sql.py --check
-.\.venv\Scripts\python.exe -m unittest discover -s tests -v
-```
-
-Para regenerar evidencia y SQL tras un cambio de fuente **revisado por el equipo**:
-`python scripts/profile_sources.py` y después `python scripts/generate_sql.py`.
-Revisa el diff y las longitudes del esquema antes de cargar nuevos CSV.
-
-Los scripts `sql/` permiten revisar la implementación y comprobar en SQL*Plus
-el contenido mediante SHA-256 por fila. Para una instalación manual alternativa
-en **otro esquema vacío**, conectado con tu usuario staging en SQL*Plus o
-SQL Developer (Ejecutar script / F5):
-
-```sql
-@"C:/RUTA/proyecto-oracle/sql/00_install.sql"
-```
-
-No ejecutes la instalación manual sobre la carga realizada con Prefect. Para
-auditar esa carga se puede ejecutar `03_validate_data.sql` en una sesión dedicada.
-La evidencia de la herramienta asignada se obtiene ejecutando el flujo Prefect.
-
-## Compartir y colaborar
-
-Consulta [la guía de entrega](docs/colaboracion.md). El repositorio incluye los
-CSV y el código; `local/`, `.venv/` y las contraseñas están excluidos de Git.
-Cada compañero debe configurar su propia conexión, porque la credencial cifrada
-local solo funciona con la cuenta Windows que la creó.
-
-La entrega al DW se describe en [el contrato de conexión](docs/entrega-dw.md).
-La adaptación y sus resultados están en [el avance de Chinook](docs/avance-contrato-chinook.md).
-El [avance inicial](docs/avance-staging.md) conserva la evidencia histórica del primer esquema.
-
-Los commits registran avances reales por entregable. Los avances semanales,
-aportes de otros integrantes y tablero Kanban deben mantenerse durante las
-semanas restantes. Varios commits de hoy no equivalen a varias semanas de trabajo.
-
-Referencias: [flujos y tareas de Prefect](https://docs.prefect.io/v3/how-to-guides/workflows/write-and-run),
-[carga por lotes en python-oracledb](https://python-oracledb.readthedocs.io/en/v3.4.2/user_guide/batch_statement.html),
-[cadenas vacías en Oracle](https://docs.oracle.com/en/database/oracle/oracle-database/21/sqlrf/Nulls.html).
+[Contrato DW](docs/entrega-dw.md), [colaboración](docs/colaboracion.md),
+[evidencia PostgreSQL](evidence/postgresql/README.md).
+La [entrega comprobada](docs/avance-postgresql.md) registra 34 pruebas aprobadas
+y dos cargas Prefect reales en Completed, con 15607 registros verificados.
+El código Oracle quedó fuera de la ejecución activa, en `archive/oracle/`,
+y es recuperable en la referencia `oracle-baseline-361bb17`. Sus evidencias
+están etiquetadas en `evidence/oracle/` y sus informes en `docs/historico/oracle/`.
+No se eliminaron instalaciones Oracle, esquemas, usuarios ni credenciales.
+Tampoco se eliminaron copias externas ni bundles, ni se modificó el Repo 2.

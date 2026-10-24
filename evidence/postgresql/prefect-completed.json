@@ -1,0 +1,48 @@
+[
+  {
+    "flow": {
+      "id": "561a402d-2d10-4ae1-8a4f-66d2dd9323df",
+      "name": "pristine-cockle",
+      "state_name": "Completed",
+      "start_time": "2026-10-24 19:11:50.454634",
+      "end_time": "2026-10-24 19:11:56.501000"
+    },
+    "tasks": [
+      {
+        "name": "Extraer CSV-70e",
+        "state_name": "Completed"
+      },
+      {
+        "name": "Cargar Staging-318",
+        "state_name": "Completed"
+      },
+      {
+        "name": "Validar Staging-c21",
+        "state_name": "Completed"
+      }
+    ]
+  },
+  {
+    "flow": {
+      "id": "7f0158c3-5415-464e-9235-299ea0fe74ee",
+      "name": "friendly-leech",
+      "state_name": "Completed",
+      "start_time": "2026-10-24 19:06:49.177636",
+      "end_time": "2026-10-24 19:06:54.613374"
+    },
+    "tasks": [
+      {
+        "name": "Extraer CSV-bfa",
+        "state_name": "Completed"
+      },
+      {
+        "name": "Cargar Staging-c7b",
+        "state_name": "Completed"
+      },
+      {
+        "name": "Validar Staging-5c9",
+        "state_name": "Completed"
+      }
+    ]
+  }
+]

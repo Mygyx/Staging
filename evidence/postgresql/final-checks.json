@@ -1,0 +1,14 @@
+{
+  "checked_at_utc": "2026-10-24T19:22:39.654484+00:00",
+  "baseline_commit": "361bb17272459e9e308a568b55e544c573d6d2c1",
+  "baseline_reference": "oracle-baseline-361bb17",
+  "original_commits_preserved": 7,
+  "original_csv_git_diff_empty": true,
+  "new_role_passwords_absent_from_publishable_files": true,
+  "local_credential_files_ignored": true,
+  "pip_check": "No broken requirements found",
+  "source_profile_check": "OK: 11 CSV, 15607 registros; manifiesto intacto",
+  "active_documentation_links_checked": true,
+  "git_diff_check_passed": true,
+  "remote_push_performed": false
+}

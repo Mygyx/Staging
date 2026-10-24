@@ -1,0 +1,35 @@
+{
+  "connected_database": "postgres",
+  "administrative_user": "postgres",
+  "server_version": "17.4",
+  "server_version_num": 170004,
+  "port": 5433,
+  "capabilities": {
+    "superuser": true,
+    "create_database": true,
+    "create_role": true
+  },
+  "databases": [
+    {
+      "name": "DBBaseDatos",
+      "owner": "postgres",
+      "marked_for_this_project": false
+    },
+    {
+      "name": "DBBaseDatosPrueba",
+      "owner": "postgres",
+      "marked_for_this_project": false
+    },
+    {
+      "name": "chinook_staging",
+      "owner": "chinook_stg_loader",
+      "marked_for_this_project": true
+    },
+    {
+      "name": "postgres",
+      "owner": "postgres",
+      "marked_for_this_project": false
+    }
+  ],
+  "preexisting_database_names_and_owners_unchanged": true
+}

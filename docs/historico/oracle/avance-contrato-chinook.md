@@ -1,3 +1,5 @@
+> Historico Oracle. No representa una ejecucion PostgreSQL.
+
 # Adaptación al contrato Chinook: 24 de octubre de 2026
 
 Se conservó el historial inicial y se creó la carpeta/repositorio local
@@ -22,13 +24,13 @@ como antecedente. Los CSV originales permanecen intactos.
 
 | Evidencia | Resultado |
 | --- | --- |
-| [Ejecución Prefect](../evidence/prefect-contract-completed.json) | Flujo y cinco tareas en `Completed` |
-| [Comparación de datos](../evidence/run-94c3f2b3-fcb5-43b7-ab8d-aa724a58c835.json) | 15607 registros comparados campo por campo y confirmados |
-| [Reversión entre tareas](../evidence/prefect-transaction-rollback.json) | Un fallo provocado en Validar Staging revierte la carga; las 12 tablas quedan vacías |
-| [Pruebas](../evidence/tests-contract.txt) | 9 aprobadas, 1 omitida porque ya hay datos; rollback probado antes de cargar |
-| [Validación SQL](../evidence/sql-contract-validated.txt) | Hashes por fila correctos en las 11 tablas |
-| [Lector DW](../evidence/dw-reader-contract.json) | Once tablas, 15607 registros, ventas 2328.60, escritura rechazada con ORA-01031 |
-| [Acceso LAN](../evidence/lan-access-status.json) | Firewall habilitado solo para la IP, interfaz, subred y puerto acordados |
+| [Ejecución Prefect](../../../evidence/oracle/prefect-contract-completed.json) | Flujo y cinco tareas en `Completed` |
+| [Comparación de datos](../../../evidence/oracle/run-94c3f2b3-fcb5-43b7-ab8d-aa724a58c835.json) | 15607 registros comparados campo por campo y confirmados |
+| [Reversión entre tareas](../../../evidence/oracle/prefect-transaction-rollback.json) | Un fallo provocado en Validar Staging revierte la carga; las 12 tablas quedan vacías |
+| [Pruebas](../../../evidence/oracle/tests-contract.txt) | 9 aprobadas, 1 omitida porque ya hay datos; rollback probado antes de cargar |
+| [Validación SQL](../../../evidence/oracle/sql-contract-validated.txt) | Hashes por fila correctos en las 11 tablas |
+| [Lector DW](../../../evidence/oracle/dw-reader-contract.json) | Once tablas, 15607 registros, ventas 2328.60, escritura rechazada con ORA-01031 |
+| [Acceso LAN](../../../evidence/oracle/lan-access-status.json) | Firewall habilitado solo para la IP, interfaz, subred y puerto acordados |
 
 El flujo fallido que aparece en el historial de Prefect corresponde a una prueba
 deliberada de rollback, seguida de la carga real exitosa. No se alteró el CSV

@@ -1,0 +1,202 @@
+{
+  "checked_at_utc": "2026-10-24T19:11:56.453865+00:00",
+  "engine": "PostgreSQL",
+  "database": "chinook_staging",
+  "schema": "public",
+  "sources": [
+    {
+      "file": "Album.csv",
+      "table": "stg_album",
+      "rows": 347,
+      "source_sha256": "656fce5550477e1e4a35a069d884b76fbeb519180a167a1bd9eb93a8ea84019e",
+      "all_values_equal": true
+    },
+    {
+      "file": "Artist.csv",
+      "table": "stg_artist",
+      "rows": 275,
+      "source_sha256": "4ac1a88103d918b481100d7b3caef709281b14865f36b335e094ee5ed8fa5926",
+      "all_values_equal": true
+    },
+    {
+      "file": "Customer.csv",
+      "table": "stg_customer",
+      "rows": 59,
+      "source_sha256": "32ee8a435a710088aed61654e8641700ae223740aec8576e214e05740e640647",
+      "all_values_equal": true
+    },
+    {
+      "file": "Employee.csv",
+      "table": "stg_employee",
+      "rows": 8,
+      "source_sha256": "66f539d1dfb65abced48588dbbd2d6168d2cc1fe2f85764231ac2a9dc2d542fb",
+      "all_values_equal": true
+    },
+    {
+      "file": "Genre.csv",
+      "table": "stg_genre",
+      "rows": 25,
+      "source_sha256": "0c73f495ea8c55702e36e5289b34ddfb89fdae58ba76d53464fc9a6866c13572",
+      "all_values_equal": true
+    },
+    {
+      "file": "Invoice.csv",
+      "table": "stg_invoice",
+      "rows": 412,
+      "source_sha256": "89233865ee25507f7a992c41cb5f4715b3cf33e322c1fff227802ac74cd6d20b",
+      "all_values_equal": true
+    },
+    {
+      "file": "InvoiceLine.csv",
+      "table": "stg_invoice_line",
+      "rows": 2240,
+      "source_sha256": "5eedcfec0bb9d3eb937576cc8e1daf3d42013ba395d764a4b876e435115fa9ec",
+      "all_values_equal": true
+    },
+    {
+      "file": "MediaType.csv",
+      "table": "stg_media_type",
+      "rows": 5,
+      "source_sha256": "80c6777732c3eca1748d3eadc0e6a7fa86e958637b1f8b10555e4eaa90ed1784",
+      "all_values_equal": true
+    },
+    {
+      "file": "Playlist.csv",
+      "table": "stg_playlist",
+      "rows": 18,
+      "source_sha256": "7bae5596f0de27f4d77c1cbde2ece990f6aaf3f9af4ec603a40d56b0328eb2f7",
+      "all_values_equal": true
+    },
+    {
+      "file": "PlaylistTrack.csv",
+      "table": "stg_playlist_track",
+      "rows": 8715,
+      "source_sha256": "708ce92206e64f05e5bbd31c43b937aca657222891cb0eac00445d0989b17166",
+      "all_values_equal": true
+    },
+    {
+      "file": "Track.csv",
+      "table": "stg_track",
+      "rows": 3503,
+      "source_sha256": "53771d86981c638ee4af35cf52deff79e224a71f5711db1b1131f3ae1e5472ba",
+      "all_values_equal": true
+    }
+  ],
+  "controls": {
+    "total_rows": 15607,
+    "source_cells": 66439,
+    "empty_fields": 1339,
+    "leading_zero_postal_fields": 24,
+    "trailing_space_fields": 8,
+    "invoice_line_rows": 2240,
+    "sales_total": "2328.60",
+    "invoice_total": "2328.60"
+  },
+  "total_rows": 15607,
+  "comparison": "Every original CSV field equals PostgreSQL TEXT; empty fields remain empty strings",
+  "catalog_matches_manifest": true,
+  "phase": "independent-read-only-verification",
+  "load_committed": true,
+  "transactional_validation": {
+    "checked_at_utc": "2026-10-24T19:11:54.487061+00:00",
+    "engine": "PostgreSQL",
+    "database": "chinook_staging",
+    "schema": "public",
+    "sources": [
+      {
+        "file": "Album.csv",
+        "table": "stg_album",
+        "rows": 347,
+        "source_sha256": "656fce5550477e1e4a35a069d884b76fbeb519180a167a1bd9eb93a8ea84019e",
+        "all_values_equal": true
+      },
+      {
+        "file": "Artist.csv",
+        "table": "stg_artist",
+        "rows": 275,
+        "source_sha256": "4ac1a88103d918b481100d7b3caef709281b14865f36b335e094ee5ed8fa5926",
+        "all_values_equal": true
+      },
+      {
+        "file": "Customer.csv",
+        "table": "stg_customer",
+        "rows": 59,
+        "source_sha256": "32ee8a435a710088aed61654e8641700ae223740aec8576e214e05740e640647",
+        "all_values_equal": true
+      },
+      {
+        "file": "Employee.csv",
+        "table": "stg_employee",
+        "rows": 8,
+        "source_sha256": "66f539d1dfb65abced48588dbbd2d6168d2cc1fe2f85764231ac2a9dc2d542fb",
+        "all_values_equal": true
+      },
+      {
+        "file": "Genre.csv",
+        "table": "stg_genre",
+        "rows": 25,
+        "source_sha256": "0c73f495ea8c55702e36e5289b34ddfb89fdae58ba76d53464fc9a6866c13572",
+        "all_values_equal": true
+      },
+      {
+        "file": "Invoice.csv",
+        "table": "stg_invoice",
+        "rows": 412,
+        "source_sha256": "89233865ee25507f7a992c41cb5f4715b3cf33e322c1fff227802ac74cd6d20b",
+        "all_values_equal": true
+      },
+      {
+        "file": "InvoiceLine.csv",
+        "table": "stg_invoice_line",
+        "rows": 2240,
+        "source_sha256": "5eedcfec0bb9d3eb937576cc8e1daf3d42013ba395d764a4b876e435115fa9ec",
+        "all_values_equal": true
+      },
+      {
+        "file": "MediaType.csv",
+        "table": "stg_media_type",
+        "rows": 5,
+        "source_sha256": "80c6777732c3eca1748d3eadc0e6a7fa86e958637b1f8b10555e4eaa90ed1784",
+        "all_values_equal": true
+      },
+      {
+        "file": "Playlist.csv",
+        "table": "stg_playlist",
+        "rows": 18,
+        "source_sha256": "7bae5596f0de27f4d77c1cbde2ece990f6aaf3f9af4ec603a40d56b0328eb2f7",
+        "all_values_equal": true
+      },
+      {
+        "file": "PlaylistTrack.csv",
+        "table": "stg_playlist_track",
+        "rows": 8715,
+        "source_sha256": "708ce92206e64f05e5bbd31c43b937aca657222891cb0eac00445d0989b17166",
+        "all_values_equal": true
+      },
+      {
+        "file": "Track.csv",
+        "table": "stg_track",
+        "rows": 3503,
+        "source_sha256": "53771d86981c638ee4af35cf52deff79e224a71f5711db1b1131f3ae1e5472ba",
+        "all_values_equal": true
+      }
+    ],
+    "controls": {
+      "total_rows": 15607,
+      "source_cells": 66439,
+      "empty_fields": 1339,
+      "leading_zero_postal_fields": 24,
+      "trailing_space_fields": 8,
+      "invoice_line_rows": 2240,
+      "sales_total": "2328.60",
+      "invoice_total": "2328.60"
+    },
+    "total_rows": 15607,
+    "comparison": "Every original CSV field equals PostgreSQL TEXT; empty fields remain empty strings",
+    "catalog_matches_manifest": true,
+    "committed": true,
+    "phase": "validated-before-commit"
+  },
+  "prefect_flow_run_id": "561a402d-2d10-4ae1-8a4f-66d2dd9323df",
+  "mode": "full-refresh"
+}

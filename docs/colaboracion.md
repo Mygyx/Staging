@@ -1,76 +1,51 @@
-# Entrega y colaboración
+# Colaboración y reproducción
 
-## Qué recibe el compañero
+El repositorio principal es `chinook_staging_etl`. Las carpetas externas
+`proyecto-oracle`, la copia del Vault y los bundles existentes son antecedentes,
+no la implementación activa. No se eliminaron ni se sobrescribieron.
 
-- `data/raw/`: fotografía exacta de los 11 CSV.
-- `data/manifest.json` y `docs/fuentes.md`: estructura, conteos, hashes y calidad.
-- `scripts/staging_flow.py`: orquestación Prefect.
-- `scripts/staging_core.py`: carga Oracle y comparación de cada campo.
-- `sql/`: DDL, carga y validación SQL reproducibles.
-- `evidence/`: resultados reales de las ejecuciones y pruebas.
-- `README.md`: instalación, conexión y ejecución desde cero.
+## Dos estudiantes, dos identidades reales
 
-Las tablas fuente usan texto. Ejemplo: `STG_INVOICE.Total` mantiene el formato
-del CSV. Al transformar al DW, se debe convertir con un formato explícito y
-documentar las reglas. No se debe limpiar la fuente ni sobrescribir este staging.
+Cada estudiante configura su propia identidad Git y registra sus aportes reales.
+No se modifican autores/fechas previos ni se crean commits en nombre del compañero.
+Los siete commits iniciales permanecen accesibles en `oracle-baseline-361bb17`.
+Los avances semanales y el tablero deben mantenerse durante el curso; los
+commits de un solo día no demuestran varias semanas de actividad.
 
-## Repositorio remoto
+## Otro equipo de desarrollo
 
-El remoto del equipo está pendiente de definir. Cuando exista, desde esta carpeta:
+1. Clonar el remoto correcto cuando esté disponible.
+2. Crear un entorno Python 3.13 e instalar requirements.
+3. Copiar las configuraciones de ejemplo sin claves reales al archivo local.
+4. Usar una base propia o acceso autorizado; no adoptar bases homónimas ajenas.
+5. Comprobar `profile_sources.py --check` y ejecutar las pruebas locales.
+6. Aprovisionar con permisos administrativos solo la base de este proyecto.
+7. Ejecutar `run.ps1`, comprobar el lector y revisar evidencia PostgreSQL.
 
-```powershell
-git remote add origin URL_REAL_DEL_REPOSITORIO_VACIO
-git push -u origin main
-```
+Para cambios de código usar una rama y revisión del compañero. No modificar
+los CSV para que una prueba pase ni regenerar el manifiesto para ocultar cambios.
 
-Si el repositorio del equipo ya tiene historial, no uses `--force`. Clónalo y
-acuerda la integración por rama/PR, conservando los commits de este staging.
+## Publicación pendiente
 
-El compañero puede clonar el repositorio remoto e instalar las dependencias:
+No hay remoto configurado. Solo cuando el usuario proporcione la URL correcta
+se añadirá origin y se enviarán los commits. No publicar en otra cuenta ni
+sobrescribir un repositorio con historial existente.
 
-```powershell
-git clone URL_REAL_DEL_REPOSITORIO
-cd NOMBRE_REAL_DEL_REPOSITORIO
-py -3.13 -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
-```
+Los bundles anteriores representan versiones Oracle y no se regeneraron como
+parte de esta migración. Se mantienen para recuperación; no equivalen a una
+base de datos ni contienen .env, contraseñas, .venv o metadatos locales.
 
-Cada integrante debe usar su identidad real de Git y hacer commits de su propio
-trabajo. No se cambian las fechas ni se simulan aportes de otros integrantes.
+## Históricos y evidencias
 
-## Transporte sin remoto
-
-`chinook_staging_etl.bundle` junto a la carpeta `proyecto-oracle` contiene el historial
-completo y los archivos versionados. Se puede enviar al compañero y clonar:
+`archive/oracle/` contiene código retirado del flujo activo. `evidence/oracle/`
+y `docs/historico/oracle/` conservan los resultados anteriores, con enlaces
+actualizados y etiquetas de motor. Para consultar un archivo original:
 
 ```powershell
-git clone .\chinook_staging_etl.bundle invacom-staging
+git show oracle-baseline-361bb17:scripts/staging_core.py
 ```
 
-Después de nuevos commits se regenera con:
-
-```powershell
-git bundle create ..\chinook_staging_etl.bundle --all
-git bundle verify ..\chinook_staging_etl.bundle
-```
-
-No se comparte `.venv/` ni `local/`; en particular, no se comparte la credencial.
-
-## Backlog sugerido para las semanas siguientes
-
-Este listado es una propuesta; el equipo debe crear y mantener el tablero real
-en GitHub Projects, Trello u otra herramienta acordada. Cada tarjeta debería
-tener responsable, semana, criterio de aceptación y vínculo al commit o PR.
-
-| Trabajo pendiente del equipo | Criterio de aceptación |
-| --- | --- |
-| Publicar repositorio remoto y crear tablero | URL compartida y acceso de integrantes |
-| Revisar entrega staging en otra máquina | Flujo Prefect termina y compara 15.607 registros |
-| Definir objetivos de negocio y granularidad | Decisiones aprobadas y documentadas |
-| Diseñar modelo dimensional | Diagrama con dimensiones, hechos y medidas |
-| Implementar transformaciones con Prefect | Reglas justificadas y resultados comprobados |
-| Conectar Excel y crear tablas dinámicas | Consultas responden los objetivos de negocio |
-| Documento APA 7 y defensa | Documento único con referencias y evidencia real |
-
-La revisión semanal debe mostrar avances de esa semana. El README y los commits
-de esta entrega no reemplazan el tablero ni las ceremonias del equipo.
+Los resultados nuevos deben registrarse en `evidence/postgresql/`, indicando
+qué pruebas se ejecutaron y cuáles están bloqueadas u omitidas. Una simulación
+de unidad no debe presentarse como una carga real a PostgreSQL o como un flujo
+Prefect Completed. No agregar archivos de `local/` o .env a Git.

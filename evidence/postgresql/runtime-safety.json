@@ -1,0 +1,10 @@
+{
+  "checked_at_utc": "2026-10-24T19:13:31.294029+00:00",
+  "loader_user": "chinook_stg_loader",
+  "loader_is_superuser": false,
+  "loader_can_create_databases": false,
+  "loader_can_create_roles": false,
+  "remaining_test_schemas": [],
+  "reader_cannot_write": true,
+  "tested_from_other_pc": false
+}

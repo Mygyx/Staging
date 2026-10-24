@@ -1,0 +1,15 @@
+{
+  "checked_at_utc": "2026-10-24T19:02:53.795356+00:00",
+  "command": "python -m unittest discover -s tests -v",
+  "tests_discovered": 34,
+  "passed": 19,
+  "skipped": 15,
+  "failures": 0,
+  "errors": 0,
+  "integration_executed": false,
+  "python": "3.13.1",
+  "prefect": "3.9.0",
+  "psycopg": "3.3.6",
+  "integration_status_at_unit_run": "Pending passwords for new loader and reader roles; test schemas already authorized",
+  "integration_status": "Executed later: 34/34 passed; see integration-tests.json"
+}

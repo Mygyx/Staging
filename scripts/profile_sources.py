@@ -23,8 +23,9 @@ HEADERS = {
     "PlaylistTrack": "PlaylistId,TrackId",
     "Track": "TrackId,Name,AlbumId,MediaTypeId,GenreId,Composer,Milliseconds,Bytes,UnitPrice",
 }
-TABLE_NAMES = {name: "STG_" + re.sub(r"(?<!^)(?=[A-Z])", "_", name).upper()
+TABLE_NAMES = {name: "stg_" + re.sub(r"(?<!^)(?=[A-Z])", "_", name).lower()
                for name in HEADERS}
+EXPECTED_ROWS = dict(zip(HEADERS, [347, 275, 59, 8, 25, 412, 2240, 5, 18, 8715, 3503]))
 RELATIONS = [
     ("Album", "ArtistId", "Artist", "ArtistId"),
     ("Customer", "SupportRepId", "Employee", "EmployeeId"),
@@ -75,8 +76,8 @@ def build_profile(source_dir: Path = ROOT / "data" / "raw") -> dict:
         tables[name] = (header, rows)
         columns = []
         for index, column in enumerate(header):
-            if not re.fullmatch(r"[A-Za-z][A-Za-z0-9_]{0,29}", column):
-                raise ValueError(f"Identificador Oracle invalido: {column}")
+            if not re.fullmatch(r"[A-Za-z][A-Za-z0-9_]{0,62}", column):
+                raise ValueError(f"Identificador PostgreSQL invalido: {column}")
             values = [row[index] for row in rows]
             columns.append({
                 "name": column,
@@ -102,7 +103,7 @@ def build_profile(source_dir: Path = ROOT / "data" / "raw") -> dict:
                    if row[child_header.index(child_col)] and row[child_header.index(child_col)] not in valid]
         relations.append({"child": f"{child}.{child_col}",
                           "parent": f"{parent}.{parent_col}", "orphan_rows": len(invalid)})
-    return {"format_version": 1, "total_rows": sum(s["rows"] for s in sources),
+    return {"format_version": 2, "total_rows": sum(s["rows"] for s in sources),
             "sources": sources, "relationship_checks": relations}
 
 

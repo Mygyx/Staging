@@ -1,0 +1,39 @@
+test_connection_errors_do_not_reveal_credentials (test_config.SettingsTests.test_connection_errors_do_not_reveal_credentials) ... ok
+test_dotenv_preserves_dollar_signs_without_interpolation (test_config.SettingsTests.test_dotenv_preserves_dollar_signs_without_interpolation) ... ok
+test_environment_is_supported_without_oracle_fallback (test_config.SettingsTests.test_environment_is_supported_without_oracle_fallback) ... ok
+test_missing_credentials_are_explicit_and_never_guessed (test_config.SettingsTests.test_missing_credentials_are_explicit_and_never_guessed) ... ok
+test_wrong_database_and_unsafe_schema_are_rejected (test_config.SettingsTests.test_wrong_database_and_unsafe_schema_are_rejected) ... ok
+test_contract_matches_requested_postgresql_interface (test_contract.ContractTests.test_contract_matches_requested_postgresql_interface) ... ok
+test_query_uses_escaped_identifiers (test_contract.ContractTests.test_query_uses_escaped_identifiers) ... ok
+test_all_eleven_original_file_hashes_are_unchanged (test_fidelity.FidelityTests.test_all_eleven_original_file_hashes_are_unchanged) ... ok
+test_csv_special_values_survive_without_inference_or_normalization (test_fidelity.FidelityTests.test_csv_special_values_survive_without_inference_or_normalization) ... ok
+test_ddl_has_the_complete_original_text_columns (test_fidelity.FidelityTests.test_ddl_has_the_complete_original_text_columns) ... ok
+test_hash_preserves_boundaries_empty_strings_spaces_and_unicode (test_fidelity.FidelityTests.test_hash_preserves_boundaries_empty_strings_spaces_and_unicode) ... ok
+test_malformed_csv_is_rejected (test_fidelity.FidelityTests.test_malformed_csv_is_rejected) ... ok
+test_manifest_and_all_source_controls_match (test_fidelity.FidelityTests.test_manifest_and_all_source_controls_match) ... ok
+test_evidence_distinguishes_precommit_and_postcommit_verification (test_flow_reporting.FlowReportingTests.test_evidence_distinguishes_precommit_and_postcommit_verification) ... ok
+test_failure_after_commit_is_not_described_as_a_rollback (test_flow_reporting.FlowReportingTests.test_failure_after_commit_is_not_described_as_a_rollback) ... ok
+test_validate_only_failure_keeps_original_validation_error (test_flow_reporting.FlowReportingTests.test_validate_only_failure_keeps_original_validation_error) ... ok
+test_concurrent_refresh_is_rejected_without_data_changes (test_postgres_integration.PostgreSQLIntegrationTests.test_concurrent_refresh_is_rejected_without_data_changes) ... skipped 'Pendiente: requiere RUN_PG_INTEGRATION=1, STG_TEST_SCHEMA_AUTHORIZED=1 y credenciales PostgreSQL'
+test_corrupted_test_value_is_detected_before_commit (test_postgres_integration.PostgreSQLIntegrationTests.test_corrupted_test_value_is_detected_before_commit) ... skipped 'Pendiente: requiere RUN_PG_INTEGRATION=1, STG_TEST_SCHEMA_AUTHORIZED=1 y credenciales PostgreSQL'
+test_empty_strings_are_not_null (test_postgres_integration.PostgreSQLIntegrationTests.test_empty_strings_are_not_null) ... skipped 'Pendiente: requiere RUN_PG_INTEGRATION=1, STG_TEST_SCHEMA_AUTHORIZED=1 y credenciales PostgreSQL'
+test_error_during_load_restores_previous_photo (test_postgres_integration.PostgreSQLIntegrationTests.test_error_during_load_restores_previous_photo) ... skipped 'Pendiente: requiere RUN_PG_INTEGRATION=1, STG_TEST_SCHEMA_AUTHORIZED=1 y credenciales PostgreSQL'
+test_failed_validation_restores_previous_photo_not_empty_tables (test_postgres_integration.PostgreSQLIntegrationTests.test_failed_validation_restores_previous_photo_not_empty_tables) ... skipped 'Pendiente: requiere RUN_PG_INTEGRATION=1, STG_TEST_SCHEMA_AUTHORIZED=1 y credenciales PostgreSQL'
+test_first_load_and_actual_structure (test_postgres_integration.PostgreSQLIntegrationTests.test_first_load_and_actual_structure) ... skipped 'Pendiente: requiere RUN_PG_INTEGRATION=1, STG_TEST_SCHEMA_AUTHORIZED=1 y credenciales PostgreSQL'
+test_leading_zeros_survive (test_postgres_integration.PostgreSQLIntegrationTests.test_leading_zeros_survive) ... skipped 'Pendiente: requiere RUN_PG_INTEGRATION=1, STG_TEST_SCHEMA_AUTHORIZED=1 y credenciales PostgreSQL'
+test_prefect_flow_completes_using_only_the_isolated_schema (test_postgres_integration.PostgreSQLIntegrationTests.test_prefect_flow_completes_using_only_the_isolated_schema) ... skipped 'Pendiente: requiere RUN_PG_INTEGRATION=1, STG_TEST_SCHEMA_AUTHORIZED=1 y credenciales PostgreSQL'
+test_reader_can_query_all_source_values (test_postgres_integration.PostgreSQLIntegrationTests.test_reader_can_query_all_source_values) ... skipped 'Pendiente: requiere RUN_PG_INTEGRATION=1, STG_TEST_SCHEMA_AUTHORIZED=1 y credenciales PostgreSQL'
+test_reader_cannot_insert_update_or_delete (test_postgres_integration.PostgreSQLIntegrationTests.test_reader_cannot_insert_update_or_delete) ... skipped 'Pendiente: requiere RUN_PG_INTEGRATION=1, STG_TEST_SCHEMA_AUTHORIZED=1 y credenciales PostgreSQL'
+test_repeatable_read_retains_previous_snapshot_during_refresh (test_postgres_integration.PostgreSQLIntegrationTests.test_repeatable_read_retains_previous_snapshot_during_refresh) ... skipped 'Pendiente: requiere RUN_PG_INTEGRATION=1, STG_TEST_SCHEMA_AUTHORIZED=1 y credenciales PostgreSQL'
+test_second_full_refresh_does_not_duplicate (test_postgres_integration.PostgreSQLIntegrationTests.test_second_full_refresh_does_not_duplicate) ... skipped 'Pendiente: requiere RUN_PG_INTEGRATION=1, STG_TEST_SCHEMA_AUTHORIZED=1 y credenciales PostgreSQL'
+test_trailing_spaces_survive (test_postgres_integration.PostgreSQLIntegrationTests.test_trailing_spaces_survive) ... skipped 'Pendiente: requiere RUN_PG_INTEGRATION=1, STG_TEST_SCHEMA_AUTHORIZED=1 y credenciales PostgreSQL'
+test_unexpected_column_type_is_rejected_without_refresh (test_postgres_integration.PostgreSQLIntegrationTests.test_unexpected_column_type_is_rejected_without_refresh) ... skipped 'Pendiente: requiere RUN_PG_INTEGRATION=1, STG_TEST_SCHEMA_AUTHORIZED=1 y credenciales PostgreSQL'
+test_unicode_survives (test_postgres_integration.PostgreSQLIntegrationTests.test_unicode_survives) ... skipped 'Pendiente: requiere RUN_PG_INTEGRATION=1, STG_TEST_SCHEMA_AUTHORIZED=1 y credenciales PostgreSQL'
+test_instance_with_the_dw_is_rejected (test_provision_safety.ProvisionSafetyTests.test_instance_with_the_dw_is_rejected) ... ok
+test_postgresql_12_is_not_used_as_fallback (test_provision_safety.ProvisionSafetyTests.test_postgresql_12_is_not_used_as_fallback) ... ok
+test_unknown_existing_database_is_never_adopted (test_provision_safety.ProvisionSafetyTests.test_unknown_existing_database_is_never_adopted) ... ok
+
+----------------------------------------------------------------------
+Ran 34 tests in 0.505s
+
+OK (skipped=15)

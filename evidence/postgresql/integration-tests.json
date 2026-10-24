@@ -1,0 +1,14 @@
+{
+  "checked_at_utc": "2026-10-24T19:10:14.822691+00:00",
+  "command": "RUN_PG_INTEGRATION=1 STG_TEST_SCHEMA_AUTHORIZED=1 python -m unittest discover -s tests -v",
+  "tests_discovered": 34,
+  "passed": 34,
+  "skipped": 0,
+  "failures": 0,
+  "errors": 0,
+  "database": "chinook_staging",
+  "schema_strategy": "unique stg_test_* schemas, checked and removed using exclusive ownership markers",
+  "public_fingerprint_unchanged": true,
+  "prefect": "3.9.0",
+  "psycopg": "3.3.6"
+}

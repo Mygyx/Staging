@@ -1,52 +1,42 @@
-# Decisiones de staging
+# Decisiones de PostgreSQL Staging
 
-1. Una tabla `STG_*` por CSV, con las columnas fuente en el mismo orden y una
-   columna técnica `CSV_ROW_NUMBER`. Esta última numera registros lógicos desde 1,
-   después del encabezado; no es una línea física cuando hay saltos dentro de comillas.
-2. Todos los campos fuente son `VARCHAR2(n BYTE)`, dimensionados a partir del
-   máximo real de bytes UTF-8 observado. No se usa `NUMBER`, `DATE`, `TRIM`,
-   deduplicación, relleno de vacíos ni normalización de texto. Ante archivos nuevos
-   se deben revisar manifiesto y DDL; este incremento carga la fotografía entregada.
-3. Solo la posición técnica tiene PK. No hay PK ni FK sobre datos fuente:
-   podrían impedir conservar duplicados o inconsistencias que pertenecen al CSV.
-4. Un campo vacío del CSV se representa como `NULL`. No se reemplaza por cero,
-   espacio, texto `NULL` ni un valor inventado. Oracle no distingue `''` de `NULL`
-   en VARCHAR2. El archivo original, incluido su formato, sigue en `data/raw`.
-   Las comillas delimitadoras, BOM y terminadores pertenecen al archivo CSV, no al
-   contenido del campo. La copia byte por byte y su SHA-256 permiten auditarlos.
-5. Los scripts son ASCII; los caracteres Unicode se expresan con `UNISTR`.
-   Se exige `AL32UTF8` en la base para evitar pérdidas al convertir a VARCHAR2.
-   `SET DEFINE OFF` conserva los ampersands sin pedir valores al usuario.
-6. `ETL_SOURCE_FILE` registra el hash del CSV, su tamaño, cantidad de campos y
-   registros. Los hashes del contenido se recalculan leyendo las columnas reales
-   de Oracle: no se da por válido un hash almacenado junto con una fila.
-7. La serialización para SHA-256 concatena cada campo como
-   `longitud_en_bytes_UTF8:valor`. El vacío se serializa como `0:`. Se compara
-   cada fila por `CSV_ROW_NUMBER`, además de revisar los conteos. Se detectan
-   cambios de espacios, acentos, ceros, orden, contenido y registros faltantes.
-8. La carga confirma una sola transacción después de validar. Ante un error SQL
-   se revierte el DML completo. Oracle confirma DDL de manera implícita: podrían
-   quedar tablas vacías si la instalación falla después de crearlas. No se borran
-   objetos ni se reemplazan tablas preexistentes automáticamente. Para corregir
-   una carga fallida después del DDL, ejecutar `02_load_data.sql` y
-   `03_validate_data.sql` en la misma sesión dedicada y luego `COMMIT`, una vez
-   corregida la causa. Se requiere que todas las tablas estén vacías.
-9. Prefect es la herramienta elegida por el equipo. El flujo Python define tareas
-   para verificar fuentes, preparar tablas, cargar y validar dentro de una sola
-   transacción Oracle y guardar evidencia. Las tareas no usan caché ni reintentos
-   automáticos. La carga usa python-oracledb con binds y bloqueos exclusivos
-   `NOWAIT` en orden fijo para impedir que dos cargas avancen simultáneamente.
-   Una nueva carga sobre tablas pobladas falla; `--validate-only` permite auditar.
-10. Los scripts SQL son artefactos reproducibles de revisión y una ruta manual
-   alternativa en otro esquema. La ejecución principal del proyecto es Prefect.
-   La comparación Python consulta y compara cada valor, además del hash por fila;
-   permite una revisión independiente de los escapes utilizados en los SQL.
-11. El staging es la entrega para que el compañero implemente las transformaciones
-   y el DW. La limpieza posterior se documenta y se aplica fuera de estas tablas.
+1. La fuente autoritativa sigue siendo `data/raw`: once CSV UTF-8 preservados
+   byte por byte y protegidos por los SHA-256 originales. `csv.reader` mantiene
+   comillas internas, comas, espacios, Unicode y representaciones numéricas.
+2. Cada columna fuente es TEXT con el mismo encabezado CamelCase entre comillas.
+   No se usa inferencia de Pandas, DATE, NUMERIC ni VARCHAR limitado. No hay PK,
+   FK o unicidad de negocio que rechace una fila fuente. La única PK de cada
+   fuente es el ordinal técnico `CSV_ROW_NUMBER`, empezando en 1.
+3. Los vacíos son `''`, distintos de NULL. El literal `NULL` se conservaría como
+   texto. El DW decidirá posteriormente cómo tratar los faltantes y convertir tipos.
+4. Hay once tablas fuente y una de metadatos `etl_source_file`. El catálogo se
+   reemplaza en la misma transacción que la fotografía de datos. No es historial
+   de cambios; las ejecuciones se conservan en las evidencias y en Prefect.
+5. Full Refresh usa DELETE + INSERT en una única transacción PostgreSQL, con un
+   advisory lock transaccional por proyecto/esquema. El bloqueo impide dos
+   recargas de este mismo flujo y se libera al terminar la transacción. No usa
+   TRUNCATE ni elimina/recrea tablas existentes. Se preservan esquema y permisos.
+6. La primera carga puede crear las doce tablas en la misma transacción. Una
+   estructura parcial, distinta o con objetos ajenos provoca un error antes de
+   borrar datos. El ETL exige nuestra base marcada y rechaza superusuarios.
+7. La validación crítica compara campo por campo y ordinales antes del COMMIT.
+   Recalcula hashes de filas, revisa tipos, PK, catálogo, conteos y controles con
+   Decimal. Se preservan 15607 filas, 66439 campos, 1339 vacíos, 24 códigos
+   postales con ceros iniciales y 8 campos con espacio final. Totales: 2328.60.
+8. La tarea visible final hace una verificación independiente y genera evidencia
+   después del COMMIT. Su fallo no revierte datos confirmados. No hay conexiones
+   abiertas serializadas por Prefect: cada tarea abre y cierra las suyas.
+9. El lector utiliza una transacción REPEATABLE READ READ ONLY para obtener una
+   fotografía consistente de las once tablas, incluso mientras otra conexión
+   refresca mediante DELETE + INSERT. Las pruebas verifican este comportamiento.
+10. El entorno de staging es independiente del DW. El proyecto no configura ni
+    modifica el servidor del DW, sus transformaciones, servicios o firewall.
+11. Las pruebas destructivas requieren dos indicadores explícitos y utilizan
+    esquemas aleatorios propios dentro de chinook_staging, nunca public.
+12. El punto de recuperación Oracle conserva los siete commits anteriores. Los
+    reportes Oracle se mantienen como antecedentes, sin presentarlos como prueba
+    PostgreSQL. Ninguna contraseña real se incluye en código o Git.
 
-Fuentes técnicas oficiales:
-
-- Oracle. [Nulls](https://docs.oracle.com/en/database/oracle/oracle-database/21/sqlrf/Nulls.html).
-- Oracle. [UNISTR](https://docs.oracle.com/en/database/oracle/oracle-database/21/sqlrf/UNISTR.html).
-- Oracle. [STANDARD_HASH](https://docs.oracle.com/en/database/oracle/oracle-database/21/sqlrf/STANDARD_HASH.html).
-- Oracle. [Using substitution variables](https://docs.oracle.com/en/database/oracle/oracle-database/21/sqpug/using-substitution-variables-sqlplus.html).
+Referencias oficiales: [psycopg y transacciones](https://www.psycopg.org/psycopg3/docs/basic/transactions.html),
+[identificadores seguros](https://www.psycopg.org/psycopg3/docs/api/sql.html),
+[aislamiento PostgreSQL](https://www.postgresql.org/docs/17/transaction-iso.html).
