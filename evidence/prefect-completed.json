@@ -1,0 +1,44 @@
+{
+  "origin": "Read-only export from the actual local Prefect orchestration database",
+  "python": "3.13.1",
+  "prefect": "3.9.0",
+  "oracledb": "3.4.2",
+  "flow_run": {
+    "id": "998c5d1b-06e7-49dd-923f-1b14c13ac88b",
+    "name": "alluring-quail",
+    "state_type": "COMPLETED",
+    "state_name": "Completed",
+    "start_time": "2026-10-24 16:56:51.422100",
+    "end_time": "2026-10-24 16:58:26.825551"
+  },
+  "task_runs": [
+    {
+      "name": "Verificar CSV contra manifiesto-3ed",
+      "state_type": "COMPLETED",
+      "state_name": "Completed",
+      "start_time": "2026-10-24 16:57:01.980661",
+      "end_time": "2026-10-24 16:57:08.413497"
+    },
+    {
+      "name": "Preparar tablas Oracle-008",
+      "state_type": "COMPLETED",
+      "state_name": "Completed",
+      "start_time": "2026-10-24 16:58:02.341887",
+      "end_time": "2026-10-24 16:58:03.573148"
+    },
+    {
+      "name": "Cargar y validar antes de COMMIT-8e4",
+      "state_type": "COMPLETED",
+      "state_name": "Completed",
+      "start_time": "2026-10-24 16:58:19.903271",
+      "end_time": "2026-10-24 16:58:25.910861"
+    },
+    {
+      "name": "Guardar evidencia-d21",
+      "state_type": "COMPLETED",
+      "state_name": "Completed",
+      "start_time": "2026-10-24 16:58:26.018793",
+      "end_time": "2026-10-24 16:58:26.202669"
+    }
+  ]
+}

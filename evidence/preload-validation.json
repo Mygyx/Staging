@@ -1,0 +1,17 @@
+{
+  "date": "2026-10-24",
+  "database": "Oracle Database 21c XE / XEPDB1",
+  "schema": "INVACOM_STG",
+  "phase": "Before the final Prefect load, with empty staging tables",
+  "command": "python -m unittest discover -s tests -p test_oracle_integration.py -v",
+  "environment": "RUN_ORACLE_INTEGRATION=1 and Oracle connection variables",
+  "results": {
+    "concurrent_load_is_blocked_before_inserts": "PASSED: Oracle error 54 while another connection held the table lock",
+    "rollback_when_validation_fails_after_loading_all_tables": "PASSED: injected validation failure after all inserts; all 12 tables contained zero rows after rollback",
+    "second_load_is_rejected_without_changing_original_data": "SKIPPED: requires the final loaded dataset",
+    "validation_detects_changed_accent": "SKIPPED: requires the final loaded dataset"
+  },
+  "executed_tests": 2,
+  "skipped_tests": 2,
+  "unittest_result": "OK (skipped=2)"
+}

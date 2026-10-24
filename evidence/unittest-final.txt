@@ -1,0 +1,14 @@
+test_escaped_characters_survive_sql (test_fidelity.FidelityTests.test_escaped_characters_survive_sql) ... ok
+test_every_generated_value_matches_original_csv (test_fidelity.FidelityTests.test_every_generated_value_matches_original_csv) ... ok
+test_hash_does_not_confuse_column_boundaries_or_empty_fields (test_fidelity.FidelityTests.test_hash_does_not_confuse_column_boundaries_or_empty_fields) ... ok
+test_load_is_one_transaction_and_never_erases_data (test_fidelity.FidelityTests.test_load_is_one_transaction_and_never_erases_data) ... ok
+test_manifest_matches_original_bytes (test_fidelity.FidelityTests.test_manifest_matches_original_bytes) ... ok
+test_concurrent_load_is_blocked_before_inserts (test_oracle_integration.OracleIntegrationTests.test_concurrent_load_is_blocked_before_inserts) ... ok
+test_rollback_when_validation_fails_after_loading_all_tables (test_oracle_integration.OracleIntegrationTests.test_rollback_when_validation_fails_after_loading_all_tables) ... skipped 'Requiere tablas vacias; ya existe la carga final'
+test_second_load_is_rejected_without_changing_original_data (test_oracle_integration.OracleIntegrationTests.test_second_load_is_rejected_without_changing_original_data) ... ok
+test_validation_detects_changed_accent (test_oracle_integration.OracleIntegrationTests.test_validation_detects_changed_accent) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 28.244s
+
+OK (skipped=1)

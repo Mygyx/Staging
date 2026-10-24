@@ -1,0 +1,707 @@
+{
+  "format_version": 1,
+  "total_rows": 15607,
+  "sources": [
+    {
+      "file": "Album.csv",
+      "table": "STG_ALBUM",
+      "encoding": "UTF-8",
+      "utf8_bom": false,
+      "bytes": 11164,
+      "sha256": "656fce5550477e1e4a35a069d884b76fbeb519180a167a1bd9eb93a8ea84019e",
+      "rows": 347,
+      "columns": [
+        {
+          "name": "AlbumId",
+          "max_chars": 3,
+          "max_utf8_bytes": 3,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 347
+        },
+        {
+          "name": "Title",
+          "max_chars": 95,
+          "max_utf8_bytes": 95,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 347
+        },
+        {
+          "name": "ArtistId",
+          "max_chars": 3,
+          "max_utf8_bytes": 3,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 204
+        }
+      ],
+      "duplicate_rows": 0
+    },
+    {
+      "file": "Artist.csv",
+      "table": "STG_ARTIST",
+      "encoding": "UTF-8",
+      "utf8_bom": false,
+      "bytes": 7292,
+      "sha256": "4ac1a88103d918b481100d7b3caef709281b14865f36b335e094ee5ed8fa5926",
+      "rows": 275,
+      "columns": [
+        {
+          "name": "ArtistId",
+          "max_chars": 3,
+          "max_utf8_bytes": 3,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 275
+        },
+        {
+          "name": "Name",
+          "max_chars": 85,
+          "max_utf8_bytes": 85,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 275
+        }
+      ],
+      "duplicate_rows": 0
+    },
+    {
+      "file": "Customer.csv",
+      "table": "STG_CUSTOMER",
+      "encoding": "UTF-8",
+      "utf8_bom": false,
+      "bytes": 6797,
+      "sha256": "32ee8a435a710088aed61654e8641700ae223740aec8576e214e05740e640647",
+      "rows": 59,
+      "columns": [
+        {
+          "name": "CustomerId",
+          "max_chars": 2,
+          "max_utf8_bytes": 2,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 59
+        },
+        {
+          "name": "FirstName",
+          "max_chars": 9,
+          "max_utf8_bytes": 10,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 57
+        },
+        {
+          "name": "LastName",
+          "max_chars": 12,
+          "max_utf8_bytes": 13,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 59
+        },
+        {
+          "name": "Company",
+          "max_chars": 48,
+          "max_utf8_bytes": 49,
+          "empty_fields": 49,
+          "surrounding_whitespace": 0,
+          "distinct_values": 11
+        },
+        {
+          "name": "Address",
+          "max_chars": 40,
+          "max_utf8_bytes": 41,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 59
+        },
+        {
+          "name": "City",
+          "max_chars": 19,
+          "max_utf8_bytes": 21,
+          "empty_fields": 0,
+          "surrounding_whitespace": 1,
+          "distinct_values": 53
+        },
+        {
+          "name": "State",
+          "max_chars": 6,
+          "max_utf8_bytes": 6,
+          "empty_fields": 29,
+          "surrounding_whitespace": 0,
+          "distinct_values": 26
+        },
+        {
+          "name": "Country",
+          "max_chars": 14,
+          "max_utf8_bytes": 14,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 24
+        },
+        {
+          "name": "PostalCode",
+          "max_chars": 10,
+          "max_utf8_bytes": 10,
+          "empty_fields": 4,
+          "surrounding_whitespace": 0,
+          "distinct_values": 56
+        },
+        {
+          "name": "Phone",
+          "max_chars": 19,
+          "max_utf8_bytes": 19,
+          "empty_fields": 1,
+          "surrounding_whitespace": 0,
+          "distinct_values": 59
+        },
+        {
+          "name": "Fax",
+          "max_chars": 18,
+          "max_utf8_bytes": 18,
+          "empty_fields": 47,
+          "surrounding_whitespace": 0,
+          "distinct_values": 13
+        },
+        {
+          "name": "Email",
+          "max_chars": 29,
+          "max_utf8_bytes": 29,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 59
+        },
+        {
+          "name": "SupportRepId",
+          "max_chars": 1,
+          "max_utf8_bytes": 1,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 3
+        }
+      ],
+      "duplicate_rows": 0
+    },
+    {
+      "file": "Employee.csv",
+      "table": "STG_EMPLOYEE",
+      "encoding": "UTF-8",
+      "utf8_bom": false,
+      "bytes": 1531,
+      "sha256": "66f539d1dfb65abced48588dbbd2d6168d2cc1fe2f85764231ac2a9dc2d542fb",
+      "rows": 8,
+      "columns": [
+        {
+          "name": "EmployeeId",
+          "max_chars": 1,
+          "max_utf8_bytes": 1,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 8
+        },
+        {
+          "name": "LastName",
+          "max_chars": 8,
+          "max_utf8_bytes": 8,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 8
+        },
+        {
+          "name": "FirstName",
+          "max_chars": 8,
+          "max_utf8_bytes": 8,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 8
+        },
+        {
+          "name": "Title",
+          "max_chars": 19,
+          "max_utf8_bytes": 19,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 5
+        },
+        {
+          "name": "ReportsTo",
+          "max_chars": 1,
+          "max_utf8_bytes": 1,
+          "empty_fields": 1,
+          "surrounding_whitespace": 0,
+          "distinct_values": 4
+        },
+        {
+          "name": "BirthDate",
+          "max_chars": 19,
+          "max_utf8_bytes": 19,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 8
+        },
+        {
+          "name": "HireDate",
+          "max_chars": 19,
+          "max_utf8_bytes": 19,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 7
+        },
+        {
+          "name": "Address",
+          "max_chars": 27,
+          "max_utf8_bytes": 27,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 8
+        },
+        {
+          "name": "City",
+          "max_chars": 10,
+          "max_utf8_bytes": 10,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 3
+        },
+        {
+          "name": "State",
+          "max_chars": 2,
+          "max_utf8_bytes": 2,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 1
+        },
+        {
+          "name": "Country",
+          "max_chars": 6,
+          "max_utf8_bytes": 6,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 1
+        },
+        {
+          "name": "PostalCode",
+          "max_chars": 7,
+          "max_utf8_bytes": 7,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 8
+        },
+        {
+          "name": "Phone",
+          "max_chars": 17,
+          "max_utf8_bytes": 17,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 7
+        },
+        {
+          "name": "Fax",
+          "max_chars": 17,
+          "max_utf8_bytes": 17,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 8
+        },
+        {
+          "name": "Email",
+          "max_chars": 24,
+          "max_utf8_bytes": 24,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 8
+        }
+      ],
+      "duplicate_rows": 0
+    },
+    {
+      "file": "Genre.csv",
+      "table": "STG_GENRE",
+      "encoding": "UTF-8",
+      "utf8_bom": false,
+      "bytes": 354,
+      "sha256": "0c73f495ea8c55702e36e5289b34ddfb89fdae58ba76d53464fc9a6866c13572",
+      "rows": 25,
+      "columns": [
+        {
+          "name": "GenreId",
+          "max_chars": 2,
+          "max_utf8_bytes": 2,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 25
+        },
+        {
+          "name": "Name",
+          "max_chars": 18,
+          "max_utf8_bytes": 18,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 25
+        }
+      ],
+      "duplicate_rows": 0
+    },
+    {
+      "file": "Invoice.csv",
+      "table": "STG_INVOICE",
+      "encoding": "UTF-8",
+      "utf8_bom": false,
+      "bytes": 32003,
+      "sha256": "89233865ee25507f7a992c41cb5f4715b3cf33e322c1fff227802ac74cd6d20b",
+      "rows": 412,
+      "columns": [
+        {
+          "name": "InvoiceId",
+          "max_chars": 3,
+          "max_utf8_bytes": 3,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 412
+        },
+        {
+          "name": "CustomerId",
+          "max_chars": 2,
+          "max_utf8_bytes": 2,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 59
+        },
+        {
+          "name": "InvoiceDate",
+          "max_chars": 19,
+          "max_utf8_bytes": 19,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 354
+        },
+        {
+          "name": "BillingAddress",
+          "max_chars": 40,
+          "max_utf8_bytes": 41,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 59
+        },
+        {
+          "name": "BillingCity",
+          "max_chars": 19,
+          "max_utf8_bytes": 21,
+          "empty_fields": 0,
+          "surrounding_whitespace": 7,
+          "distinct_values": 53
+        },
+        {
+          "name": "BillingState",
+          "max_chars": 6,
+          "max_utf8_bytes": 6,
+          "empty_fields": 202,
+          "surrounding_whitespace": 0,
+          "distinct_values": 26
+        },
+        {
+          "name": "BillingCountry",
+          "max_chars": 14,
+          "max_utf8_bytes": 14,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 24
+        },
+        {
+          "name": "BillingPostalCode",
+          "max_chars": 10,
+          "max_utf8_bytes": 10,
+          "empty_fields": 28,
+          "surrounding_whitespace": 0,
+          "distinct_values": 56
+        },
+        {
+          "name": "Total",
+          "max_chars": 5,
+          "max_utf8_bytes": 5,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 23
+        }
+      ],
+      "duplicate_rows": 0
+    },
+    {
+      "file": "InvoiceLine.csv",
+      "table": "STG_INVOICELINE",
+      "encoding": "UTF-8",
+      "utf8_bom": false,
+      "bytes": 46914,
+      "sha256": "5eedcfec0bb9d3eb937576cc8e1daf3d42013ba395d764a4b876e435115fa9ec",
+      "rows": 2240,
+      "columns": [
+        {
+          "name": "InvoiceLineId",
+          "max_chars": 4,
+          "max_utf8_bytes": 4,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 2240
+        },
+        {
+          "name": "InvoiceId",
+          "max_chars": 3,
+          "max_utf8_bytes": 3,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 412
+        },
+        {
+          "name": "TrackId",
+          "max_chars": 4,
+          "max_utf8_bytes": 4,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 1984
+        },
+        {
+          "name": "UnitPrice",
+          "max_chars": 4,
+          "max_utf8_bytes": 4,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 2
+        },
+        {
+          "name": "Quantity",
+          "max_chars": 1,
+          "max_utf8_bytes": 1,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 1
+        }
+      ],
+      "duplicate_rows": 0
+    },
+    {
+      "file": "MediaType.csv",
+      "table": "STG_MEDIATYPE",
+      "encoding": "UTF-8",
+      "utf8_bom": false,
+      "bytes": 142,
+      "sha256": "80c6777732c3eca1748d3eadc0e6a7fa86e958637b1f8b10555e4eaa90ed1784",
+      "rows": 5,
+      "columns": [
+        {
+          "name": "MediaTypeId",
+          "max_chars": 1,
+          "max_utf8_bytes": 1,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 5
+        },
+        {
+          "name": "Name",
+          "max_chars": 27,
+          "max_utf8_bytes": 27,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 5
+        }
+      ],
+      "duplicate_rows": 0
+    },
+    {
+      "file": "Playlist.csv",
+      "table": "STG_PLAYLIST",
+      "encoding": "UTF-8",
+      "utf8_bom": false,
+      "bytes": 317,
+      "sha256": "7bae5596f0de27f4d77c1cbde2ece990f6aaf3f9af4ec603a40d56b0328eb2f7",
+      "rows": 18,
+      "columns": [
+        {
+          "name": "PlaylistId",
+          "max_chars": 2,
+          "max_utf8_bytes": 2,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 18
+        },
+        {
+          "name": "Name",
+          "max_chars": 26,
+          "max_utf8_bytes": 26,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 14
+        }
+      ],
+      "duplicate_rows": 0
+    },
+    {
+      "file": "PlaylistTrack.csv",
+      "table": "STG_PLAYLISTTRACK",
+      "encoding": "UTF-8",
+      "utf8_bom": false,
+      "bytes": 67423,
+      "sha256": "708ce92206e64f05e5bbd31c43b937aca657222891cb0eac00445d0989b17166",
+      "rows": 8715,
+      "columns": [
+        {
+          "name": "PlaylistId",
+          "max_chars": 2,
+          "max_utf8_bytes": 2,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 14
+        },
+        {
+          "name": "TrackId",
+          "max_chars": 4,
+          "max_utf8_bytes": 4,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 3503
+        }
+      ],
+      "duplicate_rows": 0
+    },
+    {
+      "file": "Track.csv",
+      "table": "STG_TRACK",
+      "encoding": "UTF-8",
+      "utf8_bom": false,
+      "bytes": 245243,
+      "sha256": "53771d86981c638ee4af35cf52deff79e224a71f5711db1b1131f3ae1e5472ba",
+      "rows": 3503,
+      "columns": [
+        {
+          "name": "TrackId",
+          "max_chars": 4,
+          "max_utf8_bytes": 4,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 3503
+        },
+        {
+          "name": "Name",
+          "max_chars": 123,
+          "max_utf8_bytes": 123,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 3257
+        },
+        {
+          "name": "AlbumId",
+          "max_chars": 3,
+          "max_utf8_bytes": 3,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 347
+        },
+        {
+          "name": "MediaTypeId",
+          "max_chars": 1,
+          "max_utf8_bytes": 1,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 5
+        },
+        {
+          "name": "GenreId",
+          "max_chars": 2,
+          "max_utf8_bytes": 2,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 25
+        },
+        {
+          "name": "Composer",
+          "max_chars": 188,
+          "max_utf8_bytes": 188,
+          "empty_fields": 978,
+          "surrounding_whitespace": 0,
+          "distinct_values": 853
+        },
+        {
+          "name": "Milliseconds",
+          "max_chars": 7,
+          "max_utf8_bytes": 7,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 3080
+        },
+        {
+          "name": "Bytes",
+          "max_chars": 10,
+          "max_utf8_bytes": 10,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 3501
+        },
+        {
+          "name": "UnitPrice",
+          "max_chars": 4,
+          "max_utf8_bytes": 4,
+          "empty_fields": 0,
+          "surrounding_whitespace": 0,
+          "distinct_values": 2
+        }
+      ],
+      "duplicate_rows": 0
+    }
+  ],
+  "relationship_checks": [
+    {
+      "child": "Album.ArtistId",
+      "parent": "Artist.ArtistId",
+      "orphan_rows": 0
+    },
+    {
+      "child": "Customer.SupportRepId",
+      "parent": "Employee.EmployeeId",
+      "orphan_rows": 0
+    },
+    {
+      "child": "Employee.ReportsTo",
+      "parent": "Employee.EmployeeId",
+      "orphan_rows": 0
+    },
+    {
+      "child": "Invoice.CustomerId",
+      "parent": "Customer.CustomerId",
+      "orphan_rows": 0
+    },
+    {
+      "child": "InvoiceLine.InvoiceId",
+      "parent": "Invoice.InvoiceId",
+      "orphan_rows": 0
+    },
+    {
+      "child": "InvoiceLine.TrackId",
+      "parent": "Track.TrackId",
+      "orphan_rows": 0
+    },
+    {
+      "child": "PlaylistTrack.PlaylistId",
+      "parent": "Playlist.PlaylistId",
+      "orphan_rows": 0
+    },
+    {
+      "child": "PlaylistTrack.TrackId",
+      "parent": "Track.TrackId",
+      "orphan_rows": 0
+    },
+    {
+      "child": "Track.AlbumId",
+      "parent": "Album.AlbumId",
+      "orphan_rows": 0
+    },
+    {
+      "child": "Track.MediaTypeId",
+      "parent": "MediaType.MediaTypeId",
+      "orphan_rows": 0
+    },
+    {
+      "child": "Track.GenreId",
+      "parent": "Genre.GenreId",
+      "orphan_rows": 0
+    }
+  ]
+}

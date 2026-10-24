@@ -1,0 +1,2 @@
+prefect==3.9.0
+oracledb==3.4.2

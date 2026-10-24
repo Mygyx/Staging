@@ -1,0 +1,28 @@
+{
+  "date": "2026-10-24",
+  "checks": [
+    {
+      "check": "unittest",
+      "return_code": 0
+    },
+    {
+      "check": "source_manifest",
+      "return_code": 0
+    },
+    {
+      "check": "generated_sql",
+      "return_code": 0
+    },
+    {
+      "check": "dependencies",
+      "return_code": 0
+    },
+    {
+      "check": "sql_hash_validation_in_oracle",
+      "return_code": 0
+    }
+  ],
+  "all_passed": true,
+  "database": "Oracle XE 21c / XEPDB1",
+  "schema": "INVACOM_STG"
+}
