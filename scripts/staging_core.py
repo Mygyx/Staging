@@ -125,6 +125,9 @@ def record_controls(tables: dict) -> dict:
 
 def validate_snapshot(snapshot: dict):
     profile, tables = snapshot["profile"], snapshot["tables"]
+    recorded = json.loads((ROOT / "data" / "manifest.json").read_text(encoding="utf-8"))
+    if profile != recorded:
+        raise ValidationError("La fotografia difiere del manifiesto versionado.")
     if set(tables) != set(TABLE_NAMES.values()) or len(profile["sources"]) != 11:
         raise ValidationError("Se requieren exactamente las once fuentes acordadas.")
     for source in profile["sources"]:
@@ -140,6 +143,15 @@ def validate_snapshot(snapshot: dict):
         raise ValidationError("Los controles de la fotografia CSV difieren de la referencia acordada.")
     if any(r["orphan_rows"] for r in profile["relationship_checks"]):
         raise ValidationError("Las referencias fuente difieren del contrato de integridad.")
+    # La fotografia es mutable: ni sus metadatos ni sus totales bastan para
+    # demostrar fidelidad. Se contrasta con los CSV cuyo hash ya esta fijado.
+    for source in profile["sources"]:
+        header, original, raw = read_source(ROOT / "data" / "raw" / source["file"])
+        if hashlib.sha256(raw).hexdigest() != source["sha256"]:
+            raise ValidationError(f"El CSV original cambio: {source['file']}")
+        data = tables[source["table"]]
+        if data["header"] != header or data["rows"] != original:
+            raise ValidationError(f"La fotografia no coincide con el CSV original: {source['file']}")
 
 
 def snapshot_sources() -> dict:
@@ -285,6 +297,9 @@ def compare_source_rows(connection, snapshot: dict, settings: Settings, *, sourc
 
 
 def verify_connection(connection, snapshot: dict, settings: Settings) -> dict:
+    # Se repite dentro de la transaccion de carga: detecta cambios en memoria
+    # posteriores a la comprobacion inicial, antes de autorizar el COMMIT.
+    validate_snapshot(snapshot)
     check_environment(connection, settings)
     check_table_shapes(connection, snapshot["profile"], settings)
     evidence = compare_source_rows(connection, snapshot, settings)

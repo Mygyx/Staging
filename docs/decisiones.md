@@ -23,6 +23,9 @@
    Recalcula hashes de filas, revisa tipos, PK, catálogo, conteos y controles con
    Decimal. Se preservan 15607 filas, 66439 campos, 1339 vacíos, 24 códigos
    postales con ceros iniciales y 8 campos con espacio final. Totales: 2328.60.
+   La fotografia en memoria se vuelve a comparar contra los CSV y sus SHA-256
+   del manifiesto al iniciar y dentro de la validacion anterior al COMMIT. Una
+   modificacion en memoria no puede legitimarse cambiando solamente su perfil.
 8. La tarea visible final hace una verificación independiente y genera evidencia
    después del COMMIT. Su fallo no revierte datos confirmados. No hay conexiones
    abiertas serializadas por Prefect: cada tarea abre y cierra las suyas.
@@ -31,12 +34,20 @@
    refresca mediante DELETE + INSERT. Las pruebas verifican este comportamiento.
 10. El entorno de staging es independiente del DW. El proyecto no configura ni
     modifica el servidor del DW, sus transformaciones, servicios o firewall.
+    El equipo mantiene instancias distintas como decision propia de despliegue;
+    dos repositorios separados no obligan por si solos a esa separacion fisica.
+    El aprovisionador protege esa decision rechazando los nombres DW conocidos,
+    permite bases ajenas y exige revisar la instancia antes de crear objetos.
+    Ambos repositorios pueden compartir una API de monitoreo Prefect.
 11. Las pruebas destructivas requieren dos indicadores explícitos y utilizan
     esquemas aleatorios propios dentro de chinook_staging, nunca public.
-12. Git conserva los siete commits iniciales en `oracle-baseline-361bb17` y los
-    once previos a la limpieza en `pre-cleanup-b54ab4e`. El código y evidencias
-    Oracle se consultan desde ese historial; el árbol activo usa PostgreSQL.
-    Ninguna contraseña real se incluye en código o Git.
+12. La rama publicada conserva el commit fuente de Miguel y cinco commits
+    posteriores agrupados con formato `tipo(alcance): descripción`. El historial
+    detallado de 17 commits permanece en la rama local
+    `backup/historial-completo-4332b0f`, junto con las etiquetas de recuperación.
+    Los originales conservan sus autores y fechas; agruparlos genera nuevos
+    identificadores y no acredita semanas distintas ni aportes de otra persona.
+    El árbol activo usa PostgreSQL. Las credenciales reales se excluyen de Git.
 
 Referencias oficiales: [psycopg y transacciones](https://www.psycopg.org/psycopg3/docs/basic/transactions.html),
 [identificadores seguros](https://www.psycopg.org/psycopg3/docs/api/sql.html),

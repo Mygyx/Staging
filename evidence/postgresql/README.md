@@ -1,12 +1,21 @@
 # Evidencias PostgreSQL
 
 Esta carpeta contiene las evidencias de PostgreSQL. Los reportes de la etapa
-Oracle se consultan desde Git, en la referencia `pre-cleanup-b54ab4e`.
+Oracle se consultan desde Git, en la referencia local `pre-cleanup-b54ab4e`,
+disponible en la PC que conserva el respaldo del historial detallado.
 
-Cada `run-<UUID>.json` generado por Prefect incluye la validación crítica que
-precedió al COMMIT y una segunda comparación en una transacción de solo lectura.
-No contiene contraseñas ni valores personales completos: registra hashes,
-conteos, controles, identificador y resultados.
+Un reporte `run-<UUID>.json` con `mode=full-refresh` y `load_committed=true`
+incluye la validación crítica anterior al COMMIT en `transactional_validation`,
+y la verificación posterior en una conexión de solo lectura. Si la validación
+crítica falla, hay ROLLBACK y no se genera un reporte exitoso de esa carga.
+
+Un reporte con `mode=validate-only` tiene `load_committed=false` y
+`transactional_validation=null`: comprueba una fotografía ya almacenada, sin
+DELETE ni INSERT. No demuestra que se haya ejecutado una carga nueva. Este modo
+es de solo lectura para PostgreSQL, pero genera evidencia y metadatos Prefect.
+
+La verificación posterior al COMMIT no puede revertir datos ya confirmados.
+Los reportes registran hashes, conteos, identificadores y resultados, sin claves.
 
 Los resultados de unidades, integración, aprovisionamiento y verificaciones
 finales deben especificar si se ejecutaron realmente. Un caso omitido o bloqueado
@@ -20,7 +29,8 @@ ejecutan en los esquemas de pruebas expresamente autorizados, nunca en public.
   19 pruebas locales y 15 casos reales de integración PostgreSQL.
 - `prefect-completed.json`: dos cargas reales en public, cada una con las tres
   tareas en Completed. No incluye el flujo de la prueba en esquema aislado.
-- Dos `run-<UUID>.json`: comparación antes del COMMIT y validación independiente.
+- Dos reportes `full-refresh`: comparación antes del COMMIT y validación independiente.
+- El reporte `run-2919cd6f-...json` corresponde a `validate-only` tras la limpieza.
 - `reader-verification.json`: lector limitado, todos los campos y controles.
 - `runtime-safety.json`: cargador no superusuario, pruebas limpiadas y sin
   verificación de red desde otra PC.
@@ -30,9 +40,11 @@ ejecutan en los esquemas de pruebas expresamente autorizados, nunca en public.
 - `unit-tests.*`: ejecución local anterior a habilitar las pruebas PostgreSQL;
   sus omisiones se explican y no reemplazan el resultado integral posterior.
 
-Siguen pendientes únicamente la prueba desde las computadoras del equipo DW y
-la publicación en el remoto que el usuario proporcione. No se presentan como
-realizadas ni se abrió el acceso de red automáticamente.
+La conectividad desde las PCs del equipo DW y la evidencia semanal de los dos
+responsables de Staging siguen pendientes. El remoto autorizado es
+[Mygyx/Staging](https://github.com/Mygyx/Staging). La auditoría identificó una
+regla administrativa trust que requiere revisión autorizada fuera del código.
+Esta corrección no modifica credenciales, redes ni configuraciones del servidor.
 
 ## Comprobaciones posteriores a la limpieza
 
@@ -49,3 +61,32 @@ aprobación. Se conservan excluidos de Git y se documentan en la auditoría.
 El primer intento de capturar unittest con redirección PowerShell se interrumpió
 por NativeCommandError; se repitió con captura directa desde Python. Los
 reportes cleanup-tests describen esta segunda ejecución completa.
+
+## Correcciones finales posteriores a la auditoría
+
+Los reportes anteriores conservan su fecha, formato y alcance; no se sobrescriben.
+
+El reporte `run-52e4f3ea-07d8-4c9f-a9a4-6d889deb37f4.json` corresponde a otra
+ejecución local real: `mode=full-refresh`, `load_committed=true`, con validación
+transaccional y verificación posterior. No es una prueba de acceso desde la PC
+del equipo DW ni de monitoreo compartido entre los dos repositorios.
+La suite actual agrega casos y su ejecución se registra separadamente:
+
+- `final-fixes-unit-tests.*`: casos locales; las integraciones omitidas se cuentan
+  como omitidas y no como aprobadas.
+- `final-fixes-integration-tests.*`: suite completa con PostgreSQL en esquemas
+  aislados de la primera ampliación (44 casos) y temporal Prefect autorizado.
+  Los estados Failed y SQLSTATE 23505 esperados pertenecen a una prueba negativa;
+  el resumen final de unittest determina si la suite pasó.
+- `final-fixes-complete-tests.*`: suite final de 45 casos, que agrega la prueba
+  de UPDATE por columna dentro de un esquema aislado. Es el resultado final;
+  las ejecuciones previas se conservan con sus conteos originales.
+- `final-fixes-validation.json`: comprobación final de solo lectura de public,
+  contrato, fuentes y preservación de los archivos protegidos.
+
+El nuevo verificador reporta `source_tables_read_only`, el alcance de los
+privilegios de tablas/columnas examinados y TEMP efectivo. Los reportes históricos conservan el
+campo anterior, que no representa una auditoría de todo el servidor.
+
+El [catálogo de pruebas](../../docs/pruebas-y-validaciones.md) distingue cada
+tipo de fallo, las comprobaciones monetarias y las limitaciones de cobertura.

@@ -18,6 +18,8 @@ Se utiliza Python 3.13, Prefect 3.9.0, psycopg 3.3.6 y python-dotenv 1.2.4.
 Pandas no es necesario para cargar el staging.
 
 ```powershell
+git clone https://github.com/Mygyx/Staging.git
+cd Staging
 py -3.13 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
 ```
@@ -68,6 +70,10 @@ roles existentes, no borra bases y no modifica servicios ni firewall. Una base
 homónima sin la marca `chinook_staging_etl:postgres:v1` provoca una detención.
 También se detiene si encuentra `chinook_dw` o `chinook_datawarehouse` en la misma
 instancia. Otras bases permanecen fuera de todas las sentencias de escritura.
+El equipo acordó instancias distintas para Staging y DW. Esta protección conserva
+esa decisión y detecta sus nombres conocidos; no es una consecuencia obligatoria
+de separar repositorios ni descubre cualquier posible instancia DW. Revisar el
+destino antes de aprovisionar. Compartir la API Prefect sí está permitido.
 
 El DDL completo está en `sql/create_staging.sql`; los permisos revisables están
 en `sql/provision_access.sql`. Este último exige la base marcada y los dos roles
@@ -143,6 +149,14 @@ elimina solo si conserva su marca exclusiva. Nunca corrompe ni vacía `public`.
 Se prueban segunda carga, rollback a datos anteriores, fallos durante la carga,
 Unicode, vacíos, espacios, ceros, lector, permisos y concurrencia. No ejecutar
 estos escenarios en bases o esquemas ajenos al proyecto.
+Los temporales de pruebas pueden ubicarse dentro de `local/test-tmp` mediante
+TEMP, TMP y TMPDIR. La suite actual y el alcance exacto de cada caso se describen
+en [pruebas y validaciones](docs/pruebas-y-validaciones.md). Los resultados nuevos
+no sustituyen ni amplían retroactivamente lo probado por las evidencias antiguas.
+
+Los casos reales Prefect usan `PREFECT_API_URL` si está configurada. Sin ella,
+el SDK inicia un servidor temporal: ejecutar esos casos solo con autorización
+para ese temporal. Esta sesión autorizó uno exclusivamente para las pruebas.
 
 ## Interfaz web de Prefect
 
@@ -166,6 +180,44 @@ Abrir `http://127.0.0.1:4200`. No se requiere Cloud, Docker, deployments ni
 workers para esta entrega. La SQLite de `local/prefect` solo guarda metadatos
 de orquestación; no reemplaza las dos bases PostgreSQL del proyecto.
 
+## Utilizar una API Prefect compartida ya existente
+
+Para la defensa, ambos repositorios pueden publicar sus ejecuciones en una
+misma API. El responsable proporciona su dirección accesible y autenticación.
+En la terminal del Staging se configura únicamente el cliente:
+
+```powershell
+$env:PREFECT_API_URL = 'http://HOST_PREFECT:4200/api'
+.\run.ps1
+```
+
+No ejecutar `prefect server start` cuando se utiliza esa API existente. El flujo
+respeta la variable y el SDK no inicia otro servidor cuando recibe una API.
+Si requiere autenticación, sus claves se configuran de forma privada según el
+servidor; no se agregan a Git. El monitoreo compartido no fusiona código, Git,
+credenciales PostgreSQL, bases ni instancias de los dos proyectos.
+
+El nuevo test local comprueba la selección de una API proporcionada, bloqueando
+cualquier inicio de servidor y petición HTTP. No demuestra conectividad real a
+un dashboard compartido, que sigue pendiente de la prueba del equipo.
+
+## Pendientes de la entrega operativa
+
+La auditoría identificó una excepción administrativa trust en la instancia local.
+Su revisión corresponde al responsable del servidor y requiere autorización;
+estas correcciones no modifican pg_hba.conf, contraseñas ni permisos existentes.
+Conectarse como administrador no demuestra que su contraseña haya sido verificada
+si el servidor utiliza trust. El ETL sigue usando su cargador limitado.
+
+La conexión desde las PCs DW, dashboard compartido entre ambos equipos, aportes
+del otro responsable de Staging y avances semanales siguen pendientes de evidencia.
+El remoto autorizado es [Mygyx/Staging](https://github.com/Mygyx/Staging).
+Los casos nuevos y resultados están documentados en
+[pruebas y validaciones](docs/pruebas-y-validaciones.md) y evidence/postgresql.
+La suite final ejecutada aprobó 45 casos: 25 locales y 20 de integración, sin
+omisiones. El resultado individual está en
+[final-fixes-complete-tests.txt](evidence/postgresql/final-fixes-complete-tests.txt).
+
 ## Entrega e historial
 
 [Contrato DW](docs/entrega-dw.md), [colaboración](docs/colaboracion.md),
@@ -174,7 +226,13 @@ La [entrega comprobada](docs/avance-postgresql.md) registra 34 pruebas aprobadas
 y dos cargas Prefect reales en Completed, con 15607 registros verificados.
 El árbol de trabajo contiene la implementación PostgreSQL. La migración desde
 Oracle y la limpieza posterior se explican en [limpieza del repositorio](docs/limpieza-repositorio.md).
-La referencia Git `pre-cleanup-b54ab4e` permite consultar el estado completo
-anterior a la limpieza; `oracle-baseline-361bb17` conserva la versión Oracle.
-Los once commits anteriores permanecen en el historial. Las credenciales,
-el entorno Python y el historial local de Prefect se mantienen privados en esta PC.
+La rama `main` conserva el commit original de CSV de Miguel y agrupa el trabajo
+posterior en cinco commits con formato `tipo(alcance): descripción`. Sus mensajes
+explican el cambio y su motivo; no representan avances de semanas distintas.
+El historial detallado anterior queda en la rama local
+`backup/historial-completo-4332b0f`, con sus autores y fechas originales.
+Las etiquetas `oracle-baseline-361bb17`, `pre-cleanup-b54ab4e` y
+`pre-final-fixes-d9f66a9` son referencias de recuperación locales, no requisitos
+para clonar ni ejecutar el proyecto. No se publican las ramas de respaldo.
+Las credenciales, el entorno Python y el historial local de Prefect se mantienen
+privados en esta PC.

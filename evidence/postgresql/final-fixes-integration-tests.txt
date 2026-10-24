@@ -1,0 +1,182 @@
+test_connection_errors_do_not_reveal_credentials (test_config.SettingsTests.test_connection_errors_do_not_reveal_credentials) ... ok
+test_dotenv_preserves_dollar_signs_without_interpolation (test_config.SettingsTests.test_dotenv_preserves_dollar_signs_without_interpolation) ... ok
+test_environment_is_supported_without_oracle_fallback (test_config.SettingsTests.test_environment_is_supported_without_oracle_fallback) ... ok
+test_missing_credentials_are_explicit_and_never_guessed (test_config.SettingsTests.test_missing_credentials_are_explicit_and_never_guessed) ... ok
+test_wrong_database_and_unsafe_schema_are_rejected (test_config.SettingsTests.test_wrong_database_and_unsafe_schema_are_rejected) ... ok
+test_contract_matches_requested_postgresql_interface (test_contract.ContractTests.test_contract_matches_requested_postgresql_interface) ... ok
+test_query_uses_escaped_identifiers (test_contract.ContractTests.test_query_uses_escaped_identifiers) ... ok
+test_all_eleven_original_file_hashes_are_unchanged (test_fidelity.FidelityTests.test_all_eleven_original_file_hashes_are_unchanged) ... ok
+test_changed_monetary_controls_are_rejected (test_fidelity.FidelityTests.test_changed_monetary_controls_are_rejected) ... ok
+test_csv_special_values_survive_without_inference_or_normalization (test_fidelity.FidelityTests.test_csv_special_values_survive_without_inference_or_normalization) ... ok
+test_ddl_has_the_complete_original_text_columns (test_fidelity.FidelityTests.test_ddl_has_the_complete_original_text_columns) ... ok
+test_hash_preserves_boundaries_empty_strings_spaces_and_unicode (test_fidelity.FidelityTests.test_hash_preserves_boundaries_empty_strings_spaces_and_unicode) ... ok
+test_malformed_csv_is_rejected (test_fidelity.FidelityTests.test_malformed_csv_is_rejected) ... ok
+test_manifest_and_all_source_controls_match (test_fidelity.FidelityTests.test_manifest_and_all_source_controls_match) ... ok
+test_memory_change_is_rejected_before_opening_a_connection (test_fidelity.FidelityTests.test_memory_change_is_rejected_before_opening_a_connection) ... ok
+test_numeric_text_change_is_rejected_without_numeric_inference (test_fidelity.FidelityTests.test_numeric_text_change_is_rejected_without_numeric_inference) ... ok
+test_snapshot_cannot_relabel_the_original_source_hash (test_fidelity.FidelityTests.test_snapshot_cannot_relabel_the_original_source_hash) ... ok
+test_evidence_distinguishes_precommit_and_postcommit_verification (test_flow_reporting.FlowReportingTests.test_evidence_distinguishes_precommit_and_postcommit_verification) ... ok
+test_failure_after_commit_is_not_described_as_a_rollback (test_flow_reporting.FlowReportingTests.test_failure_after_commit_is_not_described_as_a_rollback) ... ok
+test_validate_only_failure_keeps_original_validation_error (test_flow_reporting.FlowReportingTests.test_validate_only_failure_keeps_original_validation_error) ... ok
+test_concurrent_refresh_is_rejected_without_data_changes (test_postgres_integration.PostgreSQLIntegrationTests.test_concurrent_refresh_is_rejected_without_data_changes) ... ok
+test_corrupted_price_is_detected_and_rolled_back (test_postgres_integration.PostgreSQLIntegrationTests.test_corrupted_price_is_detected_and_rolled_back) ... ok
+test_corrupted_test_value_is_detected_before_commit (test_postgres_integration.PostgreSQLIntegrationTests.test_corrupted_test_value_is_detected_before_commit) ... ok
+test_empty_strings_are_not_null (test_postgres_integration.PostgreSQLIntegrationTests.test_empty_strings_are_not_null) ... ok
+test_error_during_load_restores_previous_photo (test_postgres_integration.PostgreSQLIntegrationTests.test_error_during_load_restores_previous_photo) ... ok
+test_failed_validation_restores_previous_photo_not_empty_tables (test_postgres_integration.PostgreSQLIntegrationTests.test_failed_validation_restores_previous_photo_not_empty_tables) ... ok
+test_first_load_and_actual_structure (test_postgres_integration.PostgreSQLIntegrationTests.test_first_load_and_actual_structure) ... ok
+test_leading_zeros_survive (test_postgres_integration.PostgreSQLIntegrationTests.test_leading_zeros_survive) ... ok
+test_memory_change_during_load_is_rejected_before_commit (test_postgres_integration.PostgreSQLIntegrationTests.test_memory_change_during_load_is_rejected_before_commit) ... ok
+test_prefect_flow_completes_using_only_the_isolated_schema (test_postgres_integration.PostgreSQLIntegrationTests.test_prefect_flow_completes_using_only_the_isolated_schema) ... 15:31:23.576 | INFO    | prefect - Starting temporary server on http://127.0.0.1:8463
+See https://docs.prefect.io/v3/concepts/server#how-to-guides for more information on running a dedicated Prefect server.
+15:31:36.140 | INFO    | Flow run 'noisy-chinchilla' - Beginning flow run 'noisy-chinchilla' for flow 'Chinook Staging ETL'
+15:31:36.737 | INFO    | Task run 'Extraer CSV-da4' - 11 CSV verificados: 15607 registros; vacios conservados como strings
+15:31:36.742 | INFO    | Task run 'Extraer CSV-da4' - Finished in state Completed()
+15:31:38.848 | INFO    | Task run 'Cargar Staging-3fb' - stg_album: 347 registros insertados, pendientes de validacion
+15:31:38.861 | INFO    | Task run 'Cargar Staging-3fb' - stg_artist: 275 registros insertados, pendientes de validacion
+15:31:38.868 | INFO    | Task run 'Cargar Staging-3fb' - stg_customer: 59 registros insertados, pendientes de validacion
+15:31:38.871 | INFO    | Task run 'Cargar Staging-3fb' - stg_employee: 8 registros insertados, pendientes de validacion
+15:31:38.875 | INFO    | Task run 'Cargar Staging-3fb' - stg_genre: 25 registros insertados, pendientes de validacion
+15:31:38.900 | INFO    | Task run 'Cargar Staging-3fb' - stg_invoice: 412 registros insertados, pendientes de validacion
+15:31:39.017 | INFO    | Task run 'Cargar Staging-3fb' - stg_invoice_line: 2240 registros insertados, pendientes de validacion
+15:31:39.021 | INFO    | Task run 'Cargar Staging-3fb' - stg_media_type: 5 registros insertados, pendientes de validacion
+15:31:39.024 | INFO    | Task run 'Cargar Staging-3fb' - stg_playlist: 18 registros insertados, pendientes de validacion
+15:31:39.410 | INFO    | Task run 'Cargar Staging-3fb' - stg_playlist_track: 8715 registros insertados, pendientes de validacion
+15:31:39.663 | INFO    | Task run 'Cargar Staging-3fb' - stg_track: 3503 registros insertados, pendientes de validacion
+15:31:39.973 | INFO    | Task run 'Cargar Staging-3fb' - COMMIT: 15607 registros validados dentro de la transaccion de carga
+15:31:39.978 | INFO    | Task run 'Cargar Staging-3fb' - Finished in state Completed()
+15:31:42.115 | INFO    | Task run 'Validar Staging-b31' - Validacion independiente correcta; evidencia: run-7e45636f-f924-4acc-a54e-ede7d814c315.json
+15:31:42.121 | INFO    | Task run 'Validar Staging-b31' - Finished in state Completed()
+15:31:42.555 | INFO    | Flow run 'noisy-chinchilla' - Finished in state Completed()
+ok
+test_prefect_task_and_flow_fail_on_real_sql_error (test_postgres_integration.PostgreSQLIntegrationTests.test_prefect_task_and_flow_fail_on_real_sql_error) ... 15:31:46.299 | INFO    | Flow run 'terrific-mussel' - Beginning flow run 'terrific-mussel' for flow 'Chinook Staging ETL'
+15:31:46.482 | INFO    | Task run 'Extraer CSV-cd8' - 11 CSV verificados: 15607 registros; vacios conservados como strings
+15:31:46.487 | INFO    | Task run 'Extraer CSV-cd8' - Finished in state Completed()
+15:31:48.232 | INFO    | Task run 'Cargar Staging-5e3' - stg_album: 347 registros insertados, pendientes de validacion
+15:31:48.257 | INFO    | Task run 'Cargar Staging-5e3' - stg_artist: 275 registros insertados, pendientes de validacion
+15:31:48.268 | INFO    | Task run 'Cargar Staging-5e3' - stg_customer: 59 registros insertados, pendientes de validacion
+15:31:48.272 | INFO    | Task run 'Cargar Staging-5e3' - stg_employee: 8 registros insertados, pendientes de validacion
+15:31:48.277 | INFO    | Task run 'Cargar Staging-5e3' - stg_genre: 25 registros insertados, pendientes de validacion
+15:31:48.317 | INFO    | Task run 'Cargar Staging-5e3' - stg_invoice: 412 registros insertados, pendientes de validacion
+15:31:48.428 | INFO    | Task run 'Cargar Staging-5e3' - stg_invoice_line: 2240 registros insertados, pendientes de validacion
+15:31:48.431 | INFO    | Task run 'Cargar Staging-5e3' - stg_media_type: 5 registros insertados, pendientes de validacion
+15:31:48.434 | INFO    | Task run 'Cargar Staging-5e3' - stg_playlist: 18 registros insertados, pendientes de validacion
+15:31:48.825 | INFO    | Task run 'Cargar Staging-5e3' - stg_playlist_track: 8715 registros insertados, pendientes de validacion
+15:31:48.984 | INFO    | Task run 'Cargar Staging-5e3' - stg_track: 3503 registros insertados, pendientes de validacion
+15:31:48.987 | ERROR   | Task run 'Cargar Staging-5e3' - Task run failed with exception: UniqueViolation('duplicate key value violates unique constraint "stg_artist_pkey"\nDETAIL:  Key ("CSV_ROW_NUMBER")=(1) already exists.')
+Traceback (most recent call last):
+  File "C:\Users\jerem\Downloads\staging-bd\chinook_staging_etl\.venv\Lib\site-packages\prefect\task_engine.py", line 1030, in run_context
+    yield self
+  File "C:\Users\jerem\Downloads\staging-bd\chinook_staging_etl\.venv\Lib\site-packages\prefect\task_engine.py", line 1699, in run_task_sync
+    engine.call_task_fn(txn)
+    ~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\jerem\Downloads\staging-bd\chinook_staging_etl\.venv\Lib\site-packages\prefect\task_engine.py", line 1047, in call_task_fn
+    result = call_with_parameters(self.task.fn, parameters)
+  File "C:\Users\jerem\Downloads\staging-bd\chinook_staging_etl\.venv\Lib\site-packages\prefect\utilities\callables\__init__.py", line 404, in call_with_parameters
+    return fn(*args, **kwargs)
+  File "C:\Users\jerem\Downloads\staging-bd\chinook_staging_etl\scripts\staging_flow.py", line 29, in ingest
+    result = load_and_validate(snapshot, log=get_run_logger().info)
+  File "C:\Users\jerem\Downloads\staging-bd\chinook_staging_etl\scripts\staging_core.py", line 324, in load_and_validate
+    insert_snapshot(connection, snapshot, settings, log)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\jerem\AppData\Local\Programs\Python\Python313\Lib\unittest\mock.py", line 1167, in __call__
+    return self._mock_call(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\jerem\AppData\Local\Programs\Python\Python313\Lib\unittest\mock.py", line 1171, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\jerem\AppData\Local\Programs\Python\Python313\Lib\unittest\mock.py", line 1232, in _execute_mock_call
+    result = effect(*args, **kwargs)
+  File "C:\Users\jerem\Downloads\staging-bd\chinook_staging_etl\tests\test_postgres_integration.py", line 134, in duplicate
+    connection.execute(sql.SQL('INSERT INTO {} ("CSV_ROW_NUMBER") VALUES (%s)').format(
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        sql.Identifier(settings.schema, "stg_artist")), (1,))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\jerem\Downloads\staging-bd\chinook_staging_etl\.venv\Lib\site-packages\psycopg\connection.py", line 304, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.UniqueViolation: duplicate key value violates unique constraint "stg_artist_pkey"
+DETAIL:  Key ("CSV_ROW_NUMBER")=(1) already exists.
+15:31:49.164 | INFO    | Task run 'Cargar Staging-5e3' - Running hook 'capture_failure' in response to entering state 'Failed'
+15:31:49.172 | INFO    | Task run 'Cargar Staging-5e3' - Hook 'capture_failure' finished running successfully
+15:31:49.183 | ERROR   | Task run 'Cargar Staging-5e3' - Finished in state Failed('Task run encountered an exception UniqueViolation: duplicate key value violates unique constraint "stg_artist_pkey"\nDETAIL:  Key ("CSV_ROW_NUMBER")=(1) already exists.')
+15:31:49.310 | ERROR   | Flow run 'terrific-mussel' - Encountered exception during execution: UniqueViolation('duplicate key value violates unique constraint "stg_artist_pkey"\nDETAIL:  Key ("CSV_ROW_NUMBER")=(1) already exists.')
+Traceback (most recent call last):
+  File "C:\Users\jerem\Downloads\staging-bd\chinook_staging_etl\.venv\Lib\site-packages\prefect\flow_engine.py", line 1330, in run_context
+    yield self
+  File "C:\Users\jerem\Downloads\staging-bd\chinook_staging_etl\.venv\Lib\site-packages\prefect\flow_engine.py", line 2111, in run_flow_sync
+    engine.call_flow_fn()
+    ~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\jerem\Downloads\staging-bd\chinook_staging_etl\.venv\Lib\site-packages\prefect\flow_engine.py", line 1350, in call_flow_fn
+    result = call_with_parameters(self.flow.fn, self.parameters)
+  File "C:\Users\jerem\Downloads\staging-bd\chinook_staging_etl\.venv\Lib\site-packages\prefect\utilities\callables\__init__.py", line 404, in call_with_parameters
+    return fn(*args, **kwargs)
+  File "C:\Users\jerem\Downloads\staging-bd\chinook_staging_etl\scripts\staging_flow.py", line 60, in staging_etl
+    loaded = None if validate_only else ingest(snapshot)
+                                        ~~~~~~^^^^^^^^^^
+  File "C:\Users\jerem\Downloads\staging-bd\chinook_staging_etl\.venv\Lib\site-packages\prefect\tasks.py", line 1240, in __call__
+    return run_task(
+        task=self,
+    ...<2 lines>...
+        return_type=return_type,
+    )
+  File "C:\Users\jerem\Downloads\staging-bd\chinook_staging_etl\.venv\Lib\site-packages\prefect\task_engine.py", line 1932, in run_task
+    return run_task_sync(**kwargs)
+  File "C:\Users\jerem\Downloads\staging-bd\chinook_staging_etl\.venv\Lib\site-packages\prefect\task_engine.py", line 1702, in run_task_sync
+    return engine.state if return_type == "state" else engine.result()
+                                                       ~~~~~~~~~~~~~^^
+  File "C:\Users\jerem\Downloads\staging-bd\chinook_staging_etl\.venv\Lib\site-packages\prefect\task_engine.py", line 622, in result
+    raise self._raised
+  File "C:\Users\jerem\Downloads\staging-bd\chinook_staging_etl\.venv\Lib\site-packages\prefect\task_engine.py", line 1030, in run_context
+    yield self
+  File "C:\Users\jerem\Downloads\staging-bd\chinook_staging_etl\.venv\Lib\site-packages\prefect\task_engine.py", line 1699, in run_task_sync
+    engine.call_task_fn(txn)
+    ~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\jerem\Downloads\staging-bd\chinook_staging_etl\.venv\Lib\site-packages\prefect\task_engine.py", line 1047, in call_task_fn
+    result = call_with_parameters(self.task.fn, parameters)
+  File "C:\Users\jerem\Downloads\staging-bd\chinook_staging_etl\.venv\Lib\site-packages\prefect\utilities\callables\__init__.py", line 404, in call_with_parameters
+    return fn(*args, **kwargs)
+  File "C:\Users\jerem\Downloads\staging-bd\chinook_staging_etl\scripts\staging_flow.py", line 29, in ingest
+    result = load_and_validate(snapshot, log=get_run_logger().info)
+  File "C:\Users\jerem\Downloads\staging-bd\chinook_staging_etl\scripts\staging_core.py", line 324, in load_and_validate
+    insert_snapshot(connection, snapshot, settings, log)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\jerem\AppData\Local\Programs\Python\Python313\Lib\unittest\mock.py", line 1167, in __call__
+    return self._mock_call(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\jerem\AppData\Local\Programs\Python\Python313\Lib\unittest\mock.py", line 1171, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\jerem\AppData\Local\Programs\Python\Python313\Lib\unittest\mock.py", line 1232, in _execute_mock_call
+    result = effect(*args, **kwargs)
+  File "C:\Users\jerem\Downloads\staging-bd\chinook_staging_etl\tests\test_postgres_integration.py", line 134, in duplicate
+    connection.execute(sql.SQL('INSERT INTO {} ("CSV_ROW_NUMBER") VALUES (%s)').format(
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        sql.Identifier(settings.schema, "stg_artist")), (1,))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\jerem\Downloads\staging-bd\chinook_staging_etl\.venv\Lib\site-packages\psycopg\connection.py", line 304, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.UniqueViolation: duplicate key value violates unique constraint "stg_artist_pkey"
+DETAIL:  Key ("CSV_ROW_NUMBER")=(1) already exists.
+15:31:49.428 | INFO    | Flow run 'terrific-mussel' - Finished in state Failed('Flow run encountered an exception: UniqueViolation: duplicate key value violates unique constraint "stg_artist_pkey"\nDETAIL:  Key ("CSV_ROW_NUMBER")=(1) already exists.')
+
+PREFECT_EXPECTED_FAILURE {"task_name": "Cargar Staging-5e3", "task_state": "Failed", "task_run_id": "01a16fd3-b278-7ffc-bf1f-a308d7c9f11d", "flow_run_id": "dcb89964-f789-4ab1-b4a9-5152914a8d14", "flow_state": "Failed", "sqlstate": "23505", "schema": "stg_test_8c5b261d0fd74cf29f2d", "rollback_matches_previous": true}
+ok
+test_reader_can_query_all_source_values (test_postgres_integration.PostgreSQLIntegrationTests.test_reader_can_query_all_source_values) ... ok
+test_reader_cannot_insert_update_or_delete (test_postgres_integration.PostgreSQLIntegrationTests.test_reader_cannot_insert_update_or_delete) ... ok
+test_real_sql_insert_error_restores_previous_photo (test_postgres_integration.PostgreSQLIntegrationTests.test_real_sql_insert_error_restores_previous_photo) ... ok
+test_repeatable_read_retains_previous_snapshot_during_refresh (test_postgres_integration.PostgreSQLIntegrationTests.test_repeatable_read_retains_previous_snapshot_during_refresh) ... ok
+test_second_full_refresh_does_not_duplicate (test_postgres_integration.PostgreSQLIntegrationTests.test_second_full_refresh_does_not_duplicate) ... ok
+test_trailing_spaces_survive (test_postgres_integration.PostgreSQLIntegrationTests.test_trailing_spaces_survive) ... ok
+test_unexpected_column_type_is_rejected_without_refresh (test_postgres_integration.PostgreSQLIntegrationTests.test_unexpected_column_type_is_rejected_without_refresh) ... ok
+test_unicode_survives (test_postgres_integration.PostgreSQLIntegrationTests.test_unicode_survives) ... ok
+test_existing_api_is_preserved_without_starting_a_server (test_prefect_api.PrefectAPITests.test_existing_api_is_preserved_without_starting_a_server) ... ok
+test_instance_with_the_dw_is_rejected (test_provision_safety.ProvisionSafetyTests.test_instance_with_the_dw_is_rejected) ... ok
+test_postgresql_12_is_not_used_as_fallback (test_provision_safety.ProvisionSafetyTests.test_postgresql_12_is_not_used_as_fallback) ... ok
+test_unknown_existing_database_is_never_adopted (test_provision_safety.ProvisionSafetyTests.test_unknown_existing_database_is_never_adopted) ... ok
+test_unrelated_databases_are_allowed_on_our_staging_instance (test_provision_safety.ProvisionSafetyTests.test_unrelated_databases_are_allowed_on_our_staging_instance) ... ok
+
+----------------------------------------------------------------------
+Ran 44 tests in 102.968s
+
+OK
+15:32:34.093 | INFO    | prefect - Stopping temporary server on http://127.0.0.1:8463

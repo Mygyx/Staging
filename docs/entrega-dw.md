@@ -19,6 +19,34 @@ Su clave se comparte por un canal privado, nunca dentro del contrato ni de Git.
 Sus permisos son CONNECT a nuestra base, USAGE de public y SELECT de las once
 fuentes. No debe tener INSERT, UPDATE, DELETE, TRUNCATE o CREATE en el esquema.
 
+Desde otra computadora, `STG_HOST` debe identificar la PC que aloja Staging,
+mediante su IP o nombre acordado. `STG_PORT` debe ser el puerto real de esa
+instancia; 5433 es el valor local comprobado. La base sigue siendo
+`chinook_staging`, el esquema `public` y la cuenta `chinook_stg_reader`.
+El lector no utiliza la cuenta administrativa ni la del cargador. La contraseña
+y la política SSL se acuerdan por un canal privado y se configuran en el entorno
+del Repo 2. No se deben copiar contraseñas al contrato JSON.
+
+La entrega remota sigue pendiente: el responsable debe autorizar acceso de red
+limitado y Brian/Miguel deben ejecutar una lectura desde su propia computadora.
+Un SELECT exitoso en la PC de Jeremy no demuestra esa conectividad.
+
+## Alcance del verificador y TEMP
+
+El contrato version 3 conserva las mismas once consultas y columnas fuente.
+El reporte nuevo usa `source_tables_read_only` y `reader_permission_scope`.
+Verifica SELECT y ausencia efectiva de INSERT, UPDATE, DELETE, TRUNCATE,
+REFERENCES, TRIGGER y MAINTAIN en las once tablas. Comprueba tambien ausencia
+de INSERT, UPDATE y REFERENCES concedidos a columnas individuales, y ausencia
+de CREATE en la base/esquema, atributos administrativos del rol y SELECT sobre
+el catalogo tecnico. No es una auditoria de cada objeto del servidor ni de
+posibles cambios a otro rol.
+
+TEMP puede permanecer heredado: permite objetos temporales de la sesion,
+no modificar las fuentes de public. Se informa como `database_temp_privilege`;
+el verificador no concede ni revoca permisos. Los reportes historicos conservan
+su formato anterior y su alcance se debe interpretar segun aquella version.
+
 ## Fuentes y cantidades
 
 | Tabla | Registros |

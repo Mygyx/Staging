@@ -9,6 +9,7 @@ import sys
 import tempfile
 import unittest
 import uuid
+from copy import deepcopy
 from dataclasses import replace
 from pathlib import Path
 from unittest.mock import patch
@@ -125,6 +126,50 @@ class PostgreSQLIntegrationTests(unittest.TestCase):
             self.load(log=fail_after_first_table)
         self.assertEqual(self.dump(), previous)
 
+    def duplicate_ordinal_insert(self):
+        insert = core.insert_snapshot
+        def duplicate(connection, snapshot, settings, log):
+            result = insert(connection, snapshot, settings, log)
+            # INSERT real sobre nuestra tabla de pruebas: la PK 1 ya existe.
+            connection.execute(sql.SQL('INSERT INTO {} ("CSV_ROW_NUMBER") VALUES (%s)').format(
+                sql.Identifier(settings.schema, "stg_artist")), (1,))
+            return result
+        return duplicate
+
+    def test_real_sql_insert_error_restores_previous_photo(self):
+        previous = self.previous_photo()
+        with patch.object(core, "insert_snapshot", side_effect=self.duplicate_ordinal_insert()):
+            with self.assertRaises(psycopg.errors.UniqueViolation) as raised:
+                self.load()
+        self.assertEqual(raised.exception.sqlstate, "23505")
+        self.assertEqual(self.dump(), previous)
+
+    def test_memory_change_during_load_is_rejected_before_commit(self):
+        previous = self.previous_photo()
+        snapshot = deepcopy(self.snapshot)
+        insert = core.insert_snapshot
+        def change_memory(connection, loaded, settings, log):
+            result = insert(connection, loaded, settings, log)
+            loaded["tables"]["stg_artist"]["rows"][0][1] = "Changed after insertion"
+            return result
+        with patch.object(core, "insert_snapshot", side_effect=change_memory):
+            with self.assertRaisesRegex(core.ValidationError, "CSV original"):
+                core.load_and_validate(snapshot, self.settings, log=lambda message: None)
+        self.assertEqual(self.dump(), previous)
+
+    def test_corrupted_price_is_detected_and_rolled_back(self):
+        previous = self.previous_photo()
+        insert = core.insert_snapshot
+        def corrupted(connection, snapshot, settings, log):
+            result = insert(connection, snapshot, settings, log)
+            connection.execute(sql.SQL('UPDATE {} SET "UnitPrice"=%s WHERE "CSV_ROW_NUMBER"=1').format(
+                sql.Identifier(self.schema, "stg_invoice_line")), ("0.00",))
+            return result
+        with patch.object(core, "insert_snapshot", side_effect=corrupted):
+            with self.assertRaisesRegex(core.ValidationError, "Contenido u ordinal distinto"):
+                self.load()
+        self.assertEqual(self.dump(), previous)
+
     def test_corrupted_test_value_is_detected_before_commit(self):
         previous = self.previous_photo()
         insert = core.insert_snapshot
@@ -214,6 +259,33 @@ class PostgreSQLIntegrationTests(unittest.TestCase):
             self.assertEqual(report["schema"], self.schema)
             self.assertEqual(report["controls"], core.EXPECTED_CONTROLS)
 
+    def test_prefect_task_and_flow_fail_on_real_sql_error(self):
+        import staging_flow
+        previous = self.previous_photo()
+        observed = []
+        def capture_failure(task, task_run, state):
+            observed.append({"task_name": task_run.name, "task_state": state.name,
+                             "task_run_id": str(task_run.id), "flow_run_id": str(task_run.flow_run_id)})
+        failing_task = staging_flow.ingest.with_options(on_failure=[capture_failure])
+        with tempfile.TemporaryDirectory(prefix="chinook-prefect-failure-") as directory:
+            with patch.object(core.Settings, "from_env", return_value=self.settings), \
+                 patch.object(staging_flow, "ROOT", Path(directory)), \
+                 patch.object(staging_flow, "ingest", failing_task), \
+                 patch.object(core, "insert_snapshot", side_effect=self.duplicate_ordinal_insert()):
+                state = staging_flow.staging_etl(return_state=True)
+            self.assertTrue(state.is_failed())
+            with self.assertRaises(psycopg.errors.UniqueViolation) as raised:
+                state.result()
+            self.assertEqual(raised.exception.sqlstate, "23505")
+            self.assertEqual(list(Path(directory).rglob("run-*.json")), [])
+        self.assertEqual(len(observed), 1)
+        self.assertEqual(observed[0]["task_state"], "Failed")
+        self.assertEqual(observed[0]["flow_run_id"], str(state.state_details.flow_run_id))
+        self.assertEqual(self.dump(), previous)
+        print("\nPREFECT_EXPECTED_FAILURE " + json.dumps({
+            **observed[0], "flow_state": state.name, "sqlstate": "23505",
+            "schema": self.schema, "rollback_matches_previous": True}), flush=True)
+
     def reader_settings(self):
         try:
             reader = replace(core.Settings.from_env(ROOT / ".env.reader", use_environment=False), schema=self.schema)
@@ -232,7 +304,10 @@ class PostgreSQLIntegrationTests(unittest.TestCase):
     def test_reader_can_query_all_source_values(self):
         self.load()
         report = verify_reader(self.reader_settings(), self.snapshot)
-        self.assertTrue(report["reader_has_only_source_read_access"])
+        self.assertTrue(report["source_tables_read_only"])
+        self.assertEqual(report["reader_permission_scope"]["source_tables_checked"], list(TABLE_NAMES.values()))
+        self.assertIsInstance(report["database_temp_privilege"], bool)
+        self.assertIn("session-local", report["temp_policy"])
         self.assertEqual(report["controls"], core.EXPECTED_CONTROLS)
 
     def test_reader_cannot_insert_update_or_delete(self):
@@ -247,6 +322,23 @@ class PostgreSQLIntegrationTests(unittest.TestCase):
                 with self.assertRaises(psycopg.errors.InsufficientPrivilege):
                     with connection.transaction():
                         connection.execute(statement.format(sql.Identifier(self.schema, "stg_artist")), ("test-write",))
+        self.assertEqual(self.dump(), before)
+
+    def test_reader_verifier_rejects_column_update_granted_in_test_schema(self):
+        self.load()
+        reader = self.reader_settings()
+        relation = sql.Identifier(self.schema, "stg_artist")
+        with core.connect(self.settings) as connection, connection.transaction():
+            connection.execute(sql.SQL("GRANT UPDATE ({}) ON {} TO {}").format(
+                sql.Identifier("Name"), relation, sql.Identifier(reader.user)))
+            table_grant, column_grant = connection.execute("SELECT "
+                "has_table_privilege(%s,%s,'UPDATE'),has_any_column_privilege(%s,%s,'UPDATE')",
+                (reader.user, relation.as_string(), reader.user, relation.as_string())).fetchone()
+        self.assertFalse(table_grant)
+        self.assertTrue(column_grant)
+        before = self.dump()
+        with self.assertRaisesRegex(core.SafetyError, "UPDATE.*columna"):
+            verify_reader(reader, self.snapshot)
         self.assertEqual(self.dump(), before)
 
 

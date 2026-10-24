@@ -43,6 +43,12 @@ def inspect_server(settings: Settings) -> dict:
 
 
 def guard_target(report: dict, loader: Settings, reader: Settings):
+    """Preserva la instancia Staging separada elegida por el equipo.
+
+    Detecta los nombres DW conocidos; no rechaza bases de otros proyectos ni
+    descubre todos los posibles nombres de DW. Requiere revisar el destino.
+    Compartir monitoreo Prefect no cambia esta decision de infraestructura.
+    """
     if report["server_version_num"] // 10000 != 17:
         raise SafetyError("El candidato autorizado es PostgreSQL 17; revise la instancia antes de continuar.")
     if loader.user != LOADER or reader.user != READER or loader.schema != "public" or reader.schema != "public":

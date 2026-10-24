@@ -23,8 +23,8 @@ de Unicode, conversión numérica ni conversión de fechas. El manifiesto
 `data/manifest.json` detalla SHA-256 del archivo completo, tamaños por
 columna, vacíos, espacios en extremos y valores distintos.
 
-Las relaciones se revisan solo para informar calidad; no generan FK
-que puedan rechazar registros originales.
+Las relaciones se informan en el perfil. La carga de esta fotografía fija
+exige cero referencias huérfanas; no crea FK ni limpia registros.
 
 | Campo hijo | Campo padre | Registros huérfanos |
 | --- | --- | ---: |

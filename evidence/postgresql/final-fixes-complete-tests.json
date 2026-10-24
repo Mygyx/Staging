@@ -1,0 +1,26 @@
+{
+  "checked_at_utc": "2026-10-24T21:40:37.696481+00:00",
+  "mode": "final full suite, isolated PostgreSQL schemas, authorized temporary Prefect server",
+  "discovered": 45,
+  "passed": 45,
+  "skipped": 0,
+  "exit_code": 0,
+  "duration_seconds": 104.631,
+  "local_cases": 25,
+  "postgresql_integration_cases": 20,
+  "expected_prefect_failures": [
+    {
+      "task_name": "Cargar Staging-27f",
+      "task_state": "Failed",
+      "task_run_id": "01a16fdb-29ab-7b54-9de2-0efad39dfa2f",
+      "flow_run_id": "7cd48516-d621-44e9-9d23-b1c29e98bac7",
+      "flow_state": "Failed",
+      "sqlstate": "23505",
+      "schema": "stg_test_3533f435f08f436392d7",
+      "rollback_matches_previous": true
+    }
+  ],
+  "column_privilege_case_included": true,
+  "public_fingerprint_checked_by_suite": true,
+  "grants_for_test_fixtures": "new isolated schema objects only; never public or role attributes"
+}

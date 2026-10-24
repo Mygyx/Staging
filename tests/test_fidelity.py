@@ -6,12 +6,15 @@ import re
 import sys
 import tempfile
 import unittest
+from decimal import Decimal
 from pathlib import Path
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 from profile_sources import HEADERS, TABLE_NAMES, build_profile, read_source, row_digest
-from staging_core import EXPECTED_CONTROLS, record_controls, snapshot_sources
+from staging_core import (EXPECTED_CONTROLS, ValidationError, load_and_validate,
+                          record_controls, snapshot_sources, validate_snapshot)
 
 
 class FidelityTests(unittest.TestCase):
@@ -28,6 +31,44 @@ class FidelityTests(unittest.TestCase):
         self.assertEqual(record_controls(snapshot["tables"]), EXPECTED_CONTROLS)
         self.assertTrue(all(isinstance(value, str) for table in snapshot["tables"].values()
                             for row in table["rows"] for value in row))
+
+    def test_memory_change_is_rejected_before_opening_a_connection(self):
+        snapshot = snapshot_sources()
+        snapshot["tables"]["stg_artist"]["rows"][0][1] = "Changed in memory"
+        # Este cambio conserva conteos, vacios y todos los controles monetarios.
+        self.assertEqual(record_controls(snapshot["tables"]), EXPECTED_CONTROLS)
+        with patch("staging_core.connect") as connection:
+            with self.assertRaisesRegex(ValidationError, "CSV original"):
+                load_and_validate(snapshot)
+        connection.assert_not_called()
+
+    def test_snapshot_cannot_relabel_the_original_source_hash(self):
+        snapshot = snapshot_sources()
+        snapshot["profile"]["sources"][0]["sha256"] = "0" * 64
+        with self.assertRaisesRegex(ValidationError, "manifiesto"):
+            validate_snapshot(snapshot)
+
+    def test_changed_monetary_controls_are_rejected(self):
+        cases = [("stg_invoice_line", "UnitPrice", Decimal("0.01")),
+                 ("stg_invoice_line", "Quantity", Decimal("1")),
+                 ("stg_invoice", "Total", Decimal("0.01"))]
+        for table, column, increment in cases:
+            with self.subTest(table=table, column=column):
+                snapshot = snapshot_sources()
+                data = snapshot["tables"][table]
+                index = data["header"].index(column)
+                data["rows"][0][index] = str(Decimal(data["rows"][0][index]) + increment)
+                with self.assertRaisesRegex(ValidationError, "controles"):
+                    validate_snapshot(snapshot)
+
+    def test_numeric_text_change_is_rejected_without_numeric_inference(self):
+        snapshot = snapshot_sources()
+        data = snapshot["tables"]["stg_track"]
+        index = data["header"].index("Milliseconds")
+        data["rows"][0][index] = "0" + data["rows"][0][index]
+        self.assertEqual(record_controls(snapshot["tables"]), EXPECTED_CONTROLS)
+        with self.assertRaisesRegex(ValidationError, "CSV original"):
+            validate_snapshot(snapshot)
 
     def test_csv_special_values_survive_without_inference_or_normalization(self):
         values = ["", "NULL", "0017", "0.99", "  espacios  ", "O'Brien & Sons",

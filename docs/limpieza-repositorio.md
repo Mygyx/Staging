@@ -1,5 +1,10 @@
 # Limpieza del repositorio PostgreSQL
 
+Registro histórico de la limpieza, anterior a la agrupación y publicación.
+Las referencias de recuperación citadas existen en el respaldo local, no se
+exigen para ejecutar un clon nuevo. El historial actual se explica en
+[colaboración](colaboracion.md).
+
 El proyecto activo implementa exclusivamente CSV -> Python/Prefect -> PostgreSQL
 Staging. El 24 de octubre de 2026 se revisaron dependencias, rutas, documentación,
 estado Git, fuentes y base antes de retirar archivos antiguos.

@@ -19,9 +19,17 @@ class ProvisionSafetyTests(unittest.TestCase):
             guard_target(report, self.loader, self.reader)
 
     def test_instance_with_the_dw_is_rejected(self):
-        report = {"server_version_num": 170004, "databases": [{"name": "chinook_dw"}]}
-        with self.assertRaisesRegex(SafetyError, "separacion"):
-            guard_target(report, self.loader, self.reader)
+        for name in ("chinook_dw", "chinook_datawarehouse"):
+            with self.subTest(database=name):
+                report = {"server_version_num": 170004, "databases": [{"name": name}]}
+                with self.assertRaisesRegex(SafetyError, "separacion"):
+                    guard_target(report, self.loader, self.reader)
+
+    def test_unrelated_databases_are_allowed_on_our_staging_instance(self):
+        report = {"server_version_num": 170004, "databases": [
+            {"name": "postgres"}, {"name": "DBBaseDatos"},
+            {"name": "chinook_staging", "owner": self.loader.user, "marked_for_this_project": True}]}
+        guard_target(report, self.loader, self.reader)
 
     def test_postgresql_12_is_not_used_as_fallback(self):
         with self.assertRaises(SafetyError):

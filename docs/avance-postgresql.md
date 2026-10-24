@@ -1,5 +1,10 @@
 # Entrega PostgreSQL: 24 de octubre de 2026
 
+Registro histórico de la migración. Los conteos de commits, las referencias Git
+y los pendientes descritos corresponden a esa etapa; sus referencias de
+recuperación se conservan localmente. Para el remoto y el historial agrupado
+actuales, consultar [colaboración](colaboracion.md).
+
 ## Resultado y entorno real
 
 Staging cargado en **PostgreSQL 17.4, puerto 5433**, base `chinook_staging`,

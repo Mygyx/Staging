@@ -7,14 +7,18 @@ PostgreSQL. El código, pruebas y documentación vigentes están en este reposit
 
 Cada estudiante configura su propia identidad Git y registra sus aportes reales.
 No se modifican autores/fechas previos ni se crean commits en nombre del compañero.
-Los siete commits iniciales permanecen accesibles en `oracle-baseline-361bb17`;
-los once anteriores a la limpieza están en `pre-cleanup-b54ab4e`.
+El historial detallado permanece en la rama local
+`backup/historial-completo-4332b0f`. Las etiquetas locales
+`oracle-baseline-361bb17`, `pre-cleanup-b54ab4e` y `pre-final-fixes-d9f66a9`
+conservan puntos anteriores a la migración, limpieza y correcciones finales.
+La publicación conserva el commit de CSV de Miguel y cinco commits posteriores
+agrupados por etapas reales, con formato `tipo(alcance): descripción`.
 Los avances semanales y el tablero deben mantenerse durante el curso; los
 commits de un solo día no demuestran varias semanas de actividad.
 
 ## Otro equipo de desarrollo
 
-1. Clonar el remoto correcto cuando esté disponible.
+1. Clonar `https://github.com/Mygyx/Staging.git` y entrar en `Staging`.
 2. Crear un entorno Python 3.13 e instalar requirements.
 3. Copiar las configuraciones de ejemplo sin claves reales al archivo local.
 4. Usar una base propia o acceso autorizado; no adoptar bases homónimas ajenas.
@@ -25,17 +29,36 @@ commits de un solo día no demuestran varias semanas de actividad.
 Para cambios de código usar una rama y revisión del compañero. No modificar
 los CSV para que una prueba pase ni regenerar el manifiesto para ocultar cambios.
 
-## Publicación pendiente
+## Repositorio remoto y colaboración
 
-No hay remoto configurado. Solo cuando el usuario proporcione la URL correcta
-se añadirá origin y se enviarán los commits. No publicar en otra cuenta ni
-sobrescribir un repositorio con historial existente.
+El remoto autorizado es [Mygyx/Staging](https://github.com/Mygyx/Staging).
+Su commit inicial se conserva, incluida su autoría. Los cinco commits del
+proyecto se añaden a continuación, sin forzar ni sobrescribir la rama remota.
+
+Para un aporte nuevo, cada integrante crea su propia rama y solicita revisión:
+
+```powershell
+git clone https://github.com/Mygyx/Staging.git
+cd Staging
+git switch -c feat/descripcion-del-aporte
+```
+
+Después de implementar y verificar su cambio, registra únicamente los archivos
+de su aporte con `git add <rutas>`, usa un mensaje como
+`feat(validacion): comprobar un nuevo caso de integridad` y publica su rama con
+`git push -u origin feat/descripcion-del-aporte`. La revisión y el merge se
+realizan mediante un pull request; no se crean aportes en nombre de otra persona.
+
+Las ramas `backup/*` y las etiquetas de recuperación se mantienen locales.
+Para publicar `main` se usa `git push -u origin main`, sin `--all`, `--tags` ni
+`--force`. Las configuraciones `.env`, `.venv/` y `local/` siguen excluidas.
 
 ## Históricos y evidencias
 
 El código y las evidencias de Oracle se retiraron del árbol de trabajo una vez
 verificada la implementación PostgreSQL. Permanecen recuperables desde Git.
-Para consultar un archivo anterior a la limpieza sin cambiar de versión:
+En la PC que conserva las referencias locales, se puede consultar un archivo
+anterior a la limpieza sin cambiar de versión:
 
 ```powershell
 git show pre-cleanup-b54ab4e:archive/oracle/scripts/generate_sql.py

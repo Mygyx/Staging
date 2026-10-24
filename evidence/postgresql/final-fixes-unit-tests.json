@@ -1,0 +1,9 @@
+{
+  "checked_at_utc": "2026-10-24T21:30:04.966396+00:00",
+  "mode": "local unit tests, integration deliberately disabled",
+  "discovered": 44,
+  "passed": 25,
+  "skipped": 19,
+  "exit_code": 0,
+  "postgresql_writes": false
+}

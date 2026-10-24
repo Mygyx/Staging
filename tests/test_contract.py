@@ -20,6 +20,12 @@ class ContractTests(unittest.TestCase):
         self.assertEqual(published["engine"], "PostgreSQL")
         self.assertEqual(published["database"], "chinook_staging")
         self.assertEqual(published["schema"], "public")
+        self.assertEqual(published["source_type"], "TEXT")
+        self.assertEqual(published["technical_ordinal_type"], "INTEGER")
+        self.assertEqual(published["reader_policy"]["required_source_privileges"], ["SELECT"])
+        self.assertIn("TRIGGER", published["reader_policy"]["forbidden_source_privileges"])
+        self.assertIn("MAINTAIN", published["reader_policy"]["forbidden_source_privileges"])
+        self.assertIn("session-local", published["reader_policy"]["temp"])
         self.assertEqual(sum(s["rows"] for s in published["sources"]), 15607)
         for source in published["sources"]:
             self.assertIn(f'FROM "public"."{source["table"]}"', source["query"])

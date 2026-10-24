@@ -1,5 +1,5 @@
 {
-  "contract_version": 2,
+  "contract_version": 3,
   "repository": "chinook_staging_etl",
   "engine": "PostgreSQL",
   "database": "chinook_staging",
@@ -7,11 +7,36 @@
   "source_type": "TEXT",
   "empty_csv_fields": "empty string, never automatically NULL",
   "technical_ordinal": "CSV_ROW_NUMBER; excluded from the source queries",
+  "technical_ordinal_type": "INTEGER",
   "reader_user_example": "chinook_stg_reader",
   "host_environment": "STG_HOST",
   "port_environment": "STG_PORT",
   "local_port_candidate": 5433,
   "isolation": "REPEATABLE READ READ ONLY across all eleven SELECTs",
+  "reader_policy": {
+    "required_source_privileges": [
+      "SELECT"
+    ],
+    "forbidden_source_privileges": [
+      "INSERT",
+      "UPDATE",
+      "DELETE",
+      "TRUNCATE",
+      "REFERENCES",
+      "TRIGGER",
+      "MAINTAIN"
+    ],
+    "forbidden_column_privileges": [
+      "INSERT",
+      "UPDATE",
+      "REFERENCES"
+    ],
+    "schema_create": false,
+    "database_create": false,
+    "technical_catalog_select": false,
+    "temp": "TEMP may remain inherited for session-local objects; it does not authorize changes to staging source tables. This verifier changes no grants.",
+    "scope": "Current reader role and the eleven source tables; not a security audit of every server object or possible role switch."
+  },
   "controls": {
     "total_rows": 15607,
     "source_cells": 66439,

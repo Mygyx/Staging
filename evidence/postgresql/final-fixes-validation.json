@@ -1,0 +1,268 @@
+{
+  "checked_at_utc": "2026-10-24T21:43:44.591162+00:00",
+  "baseline_commit": "d9f66a9967310167c5944db21dec5718dd001176",
+  "recovery_tag": "pre-final-fixes-d9f66a9",
+  "public_fingerprint_before": "6b419a83d5c5748e6eba4ab628924a78a4d63c9b9125c072ae51507f28daabfb",
+  "public_fingerprint_after": "6b419a83d5c5748e6eba4ab628924a78a4d63c9b9125c072ae51507f28daabfb",
+  "public_unchanged": true,
+  "all_11_original_csv_hashes_unchanged": true,
+  "manifest_and_source_hash_reference_unchanged": true,
+  "protected_credentials_unchanged": true,
+  "historical_postgresql_evidence_files_unchanged": 19,
+  "database_validation": {
+    "checked_at_utc": "2026-10-24T21:43:43.984938+00:00",
+    "engine": "PostgreSQL",
+    "database": "chinook_staging",
+    "schema": "public",
+    "sources": [
+      {
+        "file": "Album.csv",
+        "table": "stg_album",
+        "rows": 347,
+        "source_sha256": "656fce5550477e1e4a35a069d884b76fbeb519180a167a1bd9eb93a8ea84019e",
+        "all_values_equal": true
+      },
+      {
+        "file": "Artist.csv",
+        "table": "stg_artist",
+        "rows": 275,
+        "source_sha256": "4ac1a88103d918b481100d7b3caef709281b14865f36b335e094ee5ed8fa5926",
+        "all_values_equal": true
+      },
+      {
+        "file": "Customer.csv",
+        "table": "stg_customer",
+        "rows": 59,
+        "source_sha256": "32ee8a435a710088aed61654e8641700ae223740aec8576e214e05740e640647",
+        "all_values_equal": true
+      },
+      {
+        "file": "Employee.csv",
+        "table": "stg_employee",
+        "rows": 8,
+        "source_sha256": "66f539d1dfb65abced48588dbbd2d6168d2cc1fe2f85764231ac2a9dc2d542fb",
+        "all_values_equal": true
+      },
+      {
+        "file": "Genre.csv",
+        "table": "stg_genre",
+        "rows": 25,
+        "source_sha256": "0c73f495ea8c55702e36e5289b34ddfb89fdae58ba76d53464fc9a6866c13572",
+        "all_values_equal": true
+      },
+      {
+        "file": "Invoice.csv",
+        "table": "stg_invoice",
+        "rows": 412,
+        "source_sha256": "89233865ee25507f7a992c41cb5f4715b3cf33e322c1fff227802ac74cd6d20b",
+        "all_values_equal": true
+      },
+      {
+        "file": "InvoiceLine.csv",
+        "table": "stg_invoice_line",
+        "rows": 2240,
+        "source_sha256": "5eedcfec0bb9d3eb937576cc8e1daf3d42013ba395d764a4b876e435115fa9ec",
+        "all_values_equal": true
+      },
+      {
+        "file": "MediaType.csv",
+        "table": "stg_media_type",
+        "rows": 5,
+        "source_sha256": "80c6777732c3eca1748d3eadc0e6a7fa86e958637b1f8b10555e4eaa90ed1784",
+        "all_values_equal": true
+      },
+      {
+        "file": "Playlist.csv",
+        "table": "stg_playlist",
+        "rows": 18,
+        "source_sha256": "7bae5596f0de27f4d77c1cbde2ece990f6aaf3f9af4ec603a40d56b0328eb2f7",
+        "all_values_equal": true
+      },
+      {
+        "file": "PlaylistTrack.csv",
+        "table": "stg_playlist_track",
+        "rows": 8715,
+        "source_sha256": "708ce92206e64f05e5bbd31c43b937aca657222891cb0eac00445d0989b17166",
+        "all_values_equal": true
+      },
+      {
+        "file": "Track.csv",
+        "table": "stg_track",
+        "rows": 3503,
+        "source_sha256": "53771d86981c638ee4af35cf52deff79e224a71f5711db1b1131f3ae1e5472ba",
+        "all_values_equal": true
+      }
+    ],
+    "controls": {
+      "total_rows": 15607,
+      "source_cells": 66439,
+      "empty_fields": 1339,
+      "leading_zero_postal_fields": 24,
+      "trailing_space_fields": 8,
+      "invoice_line_rows": 2240,
+      "sales_total": "2328.60",
+      "invoice_total": "2328.60"
+    },
+    "total_rows": 15607,
+    "comparison": "Every original CSV field equals PostgreSQL TEXT; empty fields remain empty strings",
+    "catalog_matches_manifest": true,
+    "phase": "independent-read-only-verification"
+  },
+  "reader_validation": {
+    "checked_at_utc": "2026-10-24T21:43:44.360030+00:00",
+    "engine": "PostgreSQL",
+    "database": "chinook_staging",
+    "schema": "public",
+    "sources": [
+      {
+        "file": "Album.csv",
+        "table": "stg_album",
+        "rows": 347,
+        "source_sha256": "656fce5550477e1e4a35a069d884b76fbeb519180a167a1bd9eb93a8ea84019e",
+        "all_values_equal": true
+      },
+      {
+        "file": "Artist.csv",
+        "table": "stg_artist",
+        "rows": 275,
+        "source_sha256": "4ac1a88103d918b481100d7b3caef709281b14865f36b335e094ee5ed8fa5926",
+        "all_values_equal": true
+      },
+      {
+        "file": "Customer.csv",
+        "table": "stg_customer",
+        "rows": 59,
+        "source_sha256": "32ee8a435a710088aed61654e8641700ae223740aec8576e214e05740e640647",
+        "all_values_equal": true
+      },
+      {
+        "file": "Employee.csv",
+        "table": "stg_employee",
+        "rows": 8,
+        "source_sha256": "66f539d1dfb65abced48588dbbd2d6168d2cc1fe2f85764231ac2a9dc2d542fb",
+        "all_values_equal": true
+      },
+      {
+        "file": "Genre.csv",
+        "table": "stg_genre",
+        "rows": 25,
+        "source_sha256": "0c73f495ea8c55702e36e5289b34ddfb89fdae58ba76d53464fc9a6866c13572",
+        "all_values_equal": true
+      },
+      {
+        "file": "Invoice.csv",
+        "table": "stg_invoice",
+        "rows": 412,
+        "source_sha256": "89233865ee25507f7a992c41cb5f4715b3cf33e322c1fff227802ac74cd6d20b",
+        "all_values_equal": true
+      },
+      {
+        "file": "InvoiceLine.csv",
+        "table": "stg_invoice_line",
+        "rows": 2240,
+        "source_sha256": "5eedcfec0bb9d3eb937576cc8e1daf3d42013ba395d764a4b876e435115fa9ec",
+        "all_values_equal": true
+      },
+      {
+        "file": "MediaType.csv",
+        "table": "stg_media_type",
+        "rows": 5,
+        "source_sha256": "80c6777732c3eca1748d3eadc0e6a7fa86e958637b1f8b10555e4eaa90ed1784",
+        "all_values_equal": true
+      },
+      {
+        "file": "Playlist.csv",
+        "table": "stg_playlist",
+        "rows": 18,
+        "source_sha256": "7bae5596f0de27f4d77c1cbde2ece990f6aaf3f9af4ec603a40d56b0328eb2f7",
+        "all_values_equal": true
+      },
+      {
+        "file": "PlaylistTrack.csv",
+        "table": "stg_playlist_track",
+        "rows": 8715,
+        "source_sha256": "708ce92206e64f05e5bbd31c43b937aca657222891cb0eac00445d0989b17166",
+        "all_values_equal": true
+      },
+      {
+        "file": "Track.csv",
+        "table": "stg_track",
+        "rows": 3503,
+        "source_sha256": "53771d86981c638ee4af35cf52deff79e224a71f5711db1b1131f3ae1e5472ba",
+        "all_values_equal": true
+      }
+    ],
+    "controls": {
+      "total_rows": 15607,
+      "source_cells": 66439,
+      "empty_fields": 1339,
+      "leading_zero_postal_fields": 24,
+      "trailing_space_fields": 8,
+      "invoice_line_rows": 2240,
+      "sales_total": "2328.60",
+      "invoice_total": "2328.60"
+    },
+    "total_rows": 15607,
+    "comparison": "Every original CSV field equals PostgreSQL TEXT; empty fields remain empty strings",
+    "source_tables_read_only": true,
+    "reader_permission_scope": {
+      "role": "chinook_stg_reader",
+      "schema": "public",
+      "source_tables_checked": [
+        "stg_album",
+        "stg_artist",
+        "stg_customer",
+        "stg_employee",
+        "stg_genre",
+        "stg_invoice",
+        "stg_invoice_line",
+        "stg_media_type",
+        "stg_playlist",
+        "stg_playlist_track",
+        "stg_track"
+      ],
+      "required_privileges": [
+        "SELECT"
+      ],
+      "forbidden_privileges": [
+        "INSERT",
+        "UPDATE",
+        "DELETE",
+        "TRUNCATE",
+        "REFERENCES",
+        "TRIGGER",
+        "MAINTAIN"
+      ],
+      "forbidden_column_privileges": [
+        "INSERT",
+        "UPDATE",
+        "REFERENCES"
+      ],
+      "administrative_role_flags": false,
+      "database_create": false,
+      "schema_create": false,
+      "technical_catalog_select": false,
+      "scope": "Current role and these sources; no claim about every server object or role switch."
+    },
+    "database_temp_privilege": true,
+    "temp_policy": "TEMP may remain inherited for session-local objects; it does not authorize changes to staging source tables. This verifier changes no grants.",
+    "tested_from_other_pc": false
+  },
+  "source_queries_and_columns_unchanged": true,
+  "remaining_test_schemas": [],
+  "no_active_oracle_driver_imports": true,
+  "complete_suite_passed": 45,
+  "unit_cases": 25,
+  "integration_cases": 20,
+  "remote_dw_pc_test_performed": false,
+  "real_shared_prefect_dashboard_test_performed": false,
+  "global_database_or_network_configuration_modified": false,
+  "github_push_performed": false,
+  "pending": [
+    "Administrative trust rule from audit not changed",
+    "Remote DW PC integration",
+    "Real shared Prefect dashboard",
+    "Other student contributions and weekly evidence",
+    "Remote repository URL and publication"
+  ]
+}
