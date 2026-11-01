@@ -35,5 +35,8 @@ jobs:
       - name: Comprobar facturas antes del DW
         run: python scripts/check_dw_readiness.py
 
+      - name: Validar calidad de Track
+        run: python scripts/validate_tracks.py
+
       - name: Ejecutar pruebas automatizadas
         run: python -m unittest discover -s tests -v

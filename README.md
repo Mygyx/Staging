@@ -236,3 +236,5 @@ Las etiquetas `oracle-baseline-361bb17`, `pre-cleanup-b54ab4e` y
 para clonar ni ejecutar el proyecto. No se publican las ramas de respaldo.
 Las credenciales, el entorno Python y el historial local de Prefect se mantienen
 privados en esta PC.
+
+Como comprobación adicional de calidad, scripts/validate_tracks.py valida identificadores, duraciones, precios y tamaños de archivo de Track.csv. Esta validación también se ejecuta antes de la carga a Staging mediante Prefect y en GitHub Actions. Su alcance y pruebas se documentan en docs/validacion-track.md.

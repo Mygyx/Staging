@@ -17,6 +17,7 @@ from prefect.runtime import flow_run
 from staging_core import load_and_validate, snapshot_sources, validate_existing
 from profile_sources import TABLE_NAMES
 from check_dw_readiness import verificar_ventas
+from validate_tracks import validar_tracks_snapshot
 
 
 def validar_facturas_snapshot(snapshot: dict) -> None:
@@ -46,19 +47,32 @@ def validar_facturas_snapshot(snapshot: dict) -> None:
 
 
 
-@task(name="Extraer CSV", cache_policy=NO_CACHE, persist_result=False, retries=0)
+
+@task(
+    name="Extraer CSV",
+    cache_policy=NO_CACHE,
+    persist_result=False,
+    retries=0
+)
 def inspect_sources() -> dict:
 
+    # Obtener y verificar las fuentes originales
     snapshot = snapshot_sources()
 
-    # Verificar coherencia individual de las facturas
+    # Verificar coherencia individual de facturas
     validar_facturas_snapshot(snapshot)
 
+    # Verificar calidad de los datos de Track
+    reporte_tracks = validar_tracks_snapshot(snapshot)
+
     get_run_logger().info(
-        "11 CSV verificados y facturas validadas correctamente"
+        f"11 CSV verificados. "
+        f"Facturas correctas. "
+        f"{reporte_tracks['tracks_revisados']} tracks validados."
     )
 
     return snapshot
+
 
 
 @task(name="Cargar Staging", cache_policy=NO_CACHE, persist_result=False, retries=0)
