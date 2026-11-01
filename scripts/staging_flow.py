@@ -15,12 +15,49 @@ from prefect.cache_policies import NO_CACHE
 from prefect.runtime import flow_run
 
 from staging_core import load_and_validate, snapshot_sources, validate_existing
+from profile_sources import TABLE_NAMES
+from check_dw_readiness import verificar_ventas
+
+
+def validar_facturas_snapshot(snapshot: dict) -> None:
+    """Comprueba las facturas antes de cargar Staging."""
+
+    registros = {}
+
+    for nombre in ("Invoice", "InvoiceLine"):
+
+        nombre_tabla = TABLE_NAMES[nombre]
+
+        tabla = snapshot["tables"][nombre_tabla]
+
+        registros[nombre] = [
+            dict(zip(tabla["header"], fila))
+            for fila in tabla["rows"]
+        ]
+
+    try:
+        verificar_ventas(registros)
+
+    except SystemExit as error:
+        raise ValueError(
+            "Se detectaron facturas inconsistentes. "
+            "Se cancela la carga de Staging."
+        ) from error
+
 
 
 @task(name="Extraer CSV", cache_policy=NO_CACHE, persist_result=False, retries=0)
 def inspect_sources() -> dict:
+
     snapshot = snapshot_sources()
-    get_run_logger().info("11 CSV verificados: 15607 registros; vacios conservados como strings")
+
+    # Verificar coherencia individual de las facturas
+    validar_facturas_snapshot(snapshot)
+
+    get_run_logger().info(
+        "11 CSV verificados y facturas validadas correctamente"
+    )
+
     return snapshot
 
 
