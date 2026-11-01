@@ -14,10 +14,14 @@ def obtener_registros(nombre):
     return [dict(zip(columnas, fila)) for fila in filas]
 
 
-def verificar_ventas():
-    facturas = obtener_registros("Invoice")
-    detalles = obtener_registros("InvoiceLine")
-
+def verificar_ventas(registros=None):
+    if registros is None:
+        facturas = obtener_registros("Invoice")
+        detalles = obtener_registros("InvoiceLine")
+    else:
+        facturas = registros["Invoice"]
+        detalles = registros["InvoiceLine"]
+        
     errores = []
     totales_facturas = {}
     ventas_calculadas = defaultdict(lambda: Decimal("0"))
