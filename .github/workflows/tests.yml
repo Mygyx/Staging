@@ -32,5 +32,8 @@ jobs:
       - name: Verificar integridad de los CSV
         run: python scripts/profile_sources.py --check
 
-      - name: Ejecutar pruebas unitarias
+      - name: Comprobar facturas antes del DW
+        run: python scripts/check_dw_readiness.py
+
+      - name: Ejecutar pruebas automatizadas
         run: python -m unittest discover -s tests -v
