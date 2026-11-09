@@ -179,6 +179,8 @@ def check_environment(connection, settings: Settings):
     if row[2] < 170000 or row[3] != "UTF8":
         raise SafetyError("Se requiere PostgreSQL 17 o posterior y codificacion UTF8.")
     if row[4]:
+        # para que el usuario postgres no puueda asi como pregunta ??????????????
+        # para complicarse ?
         raise SafetyError("El ETL y el lector no deben ejecutarse como superusuario. Use roles limitados.")
     if row[5] != PROJECT_MARKER:
         raise SafetyError("La base no tiene la marca del proyecto. No se modifican bases de proposito desconocido.")
