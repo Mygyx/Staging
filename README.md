@@ -458,19 +458,26 @@ tiene relación con el 5433 de PostgreSQL.
 **Terminal 1 — servidor Prefect:**
 
 ```powershell
+Set-Location D:\Staging
+
 $env:PREFECT_HOME = Join-Path (Get-Location) 'local\prefect'
 New-Item -ItemType Directory -Path $env:PREFECT_HOME -Force | Out-Null
+
+$env:PREFECT_API_URL = 'http://127.0.0.1:4201/api'
+$env:PREFECT_UI_API_URL = 'http://127.0.0.1:4201/api'
 $env:PREFECT_SERVER_ANALYTICS_ENABLED = 'false'
-.\.venv\Scripts\prefect.exe config set PREFECT_API_URL=http://127.0.0.1:4201/api PREFECT_UI_API_URL=http://127.0.0.1:4201/api
+
 .\.venv\Scripts\prefect.exe server start --host 127.0.0.1 --port 4201
 ```
 
-`config set` guarda dos direcciones en el perfil local: `PREFECT_API_URL` es la
+Este bloque define dos direcciones para la sesión: `PREFECT_API_URL` es la
 conexión que usa el cliente Python y `PREFECT_UI_API_URL` es la que usa el
 dashboard en el navegador. Ambas deben apuntar a la API del servidor en 4201.
-El cambio queda guardado en el perfil; no se limita a esta terminal.
+Las variables duran mientras esa terminal esté abierta; al abrir otra sesión,
+volver a ejecutar el bloque. `Set-Location` selecciona la carpeta del proyecto;
+si el clon está en otra ubicación, ajustar esa primera línea.
 
-Si iniciaste el servidor sin guardar previamente esa configuración, puede
+Si iniciaste el servidor sin establecer `PREFECT_API_URL`, puede
 aparecer un menú para configurar `PREFECT_API_URL`.
 Elegí **Set `PREFECT_API_URL` in the current profile** con la flecha abajo y Enter.
 Si el perfil se llama `ephemeral`, ese es su nombre de configuración; no indica
@@ -488,7 +495,7 @@ para que el flujo publique sus resultados en ese mismo servidor.
 funcionando mientras esa terminal siga abierta. Abrí
 [http://127.0.0.1:4201](http://127.0.0.1:4201).
 
-Si cambiás el perfil mientras el servidor ya está encendido, detenelo con
+Si cambiás las URL mientras el servidor ya está encendido, detenelo con
 **Ctrl+C** en su terminal y volvé a iniciarlo para aplicar los ajustes.
 
 ### Si el dashboard muestra "Unable to connect to Prefect server"
@@ -506,7 +513,7 @@ el dashboard recibe una URL con 4200, hay una diferencia de configuración: el
 servidor escucha en 4201, pero la interfaz intenta consultar otro puerto.
 
 En ese caso, detené el servidor con Ctrl+C, volvé a ejecutar el bloque de
-**Terminal 1**, incluyendo `config set` para las dos direcciones, y actualizá
+**Terminal 1**, incluyendo las dos variables de URL, y actualizá
 la página cuando termine el arranque. Guardar solo una variable en la terminal
 cliente puede permitir una carga correcta mientras el dashboard conserva una
 dirección equivocada. No hace falta recargar los CSV para corregir esa dirección.
@@ -514,6 +521,7 @@ dirección equivocada. No hace falta recargar los CSV para corregir esa direcci�
 **Terminal 2 — cliente que ejecutará el flujo:**
 
 ```powershell
+Set-Location D:\Staging
 $env:PREFECT_HOME = Join-Path (Get-Location) 'local\prefect'
 New-Item -ItemType Directory -Path $env:PREFECT_HOME -Force | Out-Null
 $env:PREFECT_API_URL = 'http://127.0.0.1:4201/api'
@@ -529,11 +537,59 @@ En otra PC, `127.0.0.1` apunta a esa otra PC, no a la máquina que aloja la API.
 
 Sin una API configurada, el SDK puede iniciar un servidor temporal.
 Para seguir esta guía y conservar un dashboard conocido, usá la API explícita.
-Los ayudantes 07/08 la exigen. No se requieren Cloud, Docker, deployments ni
-workers para ejecutar este flujo local. La SQLite de Prefect guarda metadatos
+Los ayudantes 07/08 la exigen. La ejecución directa por comando no requiere
+Cloud, Docker, deployments ni workers. La opción del panel de la sección 6
+registra un deployment local. La SQLite de Prefect guarda metadatos
 de orquestación; los datos de negocio se guardan en PostgreSQL.
 
 ## 6. Ejecutar la carga de los CSV
+
+### Opción A: iniciar la carga desde el panel de Prefect
+
+Con el servidor de la terminal 1 de la sección 5 funcionando, abrir otra
+PowerShell en `D:\Staging` y ejecutar:
+
+```powershell
+Set-Location D:\Staging
+$env:PREFECT_HOME = Join-Path (Get-Location) 'local\prefect'
+$env:PREFECT_API_URL = 'http://127.0.0.1:4201/api'
+.\.venv\Scripts\prefect.exe flow serve --name chinook-staging-manual --limit 1 scripts/staging_flow.py:staging_etl
+```
+
+El comando `flow serve` de Prefect 3.9.0 registra un deployment llamado
+`chinook-staging-manual` y deja un proceso escuchando órdenes para ese flujo.
+**Dejar esa terminal abierta.** Registrar y servir el flujo no carga los CSV
+por sí solo: la ejecución la inicia el usuario desde el panel. `--limit 1`
+permite una ejecución simultánea en ese proceso; no limita las filas cargadas.
+
+El deployment queda registrado en el almacenamiento del servidor de Prefect,
+pero el proceso `flow serve` debe estar funcionando para atender las ejecuciones.
+Si cerrás su terminal o reiniciás la PC, volvé a iniciar el servidor y este
+bloque en sus terminales respectivas. Si el servidor ya sigue encendido, basta
+con volver a iniciar `flow serve`.
+
+Repetir el comando con el mismo nombre de flujo, nombre de deployment y API
+actualiza el registro existente. Usá una sola terminal de `flow serve` para
+este proyecto: iniciar el comando en varias terminales crea varios ejecutores,
+y `--limit 1` se aplica a cada proceso. Cada solicitud desde el botón Run sí
+crea una nueva ejecución del ETL.
+
+En el navegador:
+
+1. Abrir [http://127.0.0.1:4201](http://127.0.0.1:4201).
+2. Entrar a **Deployments** y abrir `chinook-staging-manual`, asociado al flujo
+   **Chinook Staging ETL**.
+3. Pulsar **Run** o **Quick run**, según la vista de Prefect. Si se muestran
+   parámetros, dejar `validate_only = false` para cargar.
+4. Abrir la ejecución creada y observar las tareas **Extraer CSV → Cargar
+   Staging → Validar Staging**. Confirmar el estado final del flujo completo.
+
+El servidor ofrece la API y el panel; `flow serve` ejecuta las órdenes.
+Ambos deben estar funcionando para esta modalidad. No requiere cambiar el
+código del ETL ni crear otro script de carga. Un `validate_only = true` revisa
+una carga existente; si las tablas están vacías, no sirve para poblarlas.
+
+### Opción B: iniciar una ejecución desde PowerShell
 
 Con PostgreSQL preparado, `.env` correcto y la terminal 2 configurada:
 
@@ -644,7 +700,7 @@ este repositorio no crea `chinook_dw`. No hace falta duplicar los CSV en el DW.
 | Tablas incompletas o con columnas distintas | Comparar con el DDL oficial; la carga no reconstruye un esquema parcial. |
 | CSV o manifiesto modificado | Comprobar `profile_sources.py --check` y restaurar las fuentes oficiales si la modificación fue accidental. |
 | API de Prefect no disponible | Mantener terminal 1 abierta y revisar URL/puerto en terminal 2. |
-| Dashboard con `Unable to connect`, aunque la API responde | Revisar `/ui-settings`: `api_url` debe usar el puerto del servidor. Corregir el perfil con `config set` y reiniciar Prefect. |
+| Dashboard con `Unable to connect`, aunque la API responde | Revisar `/ui-settings`: `api_url` debe usar el puerto del servidor. Definir ambas URL en la terminal del servidor y reiniciarlo. |
 | Error al ejecutar un `.ps1` por política local | Usar directamente el comando Python equivalente o revisar la política permitida en tu equipo. |
 | `NativeCommandError` al redirigir logs en Windows PowerShell 5 | Prefect escribe mensajes INFO en stderr; revisar el código de salida y el error real. Los ayudantes 07/08 manejan ese caso. |
 
