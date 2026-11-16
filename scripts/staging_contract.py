@@ -1,4 +1,9 @@
-"""Interfaz PostgreSQL para el DW: encabezados CSV, TEXT y lectura consistente."""
+"""Define cómo debe leer el DW las tablas de Staging.
+
+--export genera contracts/staging_sources.json con tablas, columnas y
+consultas. --check comprueba los datos y permisos de la cuenta lectora
+mediante una conexión de solo lectura.
+"""
 from __future__ import annotations
 
 import argparse

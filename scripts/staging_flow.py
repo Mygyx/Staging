@@ -1,4 +1,8 @@
-"""Tres etapas locales: CSV -> Full Refresh PostgreSQL -> auditoria independiente."""
+"""Coordina el ETL de Staging mediante Prefect.
+
+run.ps1 inicia este archivo. Ejecuta la lectura y validación de los CSV,
+la carga en PostgreSQL y una comprobación final de los datos guardados.
+"""
 from __future__ import annotations
 
 import argparse

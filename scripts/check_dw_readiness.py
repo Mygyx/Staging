@@ -1,5 +1,9 @@
+"""Comprueba que las facturas cuadren con la suma de sus detalles.
 
-"""Comprueba la preparación de ventas para el Data Warehouse."""
+Revisa fechas, precios y cantidades de Invoice e InvoiceLine. El flujo
+reutiliza esta revisión antes de cargar Staging; también puede ejecutarse
+directamente sobre los CSV. Un error impide continuar con la carga.
+"""
 
 from collections import defaultdict
 from datetime import datetime

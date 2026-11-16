@@ -1,4 +1,9 @@
-"""Inventario reproducible; solo biblioteca estandar, sin inferir tipos de datos."""
+"""Lee los CSV y describe sus archivos, columnas, filas y relaciones.
+
+El ETL reutiliza estas funciones para revisar las fuentes. Ejecutado
+directamente, genera data/manifest.json y docs/fuentes.md; con --check
+comprueba que coincidan con los CSV actuales sin regenerarlos.
+"""
 from __future__ import annotations
 
 import argparse

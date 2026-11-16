@@ -1,4 +1,9 @@
-"""Inspeccion autenticada y aprovisionamiento optativo de una base nueva y propia."""
+"""Prepara la base de Staging y las cuentas que la utilizan.
+
+--inspect revisa la instancia. --create-new prepara chinook_staging,
+las cuentas cargadora y lectora, las tablas y sus permisos. La carga
+de los CSV se realiza después mediante staging_flow.py.
+"""
 from __future__ import annotations
 
 import argparse

@@ -1,8 +1,8 @@
+"""Comprueba las ventas ya almacenadas en PostgreSQL Staging.
 
-"""Valida las ventas almacenadas en PostgreSQL Staging.
-
-La conexión es únicamente de lectura.
-No modifica ninguna tabla.
+Lee stg_invoice y stg_invoice_line usando .env.reader y una conexión de
+solo lectura; después reutiliza las reglas de check_dw_readiness.py.
+Es una comprobación adicional que se ejecuta por separado del ETL.
 """
 
 from profile_sources import HEADERS, ROOT

@@ -221,6 +221,13 @@ recreés el entorno o cambien los requisitos.
 
 [requirements-lock.txt](requirements-lock.txt) fija también las dependencias
 indirectas del entorno registrado; puede usarse en lugar de `requirements.txt`.
+Ambos archivos fijan versiones: el primero enumera las bibliotecas que usa
+directamente el proyecto y el lock también registra las que necesitan esas
+bibliotecas. `pip install -r requirements.txt` instala las dependencias, pero
+**no crea ni actualiza automáticamente `requirements-lock.txt`**. El archivo
+corto se mantiene al elegir las dependencias del proyecto; el lock se genera
+o actualiza de forma explícita desde un entorno preparado, por ejemplo con
+la salida de `pip freeze`, revisando las dependencias de cada plataforma.
 Pandas no es necesario para esta carga. Los archivos reales de configuración y
 `.venv` están excluidos de Git: cada persona los prepara en su equipo.
 

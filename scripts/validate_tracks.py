@@ -1,5 +1,9 @@
+"""Comprueba los datos de las pistas antes de cargar Staging.
 
-"""Validaciones de calidad de los datos de Track."""
+Revisa identificadores, duración, precio y Bytes. Si encuentra errores,
+genera una excepción que detiene la carga. Prefect le entrega los datos
+ya extraídos; ejecutado directamente, lee data/raw/Track.csv.
+"""
 
 from decimal import Decimal, InvalidOperation
 

@@ -1,4 +1,9 @@
-"""CSV fieles -> PostgreSQL: una transaccion para refrescar y validar todo."""
+"""Carga en PostgreSQL una copia fiel de los CSV originales.
+
+Sus funciones comprueban las fuentes y el destino, recargan las tablas
+en una transacción y comparan cada campo antes de confirmar el guardado.
+También permiten verificar una carga existente mediante solo lectura.
+"""
 from __future__ import annotations
 
 import hashlib
