@@ -10,8 +10,12 @@ no repitas el paso 04 sobre las tablas creadas: continuá con Prefect y la carga
 
 ## Qué hace falta
 
-Para 01–06: servidor PostgreSQL 17 encendido, cliente **psql 17**, dirección y
-puerto reales y una cuenta superusuaria autorizada, normalmente `postgres`.
+Para 01–06: servidor PostgreSQL 17 encendido, dirección y puerto reales y una
+cuenta superusuaria autorizada, normalmente `postgres`. Elegí un cliente:
+
+- **PowerShell con psql 17:** copiás el comando de la opción A de cada archivo.
+- **Query Tool de pgAdmin:** copiás el SQL de la opción B de cada archivo.
+
 Los roles del proyecto no deben ser superusuarios; esta cuenta se usa solo para
 prepararlos y ejecutar `SET ROLE` al crear objetos de su propiedad.
 
@@ -19,12 +23,98 @@ Para 07–08 también hacen falta Python 3.13, `.venv` con las dependencias,
 `.env` y `.env.reader` completos, CSV/manifiesto originales y una API Prefect
 funcionando. Crear las tablas con SQL no instala esas herramientas.
 
-Los archivos usan instrucciones de **psql** como `\i`, `\ir`, `\if` y
-`\password`. No se deben pegar completos en el Query Tool de pgAdmin, que
-ejecuta SQL pero no esos comandos del cliente. Podés usar SQL Shell (psql) o
-el ejecutable `psql.exe` incluido con la instalación de PostgreSQL.
+Los archivos conservan su ruta interna para **psql**, con órdenes como `\ir`,
+`\if` y `\password`. Ahora cada uno incluye también el SQL equivalente para
+**pgAdmin**, sin esas órdenes. Elegí una opción por paso; no ejecutes ambas.
 
-## 1. Abrir psql e inspeccionar el destino
+## Qué copiar y dónde ejecutarlo
+
+| Lo que estás viendo | Dónde ejecutarlo | Qué copiar |
+| --- | --- | --- |
+| De `# INICIO_POWERSHELL` a `# FIN_POWERSHELL` | Terminal PowerShell | Todo ese bloque del `.sql`, incluidos sus dos comentarios |
+| De `-- INICIO_SQL_PGADMIN` a `-- FIN_SQL_PGADMIN` | Query Tool de pgAdmin | Todo ese bloque del `.sql`, incluidos sus dos comentarios; en el 03 hay tres bloques con sufijos |
+| Bloque marcado `powershell` en este README | Terminal PowerShell | Las líneas dentro del bloque; sin los signos de Markdown ni el indicador `PS D:\Staging>` |
+| Una orden como `\i sql/manual/01_inspeccionar_instancia.sql` | SQL Shell/psql, después de conectarse | La orden completa, incluida la barra invertida `\` |
+| Archivo `.sql` completo | Solo psql, mediante el comando de la opción A o `\i` | psql ignora los ejemplos comentados de la cabecera y ejecuta su ruta interna |
+| Archivos `.ps1` 07 y 08 | PowerShell | El comando para lanzar el archivo; son ayudantes de Python/Prefect, no SQL |
+
+Las barras invertidas **sí importan**: `\set`, `\encoding`, `\i`, `\ir`,
+`\if` y `\password` son órdenes del cliente psql. Los comentarios que comienzan
+con `--` explican el archivo. Las sentencias SQL y los bloques `DO $$ ... $$;`
+son las instrucciones que psql envía a PostgreSQL.
+
+### Las dos opciones están dentro de cada SQL
+
+La cabecera de cada archivo contiene la opción A para **PowerShell** y la
+opción B para **Query Tool de pgAdmin**. Copiá únicamente desde la marca de
+inicio hasta la de fin de la opción elegida. No copies los delimitadores
+`/*` y `*/` que rodean los ejemplos: son comentarios para que psql y Python
+no ejecuten las alternativas al procesar el archivo.
+
+**No pegues el archivo completo en Query Tool.** La parte interna puede tener
+órdenes de psql. Los ejemplos SQL marcados para pgAdmin sí se pueden pegar
+completos y contienen las comprobaciones necesarias.
+
+| Archivo | Base de conexión, como administrador | Bloque SQL para pgAdmin | Resultado esperado |
+| --- | --- | --- | --- |
+| [01](01_inspeccionar_instancia.sql) | `postgres` | `INICIO_SQL_PGADMIN` → `FIN_SQL_PGADMIN` | Muestra el destino y termina sin excepciones. |
+| [02](02_crear_roles.sql) | `postgres` | `INICIO_SQL_PGADMIN` → `FIN_SQL_PGADMIN` | Dos roles del proyecto con inicio de sesión y contraseña. |
+| [03](03_crear_base.sql) | `postgres` | Tres bloques: `_1_COMPROBAR`, `_2_CREAR_BASE`, `_3_MARCAR_BASE` | Base UTF-8, propiedad del cargador y marcada para el proyecto. |
+| [04](04_crear_tablas.sql) | `chinook_staging` | `INICIO_SQL_PGADMIN` → `FIN_SQL_PGADMIN` | 11 tablas `stg_*` y `etl_source_file`, todavía sin filas. |
+| [05](05_configurar_permisos.sql) | `chinook_staging` | `INICIO_SQL_PGADMIN` → `FIN_SQL_PGADMIN` | El lector puede consultar las 11 fuentes, sin modificarlas. |
+| [06](06_verificar_preparacion.sql) | `chinook_staging` | `INICIO_SQL_PGADMIN` → `FIN_SQL_PGADMIN` | Comprobaciones sin errores y conteos en Messages. |
+
+En PowerShell, todos usan las marcas `# INICIO_POWERSHELL` y
+`# FIN_POWERSHELL`. El comando invoca `psql.exe`, solicita la contraseña del
+administrador con `-W` y selecciona la base adecuada con `-d`. Los ejemplos
+suponen `D:\PostgreSQL\17`, `D:\Staging` y `127.0.0.1:5433`; ajustalos en tu equipo.
+`-v ON_ERROR_STOP=1` detiene psql ante el primer error; no agregues `-1`, porque
+la creación de la base debe ejecutarse fuera de una transacción.
+
+El archivo 02 explica cómo indicar las **claves de los roles nuevos**: son
+distintas de la clave administrativa que solicita `-W`. En pgAdmin se escriben
+en las variables del bloque copiado al editor; en psql se solicitan con
+`\password`. Las claves deben coincidir con `.env` y `.env.reader`.
+
+También tienen ambas opciones estos componentes, que **no son pasos extra**:
+
+- [`_comprobar_base.sql`](_comprobar_base.sql): ayudante de 04–06; solo revisa el destino.
+- [`../create_staging.sql`](../create_staging.sql): definición oficial usada por 04 y Python. Sus opciones manuales hacen lo mismo que 04.
+- [`../provision_access.sql`](../provision_access.sql): permisos oficiales usados por 05 y Python. Sus opciones manuales hacen lo mismo que 05.
+
+No ejecutes 04 y después `create_staging.sql` como si faltara otra etapa:
+estarías intentando crear las mismas tablas dos veces.
+
+### Por qué hay archivos PowerShell junto a los SQL
+
+Los pasos 01–06 preparan PostgreSQL. Los pasos 07–08 completan el recorrido con
+la carga y su comprobación, que pertenecen al programa Python/Prefect:
+
+- `07_cargar_csv.ps1` inicia `scripts/staging_flow.py`, igual que la carga normal.
+- `08_validar_carga.ps1` ejecuta el flujo con `--validate-only` y después comprueba
+  el contrato con la cuenta lectora. Las tablas deben haber sido cargadas antes.
+- `_python_comun.ps1` es un ayudante que ambos reutilizan para localizar Python,
+  comprobar configuración y manejar el resultado del comando.
+
+Estos tres archivos no son necesarios para ejecutar el ETL desde `run.ps1` o
+desde un deployment de Prefect. Sí forman parte de la ruta numerada documentada:
+07 y 08 dependen del ayudante. Su función es ofrecer los mismos pasos sin
+duplicar la lógica de carga ni de validación.
+
+`run.ps1` **no llama** a 07, 08 ni `_python_comun.ps1`. Son accesos alternativos
+al código Python: `run.ps1` y 07 inician el mismo `staging_flow.py` por rutas
+distintas. Por eso se utiliza una ruta de carga u otra, no ambas para una sola
+demostración.
+
+## 1. Inspeccionar el destino
+
+La forma más directa es abrir el archivo **01** y elegir su opción A o B.
+En pgAdmin, abrí Query Tool sobre **`postgres`**, conectado como administrador,
+y ejecutá el bloque SQL indicado. Solo consulta y comprueba: no crea recursos.
+
+Si preferís una sesión interactiva de psql para los seis pasos, esta es la
+alternativa; los comandos `\i` de los pasos siguientes pertenecen a esa sesión.
+No hace falta abrirla si vas a usar los bloques de PowerShell o de pgAdmin.
 
 Desde PowerShell, entrá a la raíz del clon y abrí una conexión administrativa.
 Este ejemplo supone el proyecto en D:, PostgreSQL instalado en
@@ -52,11 +142,13 @@ A partir de ahora verás el indicador `postgres=#`. Estos comandos van **dentro
 de psql**, no en PowerShell:
 
 ```text
+\set ON_ERROR_STOP on
+\encoding UTF8
 \pset pager off
 \i sql/manual/01_inspeccionar_instancia.sql
 ```
 
-El primer comando evita que las salidas largas queden detenidas en un visor.
+`\pset pager off` evita que las salidas largas queden detenidas en un visor.
 El archivo 01 solo consulta y comprueba: muestra conexión, versión, puerto,
 bases y roles. Revisá que corresponda al destino que querés preparar.
 
@@ -71,6 +163,16 @@ otra carpeta, usá una ruta absoluta, por ejemplo:
 Los `\ir` internos resuelven sus archivos respecto del script que los incluye.
 
 ## 2. Crear las cuentas PostgreSQL
+
+**En pgAdmin:** abrir **02**, copiar su bloque SQL y reemplazar únicamente los
+valores asignados a `clave_cargador` y `clave_lector` en la copia del editor.
+No cambies el texto `REEMPLAZAR...` de los `IF`: detecta los valores pendientes.
+Si una clave contiene `'`, escribí `''` dentro del literal SQL. No guardes las
+claves reales en el archivo del repositorio. Ejecutá el bloque completo sobre
+**`postgres`**. Si ya existen roles válidos del proyecto, conserva sus claves.
+
+**En PowerShell:** el bloque A de **02** pide las claves nuevas mediante psql.
+Si elegiste la sesión interactiva anterior, el equivalente es:
 
 En la misma sesión, todavía conectado a `postgres` como administrador:
 
@@ -99,6 +201,19 @@ esa cuenta; no es algo que estos scripts hagan automáticamente.
 
 ## 3. Crear la base
 
+**En pgAdmin:** abrir **03** y ejecutar sus tres bloques **por separado**:
+
+1. `_1_COMPROBAR`: revisa el destino y devuelve `crear_base`. Si hay un error, detenete. Si devuelve `false`, omití 2 y 3: la base ya está preparada.
+2. `_2_CREAR_BASE`: solo si devuelve `true`. Activá **Auto-commit**, cerrá cualquier transacción previa y ejecutá únicamente este bloque, que contiene `CREATE DATABASE`. No lo envíes junto con los otros bloques.
+3. `_3_MARCAR_BASE`: solo después de que el bloque 2 termine correctamente. Identifica la base que acabás de crear; no sirve para adoptar una base existente desconocida.
+
+Después, refrescá **Databases**, seleccioná **`chinook_staging`** y abrí una
+**nueva Query Tool** para 04–06. La pestaña conectada a `postgres` no cambia de
+base por haber creado otra. No pegues `\connect` en Query Tool.
+
+**En PowerShell:** el bloque A de **03** resuelve automáticamente la decisión
+de crear o conservar una base válida. En la sesión interactiva de psql:
+
 Todavía conectado como administrador a `postgres`:
 
 ```text
@@ -116,7 +231,8 @@ Si hubiera una interrupción entre crear la base y agregar su comentario,
 inspeccioná el resultado antes de continuar; no marques una base desconocida
 solo para saltarte la comprobación.
 
-Ahora cambiá de base conservando la conexión administrativa:
+Solo en la sesión interactiva de **psql**, cambiá de base conservando la
+conexión administrativa:
 
 ```text
 \connect chinook_staging
@@ -126,6 +242,13 @@ El indicador pasa a `chinook_staging=#`. Los siguientes pasos deben ejecutarse
 en esta base, en el mismo host/puerto.
 
 ## 4. Crear las tablas oficiales
+
+**En pgAdmin:** sobre **`chinook_staging`**, ejecutá el bloque B completo de
+**04**. Ya incluye la comprobación de destino, la transacción y las mismas 12
+definiciones de tablas del SQL oficial; no hay que pegar `\ir` ni ejecutar
+otro archivo después. Se confirma todo con `COMMIT` si termina correctamente.
+
+**En PowerShell:** ejecutá el bloque A de **04**. En la sesión interactiva:
 
 Conectado a `chinook_staging` como administrador:
 
@@ -144,6 +267,11 @@ volver a crear tablas para cargar de nuevo los CSV.
 
 ## 5. Asignar permisos al lector
 
+**En pgAdmin:** sobre **`chinook_staging`**, ejecutá el bloque B completo de
+**05**. Incluye las comprobaciones y el SQL oficial de permisos.
+
+**En PowerShell:** ejecutá el bloque A de **05**. En la sesión interactiva:
+
 En la misma base y con la cuenta administrativa:
 
 ```text
@@ -160,6 +288,12 @@ que el acceso se asigne de forma explícita a los roles del proyecto.
 
 ## 6. Revisar la preparación
 
+**En pgAdmin:** sobre **`chinook_staging`**, ejecutá el bloque B completo de
+**06**. Revisá **Data Output** para las columnas y el resultado final y
+**Messages** para los conteos emitidos con `NOTICE`.
+
+**En PowerShell:** ejecutá el bloque A de **06**. En la sesión interactiva:
+
 ```text
 \i sql/manual/06_verificar_preparacion.sql
 ```
@@ -171,7 +305,8 @@ contenido y estructura que realiza el ETL.
 
 **Si acabás de crear las tablas, cero filas es el resultado esperado.**
 Hasta este momento ningún paso ha leído ni insertado los CSV.
-Si todas las comprobaciones terminaron sin error, cerrá psql:
+Si todas las comprobaciones terminaron sin error y usaste la sesión
+interactiva de **psql**, cerrala con este comando (no va en Query Tool):
 
 ```text
 \q
@@ -234,13 +369,15 @@ junto con host/puerto accesibles y el [contrato de lectura](../../docs/entrega-d
 
 ## Si falla un paso o necesitás retomarlo
 
-Los SQL activan `ON_ERROR_STOP`: se detiene el archivo ante un error. En una
+En la opción PowerShell/psql se activa `ON_ERROR_STOP`: se detiene el archivo
+ante un error. En pgAdmin no se usa esa orden; ejecutá el bloque marcado completo
+y revisá los errores de Messages antes de seguir con otro paso. En una
 sesión interactiva podés volver al indicador de psql; eso no significa que el
 paso haya terminado correctamente. No continúes copiando los comandos siguientes
 sin resolver la causa.
 
 Si el indicador muestra una transacción abortada (`=!#`) o quedó una transacción
-abierta por un paso fallido, ejecutá dentro de psql:
+abierta por un paso fallido, ejecutá en psql o en la misma Query Tool:
 
 ```sql
 ROLLBACK;
@@ -263,3 +400,5 @@ sobre una base preparada, usá 07; para auditarla sin recargar, usá 08.
 
 Referencia de los comandos del cliente:
 [documentación oficial de psql 17](https://www.postgresql.org/docs/17/app-psql.html).
+La separación del paso 03 se debe a la restricción de
+[CREATE DATABASE](https://www.postgresql.org/docs/17/sql-createdatabase.html).

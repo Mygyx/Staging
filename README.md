@@ -20,7 +20,7 @@ comprueba el resultado. Clonar el repositorio o instalar Python no crea la base.
 | [scripts/provision_postgres.py](scripts/provision_postgres.py) | Inspección y preparación automática de PostgreSQL. |
 | [sql/create_staging.sql](sql/create_staging.sql) | Definición de las 11 tablas fuente y la tabla técnica. |
 | [sql/provision_access.sql](sql/provision_access.sql) | Permisos que permiten al DW leer las fuentes sin modificarlas. |
-| [sql/manual](sql/manual/README.md) | Alternativa numerada para preparar la base con `psql` y luego ejecutar el ETL. |
+| [sql/manual](sql/manual/README.md) | Alternativa numerada para preparar la base desde PowerShell/psql o Query Tool de pgAdmin y luego ejecutar el ETL. |
 | [scripts/staging_flow.py](scripts/staging_flow.py), [run.ps1](run.ps1) | Flujo de carga y su acceso directo para PowerShell. |
 
 Las fuentes contienen **15.607 filas y 66.439 campos originales**. Las 11 tablas
@@ -415,15 +415,17 @@ No borres bases ni agregues marcas a objetos desconocidos para forzar la ejecuci
 
 ### Ruta B: preparación manual numerada
 
-La [guía manual](sql/manual/README.md) explica cómo preparar lo mismo con el
-cliente `psql` de PostgreSQL 17. Esta ruta requiere una cuenta superusuaria
+La [guía manual](sql/manual/README.md) explica cómo preparar lo mismo desde
+**PowerShell con `psql`** o desde **Query Tool de pgAdmin**. Cada `.sql` contiene
+ambas opciones, con marcas de inicio y fin para copiar el bloque correcto.
+Esta ruta requiere PostgreSQL 17 y una cuenta superusuaria
 autorizada para ejecutar sus comprobaciones y cambiar al propietario de las tablas.
 Es una alternativa si querés revisar cada etapa o si no podés usar el aprovisionador.
 
 | Orden | Archivo | Resultado |
 | --- | --- | --- |
-| 01 | [Inspeccionar instancia](sql/manual/01_inspeccionar_instancia.sql) | Muestra y comprueba el servidor y los objetos existentes. |
-| 02 | [Crear roles](sql/manual/02_crear_roles.sql) | Pide las contraseñas y crea los dos roles del proyecto. |
+| 01 | [Inspeccionar instancia](sql/manual/01_inspeccionar_instancia.sql) | Comprueba conexión, versión, bases y roles existentes. |
+| 02 | [Crear roles](sql/manual/02_crear_roles.sql) | Crea las cuentas cargadora y lectora; las claves se indican según la opción elegida. |
 | 03 | [Crear base](sql/manual/03_crear_base.sql) | Crea `chinook_staging`, su propietario y su marca. |
 | 04 | [Crear tablas](sql/manual/04_crear_tablas.sql) | Ejecuta el DDL oficial sobre el esquema vacío. |
 | 05 | [Configurar permisos](sql/manual/05_configurar_permisos.sql) | Ejecuta el SQL oficial de acceso. |
@@ -431,12 +433,20 @@ Es una alternativa si querés revisar cada etapa o si no podés usar el aprovisi
 | 07 | [Cargar CSV](sql/manual/07_cargar_csv.ps1) | Ejecuta el flujo Python/Prefect existente. |
 | 08 | [Validar carga](sql/manual/08_validar_carga.ps1) | Audita los datos cargados y el acceso del lector. |
 
-Los pasos 01–06 se ejecutan **dentro de psql**; 07–08, desde **PowerShell**.
-Los archivos 04 y 05 incluyen los SQL originales: no hay dos versiones del DDL.
-La ruta manual también respeta los nombres, marcas y separación de instancias.
+En cada SQL, para PowerShell copiá desde `# INICIO_POWERSHELL` hasta
+`# FIN_POWERSHELL`. Para pgAdmin, copiá desde `-- INICIO_SQL_PGADMIN` hasta
+`-- FIN_SQL_PGADMIN`. El **03 tiene tres bloques SQL**, identificados con sufijos:
+se ejecutan por separado porque `CREATE DATABASE` no admite una transacción.
+Los pasos 01–03 se conectan a `postgres`; 04–06, a `chinook_staging`.
+Los ayudantes 07–08 siguen siendo **PowerShell/Python/Prefect**, no SQL.
 
-Elegí **A o B** para preparar la base. Si A ya terminó correctamente, pasá al
-paso 5 de este README; no ejecutes 04 manual sobre tablas ya creadas.
+En la ruta psql, 04 y 05 incluyen los SQL oficiales. La alternativa pgAdmin
+contiene el SQL equivalente en el mismo archivo, para poder copiarlo sin
+órdenes `\ir`. Las dos rutas respetan los nombres, marcas y separación de
+instancias. Los detalles de contraseñas, conexión y bloques están en la guía manual.
+
+Elegí la **preparación automática o la manual**. Si la automática ya terminó
+correctamente, pasá al paso 5 de este README; no ejecutes 04 manual sobre tablas ya creadas.
 La alternativa manual no soluciona un servidor apagado ni una contraseña inválida.
 
 ## 5. Preparar Prefect para ver las ejecuciones
