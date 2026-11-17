@@ -21,7 +21,7 @@ comprueba el resultado. Clonar el repositorio o instalar Python no crea la base.
 | [sql/create_staging.sql](sql/create_staging.sql) | Definición de las 11 tablas fuente y la tabla técnica. |
 | [sql/provision_access.sql](sql/provision_access.sql) | Permisos que permiten al DW leer las fuentes sin modificarlas. |
 | [sql/manual](sql/manual/README.md) | Alternativa numerada para preparar la base desde PowerShell/psql o Query Tool de pgAdmin y luego ejecutar el ETL. |
-| [scripts/staging_flow.py](scripts/staging_flow.py), [run.ps1](run.ps1) | Flujo de carga y su acceso directo para PowerShell. |
+| [scripts/staging_flow.py](scripts/staging_flow.py), [run.ps1](run.ps1) | Deployment de Staging para Quick Run; opciones explícitas para cargar o validar desde PowerShell. |
 
 Las fuentes contienen **15.607 filas y 66.439 campos originales**. Las 11 tablas
 `stg_*` conservan los campos fuente como `TEXT`, sus nombres CamelCase y sus
@@ -535,9 +535,11 @@ Si el equipo ya dispone de una API compartida, utilizá su URL real en la
 terminal 2 y su autenticación privada; no necesitás iniciar otro servidor.
 En otra PC, `127.0.0.1` apunta a esa otra PC, no a la máquina que aloja la API.
 
-Sin una API configurada, el SDK puede iniciar un servidor temporal.
-Para seguir esta guía y conservar un dashboard conocido, usá la API explícita.
-Los ayudantes 07/08 la exigen. La ejecución directa por comando no requiere
+El programa usa `http://127.0.0.1:4201/api` si no definiste `PREFECT_API_URL`.
+Si la definiste, conserva tu dirección. Al arrancar el servicio comprueba que
+esa API responda; si está apagada, se detiene sin iniciar una carga ni crear
+otro servidor. Los ayudantes 07/08 exigen la variable explícita.
+La ejecución directa por comando no requiere
 Cloud, Docker, deployments ni workers. La opción del panel de la sección 6
 registra un deployment local. La SQLite de Prefect guarda metadatos
 de orquestación; los datos de negocio se guardan en PostgreSQL.
@@ -546,32 +548,43 @@ de orquestación; los datos de negocio se guardan en PostgreSQL.
 
 ### Opción A: iniciar la carga desde el panel de Prefect
 
-Con el servidor de la terminal 1 de la sección 5 funcionando, abrir otra
-PowerShell en `D:\Staging` y ejecutar:
+Con el servidor de la terminal 1 de la sección 5 funcionando, abrir
+`scripts/staging_flow.py` en VS Code, seleccionar el intérprete
+`D:\Staging\.venv\Scripts\python.exe` y pulsar **Run Python File** (▶).
+El programa abre el navegador y sirve únicamente el deployment de Staging;
+no solicita una carga nueva al arrancar. Esperar a que aparezca **Ready**.
+
+Desde PowerShell, el mismo modo se inicia así:
 
 ```powershell
 Set-Location D:\Staging
 $env:PREFECT_HOME = Join-Path (Get-Location) 'local\prefect'
 $env:PREFECT_API_URL = 'http://127.0.0.1:4201/api'
-.\.venv\Scripts\prefect.exe flow serve --name chinook-staging-manual --limit 1 scripts/staging_flow.py:staging_etl
+.\run.ps1
 ```
 
-El comando `flow serve` de Prefect 3.9.0 registra un deployment llamado
-`chinook-staging-manual` y deja un proceso escuchando órdenes para ese flujo.
-**Dejar esa terminal abierta.** Registrar y servir el flujo no carga los CSV
-por sí solo: la ejecución la inicia el usuario desde el panel. `--limit 1`
-permite una ejecución simultánea en ese proceso; no limita las filas cargadas.
+Sin argumentos, `run.ps1` y `staging_flow.py` llaman a
+`staging_etl.serve(name="chinook-staging-manual", limit=1)`. También se puede
+indicar `--serve` al archivo Python o `-Serve` a `run.ps1`.
+**Dejar esa terminal abierta.** El servicio atiende peticiones de ese deployment:
+la carga se solicita con Quick Run. Si había peticiones pendientes, también
+podrá atenderlas. `limit=1` permite una ejecución simultánea en ese proceso;
+no limita las filas cargadas.
+
+Activar `.venv` selecciona las herramientas del entorno; no inicia la API ni
+el ETL. `prefect server start` debe permanecer en una terminal diferente del
+servicio de Staging. No hacen falta cambios en el flujo del DW para este arranque.
 
 El deployment queda registrado en el almacenamiento del servidor de Prefect,
-pero el proceso `flow serve` debe estar funcionando para atender las ejecuciones.
+pero el proceso que sirve Staging debe estar funcionando para atender las ejecuciones.
 Si cerrás su terminal o reiniciás la PC, volvé a iniciar el servidor y este
 bloque en sus terminales respectivas. Si el servidor ya sigue encendido, basta
-con volver a iniciar `flow serve`.
+con volver a iniciar `run.ps1` o pulsar Run en `staging_flow.py`.
 
 Repetir el comando con el mismo nombre de flujo, nombre de deployment y API
-actualiza el registro existente. Usá una sola terminal de `flow serve` para
+actualiza el registro existente. Usá una sola terminal del servicio de Staging para
 este proyecto: iniciar el comando en varias terminales crea varios ejecutores,
-y `--limit 1` se aplica a cada proceso. Cada solicitud desde el botón Run sí
+y `limit=1` se aplica a cada proceso. Cada solicitud desde el botón Run sí
 crea una nueva ejecución del ETL.
 
 En el navegador:
@@ -584,9 +597,8 @@ En el navegador:
 4. Abrir la ejecución creada y observar las tareas **Extraer CSV → Cargar
    Staging → Validar Staging**. Confirmar el estado final del flujo completo.
 
-El servidor ofrece la API y el panel; `flow serve` ejecuta las órdenes.
-Ambos deben estar funcionando para esta modalidad. No requiere cambiar el
-código del ETL ni crear otro script de carga. Un `validate_only = true` revisa
+El servidor ofrece la API y el panel; el servicio de Staging ejecuta las órdenes.
+Ambos deben estar funcionando para esta modalidad. Un `validate_only = true` revisa
 una carga existente; si las tablas están vacías, no sirve para poblarlas.
 
 ### Opción B: iniciar una ejecución desde PowerShell
@@ -594,14 +606,18 @@ una carga existente; si las tablas están vacías, no sirve para poblarlas.
 Con PostgreSQL preparado, `.env` correcto y la terminal 2 configurada:
 
 ```powershell
-.\run.ps1
+.\run.ps1 -RunOnce
 ```
 
 Es el acceso directo al siguiente comando; **ejecutá uno de los dos**:
 
 ```powershell
-.\.venv\Scripts\python.exe scripts/staging_flow.py
+.\.venv\Scripts\python.exe scripts/staging_flow.py --run-once
 ```
+
+`--run-once` inicia una carga inmediatamente; `--validate-only` audita una carga
+existente. Son opciones excluyentes con `--serve`. Sin ninguna de ellas el
+programa sirve el deployment y espera peticiones del panel.
 
 El flujo **Chinook Staging ETL** ejecuta tres tareas secuenciales:
 

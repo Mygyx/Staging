@@ -1,18 +1,22 @@
 """Coordina el ETL de Staging mediante Prefect.
 
-run.ps1 inicia este archivo. Ejecuta la lectura y validación de los CSV,
-la carga en PostgreSQL y una comprobación final de los datos guardados.
+Sin argumentos sirve el deployment y abre Prefect para usar Quick Run.
+--run-once ejecuta una carga; --validate-only comprueba una carga existente.
+El flujo lee los CSV, los carga y comprueba los datos guardados en PostgreSQL.
 """
 from __future__ import annotations
 
 import argparse
 import json
 import os
+import urllib.request
+import webbrowser
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 os.environ.setdefault("PREFECT_HOME", str(ROOT / "local" / "prefect"))
 os.environ.setdefault("PREFECT_SERVER_ANALYTICS_ENABLED", "false")
+os.environ.setdefault("PREFECT_API_URL", "http://127.0.0.1:4201/api")
 
 from prefect import flow, get_run_logger, task
 from prefect.cache_policies import NO_CACHE
@@ -116,8 +120,50 @@ def staging_etl(validate_only: bool = False) -> str:
     return validate_final(snapshot, loaded)
 
 
-if __name__ == "__main__":
+def serve_staging() -> None:
+    """Atiende solicitudes del panel sin solicitar una carga nueva al arrancar."""
+    api_url = os.environ.get("PREFECT_API_URL", "").rstrip("/")
+    try:
+        with urllib.request.urlopen(api_url + "/health", timeout=5) as response:
+            if json.loads(response.read()) is not True:
+                raise ValueError("La API no confirma su estado")
+    except (OSError, ValueError) as error:
+        raise ConnectionError(
+            "No se pudo conectar con la API de Prefect. "
+            "Inicia el servidor en otra terminal con "
+            r".\.venv\Scripts\prefect.exe server start --host 127.0.0.1 --port 4201 "
+            "y revisa PREFECT_API_URL. No se ha iniciado una carga."
+        ) from error
+    dashboard = api_url[:-4] if api_url.endswith("/api") else api_url
+    print(f"Panel de Prefect: {dashboard}")
+    print("Preparando chinook-staging-manual. Deja esta terminal abierta y usa Quick Run en Deployments.")
+    try:
+        webbrowser.open(dashboard)
+    except (OSError, webbrowser.Error):
+        print("Abre el enlace del panel manualmente en tu navegador.")
+    previous_directory = Path.cwd()
+    try:
+        os.chdir(ROOT)
+        staging_etl.serve(name="chinook-staging-manual", limit=1)
+    finally:
+        os.chdir(previous_directory)
+
+
+def main(argv: list[str] | None = None) -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--validate-only", action="store_true", help="Solo SELECT en PostgreSQL; registra evidencia local")
-    args = parser.parse_args()
-    staging_etl(validate_only=args.validate_only)
+    modes = parser.add_mutually_exclusive_group()
+    modes.add_argument("--serve", action="store_true", help="Servir el deployment y abrir el panel; modo predeterminado")
+    modes.add_argument("--run-once", action="store_true", help="Ejecutar una carga de Staging sin esperar Quick Run")
+    modes.add_argument("--validate-only", action="store_true", help="Solo SELECT en PostgreSQL; registra evidencia local")
+    args = parser.parse_args(argv)
+    if args.run_once or args.validate_only:
+        staging_etl(validate_only=args.validate_only)
+    else:
+        try:
+            serve_staging()
+        except ConnectionError as error:
+            parser.exit(2, f"{error}\n")
+
+
+if __name__ == "__main__":
+    main()

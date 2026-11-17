@@ -1,6 +1,13 @@
 # Pruebas y validaciones del Staging
 
-## Fotografia y dos modos de ejecucion
+## Fotografia, servicio y modos de ejecucion
+
+El arranque sin opciones sirve `chinook-staging-manual` y abre el panel para
+Quick Run. La carga directa se solicita con `run.ps1 -RunOnce` o
+`staging_flow.py --run-once`; `--validate-only` conserva la auditoría de solo lectura.
+Las pruebas de CLI interceptan Prefect, PostgreSQL, HTTP y navegador para
+comprobar que Run del editor no inicia una carga nueva, que se conserva la API
+configurada y que un servidor apagado no provoca un arranque alternativo.
 
 Extraer CSV conserva los valores textuales y valida los hashes del manifiesto.
 La fotografia mutable se vuelve a contrastar campo por campo contra los CSV,
@@ -18,7 +25,7 @@ Se comprueba lo almacenado y se escriben evidencia y metadatos locales Prefect.
 
 ## Catalogo de la suite actual
 
-Hay 45 casos: 25 locales y 20 de integracion PostgreSQL. Los subcasos monetarios
+Hay 80 casos: 60 locales y 20 de integracion PostgreSQL. Los subcasos monetarios
 son parte de un caso, no tres pruebas independientes en el conteo de unittest.
 
 | Grupo | Que demuestra |
@@ -29,6 +36,7 @@ son parte de un caso, no tres pruebas independientes en el conteo de unittest.
 | Controles monetarios negativos | Rechazo de cambios en precio, cantidad y total de factura mediante Decimal |
 | Aprovisionamiento | Rechazo de homonimos ajenos, motor incorrecto e instancia DW; permite otras bases |
 | Seleccion de API Prefect | Conserva API existente sin iniciar servidor ni efectuar HTTP; no prueba una API real |
+| Arranque desde editor y CLI | Run sirve Staging sin cargar; opciones explícitas para carga/auditoría, API local por defecto, error con API apagada y carpeta correcta del deployment |
 | Primera y segunda carga | DDL inicial correcto y recarga sin duplicar las doce tablas |
 | Excepcion Python en carga | El callback de log falla tras la primera tabla; restaura la fotografia anterior |
 | Error SQL real | Un INSERT de ordinal duplicado falla con UniqueViolation 23505; restaura todas las tablas |

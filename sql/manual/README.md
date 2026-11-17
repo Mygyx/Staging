@@ -90,7 +90,7 @@ estarías intentando crear las mismas tablas dos veces.
 Los pasos 01–06 preparan PostgreSQL. Los pasos 07–08 completan el recorrido con
 la carga y su comprobación, que pertenecen al programa Python/Prefect:
 
-- `07_cargar_csv.ps1` inicia `scripts/staging_flow.py`, igual que la carga normal.
+- `07_cargar_csv.ps1` inicia `scripts/staging_flow.py --run-once` para cargar inmediatamente.
 - `08_validar_carga.ps1` ejecuta el flujo con `--validate-only` y después comprueba
   el contrato con la cuenta lectora. Las tablas deben haber sido cargadas antes.
 - `_python_comun.ps1` es un ayudante que ambos reutilizan para localizar Python,
@@ -102,9 +102,9 @@ desde un deployment de Prefect. Sí forman parte de la ruta numerada documentada
 duplicar la lógica de carga ni de validación.
 
 `run.ps1` **no llama** a 07, 08 ni `_python_comun.ps1`. Son accesos alternativos
-al código Python: `run.ps1` y 07 inician el mismo `staging_flow.py` por rutas
-distintas. Por eso se utiliza una ruta de carga u otra, no ambas para una sola
-demostración.
+al código Python: `run.ps1` sin opciones sirve el deployment para Quick Run;
+`run.ps1 -RunOnce` y 07 inician una carga inmediata. Por eso se utiliza una ruta
+de carga u otra, no ambas para una sola demostración.
 
 ## 1. Inspeccionar el destino
 
@@ -326,7 +326,7 @@ Después:
 & .\sql\manual\07_cargar_csv.ps1
 ```
 
-Este archivo llama a `scripts/staging_flow.py`, usando el Python de `.venv`
+Este archivo llama a `scripts/staging_flow.py --run-once`, usando el Python de `.venv`
 y las credenciales del cargador en `.env`. No vuelve a crear la base ni inicia
 un servidor Prefect. El flujo comprueba fuentes, carga de forma transaccional
 y audita los datos. Si falla, el ayudante devuelve un error y no continúa con
@@ -340,7 +340,7 @@ repo es `Completed`, 15.607 filas fuente y 11 registros en el catálogo técnico
 Si PowerShell no permite ejecutar scripts, el equivalente es:
 
 ```powershell
-.\.venv\Scripts\python.exe scripts/staging_flow.py
+.\.venv\Scripts\python.exe scripts/staging_flow.py --run-once
 ```
 
 ## 8. Validar el contenido y la cuenta del DW

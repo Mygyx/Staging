@@ -24,7 +24,7 @@ commits de un solo día no demuestran varias semanas de actividad.
 4. Usar una base propia o acceso autorizado; no adoptar bases homónimas ajenas.
 5. Comprobar `profile_sources.py --check` y ejecutar las pruebas locales.
 6. Aprovisionar con permisos administrativos solo la base de este proyecto.
-7. Ejecutar `run.ps1`, comprobar el lector y revisar evidencia PostgreSQL.
+7. Ejecutar `run.ps1` y solicitar Quick Run desde Deployments, o cargar directamente con `run.ps1 -RunOnce`; después comprobar el lector y revisar evidencia PostgreSQL.
 
 Para cambios de código usar una rama y revisión del compañero. No modificar
 los CSV para que una prueba pase ni regenerar el manifiesto para ocultar cambios.
